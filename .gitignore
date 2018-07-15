@@ -1,0 +1,4 @@
+build*/
+subprojects/libfoxenbitstream
+subprojects/libfoxenmem
+subprojects/libfoxenunit
