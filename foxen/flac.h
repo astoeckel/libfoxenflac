@@ -83,17 +83,17 @@ enum fx_flac_state {
 	/**
 	 * The decoder is currently inside the stream of audio frames.
 	 */
-	FLAC_IN_FRAME = 5,
+	FLAC_IN_FRAME = 4,
 
 	/**
 	 * The decoder reached the end of a block.
 	 */
-	FLAC_END_OF_FRAME = 6,
+	FLAC_END_OF_FRAME = 5,
 
 	/**
 	 * The decoder reached the end of the stream.
 	 */
-	FLAC_END_OF_STREAM = 7,
+	FLAC_END_OF_STREAM = 6,
 };
 
 /**
@@ -111,7 +111,7 @@ enum fx_flac_streaminfo_key {
 	FLAC_MAX_FRAME_SIZE = 3,
 	FLAC_SAMPLE_RATE = 4,
 	FLAC_N_CHANNELS = 5,
-	FLAC_BITS_PER_SAMPLE = 6,
+	FLAC_SAMPLE_SIZE = 6,
 	FLAC_N_SAMPLES = 7,
 	FLAC_MD5_SUM_0 = 128,
 	FLAC_MD5_SUM_1 = 129,

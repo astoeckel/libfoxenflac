@@ -15,6 +15,10 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 project('libfoxenflac', 'c', default_options : ['c_std=c99'])
+compiler = meson.get_compiler('c')
+if compiler.get_id() == 'gcc' or compiler.get_id() == 'clang'
+	add_global_arguments('-Wc++-compat', language : 'c')
+endif
 
 # Include directory
 inc_foxen = include_directories('.')
@@ -34,6 +38,14 @@ lib_foxenflac = library(
     include_directories: inc_foxen,
     dependencies: [dep_foxenbitstream, dep_foxenmem],
     install: true)
+
+# Compile the example programs
+exe_flac_decoder = executable(
+    'flac_decoder',
+    'examples/flac_decoder.c',
+    include_directories: inc_foxen,
+    link_with: lib_foxenflac,
+    install: false)
 
 # Compile and register the unit tests
 dep_foxenunit = dependency(
