@@ -1,5 +1,5 @@
 /*
- *  libstanchion -- Introduces musical acts at the EOLIAN
+ *  libfoxenflac -- FLAC decoder
  *  Copyright (C) 2018  Andreas Stöckel
  *
  *  This program is free software: you can redistribute it and/or modify
