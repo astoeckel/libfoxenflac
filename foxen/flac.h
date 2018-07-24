@@ -33,7 +33,33 @@
 extern "C" {
 #endif
 
-#define FLAC_INVALID_METADATA_KEY 0x7FFFFFFFFFFFFFFFULL;
+/**
+ * Value returned by the fx_flac_get_streaminfo() method if the given streaminfo
+ * key is invalid.
+ */
+#define FLAC_INVALID_METADATA_KEY 0x7FFFFFFFFFFFFFFFULL
+
+/**
+ * Maximum number of channels that can be encoded in a FLAC stream.
+ */
+#define FLAC_MAX_CHANNEL_COUNT 8U
+
+/**
+ * Maximum block size that can be used if the stream is encoded in the FLAC
+ * Subset format and the sample rate is smaller than 48000 kHz.
+ */
+#define FLAC_SUBSET_MAX_BLOCK_SIZE_48KHZ 4608U
+
+/**
+ * Maximum block size than can always be safely used if the stream is encoded
+ * in the FLAC Subset format.
+ */
+#define FLAC_SUBSET_MAX_BLOCK_SIZE 16384U
+
+/**
+ * Maximum block size in samples that can be used in a FLAC stream.
+ */
+#define FLAC_MAX_BLOCK_SIZE 65535U
 
 /**
  * Opaque struct representing a FLAC decoder.
@@ -48,7 +74,7 @@ typedef struct fx_flac fx_flac_t;
 /**
  * Enum representing the state of a FLAC decoder instance.
  */
-enum fx_flac_state {
+typedef enum {
 	/**
 	 * The decoder is in an error state; the decoder cannot recover from this
 	 * error. This error may for example occur if the data in the stream is
@@ -86,59 +112,61 @@ enum fx_flac_state {
 	FLAC_IN_FRAME = 4,
 
 	/**
+	 * The decoder successfully decoded an entire frame. Write the data to the
+	 * client.
+	 */
+	FLAC_DECODED_FRAME = 5,
+
+	/**
 	 * The decoder reached the end of a block.
 	 */
-	FLAC_END_OF_FRAME = 5,
+	FLAC_END_OF_FRAME = 6,
 
 	/**
 	 * The decoder reached the end of the stream.
 	 */
-	FLAC_END_OF_STREAM = 6,
-};
-
-/**
- * Typedef allow
- */
-typedef enum fx_flac_state fx_flac_state_t;
+	FLAC_END_OF_STREAM = 7,
+} fx_flac_state_t;
 
 /**
  * Enum used in fx_flac_get_streaminfo() to query metadata about the stream.
  */
-enum fx_flac_streaminfo_key {
-	FLAC_MIN_BLOCK_SIZE = 0,
-	FLAC_MAX_BLOCK_SIZE = 1,
-	FLAC_MIN_FRAME_SIZE = 2,
-	FLAC_MAX_FRAME_SIZE = 3,
-	FLAC_SAMPLE_RATE = 4,
-	FLAC_N_CHANNELS = 5,
-	FLAC_SAMPLE_SIZE = 6,
-	FLAC_N_SAMPLES = 7,
-	FLAC_MD5_SUM_0 = 128,
-	FLAC_MD5_SUM_1 = 129,
-	FLAC_MD5_SUM_2 = 130,
-	FLAC_MD5_SUM_3 = 131,
-	FLAC_MD5_SUM_4 = 132,
-	FLAC_MD5_SUM_5 = 133,
-	FLAC_MD5_SUM_6 = 134,
-	FLAC_MD5_SUM_7 = 135,
-	FLAC_MD5_SUM_8 = 136,
-	FLAC_MD5_SUM_9 = 137,
-	FLAC_MD5_SUM_A = 138,
-	FLAC_MD5_SUM_B = 139,
-	FLAC_MD5_SUM_C = 140,
-	FLAC_MD5_SUM_D = 141,
-	FLAC_MD5_SUM_E = 142,
-	FLAC_MD5_SUM_F = 143,
-};
-
-typedef enum fx_flac_streaminfo_key fx_flac_streaminfo_key_t;
+typedef enum {
+	FLAC_KEY_MIN_BLOCK_SIZE = 0,
+	FLAC_KEY_MAX_BLOCK_SIZE = 1,
+	FLAC_KEY_MIN_FRAME_SIZE = 2,
+	FLAC_KEY_MAX_FRAME_SIZE = 3,
+	FLAC_KEY_SAMPLE_RATE = 4,
+	FLAC_KEY_N_CHANNELS = 5,
+	FLAC_KEY_SAMPLE_SIZE = 6,
+	FLAC_KEY_N_SAMPLES = 7,
+	FLAC_KEY_MD5_SUM_0 = 128,
+	FLAC_KEY_MD5_SUM_1 = 129,
+	FLAC_KEY_MD5_SUM_2 = 130,
+	FLAC_KEY_MD5_SUM_3 = 131,
+	FLAC_KEY_MD5_SUM_4 = 132,
+	FLAC_KEY_MD5_SUM_5 = 133,
+	FLAC_KEY_MD5_SUM_6 = 134,
+	FLAC_KEY_MD5_SUM_7 = 135,
+	FLAC_KEY_MD5_SUM_8 = 136,
+	FLAC_KEY_MD5_SUM_9 = 137,
+	FLAC_KEY_MD5_SUM_A = 138,
+	FLAC_KEY_MD5_SUM_B = 139,
+	FLAC_KEY_MD5_SUM_C = 140,
+	FLAC_KEY_MD5_SUM_D = 141,
+	FLAC_KEY_MD5_SUM_E = 142,
+	FLAC_KEY_MD5_SUM_F = 143,
+} fx_flac_streaminfo_key_t;
 
 /**
  * Returns the size of the FLAC decoder instance in bytes. This assumes that the
  * FLAC audio that is being decoded uses the maximum settings, i.e. the largest
- * bit depth and block size.
+ * bit depth and block size. See fx_flac_init() regarding parameters.
+ *
+ * @return zero if the given parameters are out of range, the number of bytes
+ * required to hold the FLAC decoder structure otherwise.
  */
-uint32_t fx_flac_size(void);
+uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels);
 
 /**
  * Initializes the FLAC decoder at the given memory location. Each decoder can
@@ -147,12 +175,56 @@ uint32_t fx_flac_size(void);
  * @param mem is a pointer at the memory region at which the FLAC decoder should
  * store its private data. The memory region must be at last as large as
  * indicated by fx_flac_size(). May be NULL, in which case NULL is returned.
+ * @param max_block_size is the maximum block size for which the FLAC instance
+ * will provide a buffer. For streams in the Subset format (which is used per
+ * default in most FLAC encoders), max_block_size should can be set to 4608 if
+ * the sample rate is <= 48000kHz, otherwise, for larger sample rates,
+ * max_block_size must be set to 16384.
+ * @param max_channels is the maximum number of channels that will be decoded.
  * @return a pointer at the FLAC decoder instance; note that this pointer may be
  * different from what was passed to mem. However, you may still pass the
  * original `mem` as `inst` parameter to other functions. Returns NULL if the
- * input pointer is NULL.
+ * input pointer is NULL or the given parameters are invalid.
  */
-fx_flac_t *fx_flac_init(void *mem);
+fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
+                        uint8_t max_channels);
+
+/**
+ * Macro which calls malloc to allocate memory for a new fx_flac instance. The
+ * returned pointer must be freed using free. Returns NULL if the allocation
+ * fails or the given parameters are invalid.
+ *
+ * Note that this code is implemented as a macro to prevent explicitly having
+ * a dependency on malloc while still providing a convenient allocation routine.
+ */
+#define FX_FLAC_ALLOC(max_block_size, max_channels)                            \
+	(fx_flac_size((max_block_size), (max_channels)) == 0U)                     \
+	    ? NULL                                                                 \
+	    : fx_flac_init(malloc(fx_flac_size((max_block_size), (max_channels))), \
+	                   (max_block_size), (max_channels))
+
+
+/**
+ * Returns a new fx_flac instance that is sufficient to decode FLAC streams in
+ * the FLAC Subset format with DAT parameters, i.e. up to 48 kHz, and two
+ * channels. This will allocate about 40 kiB of memory.
+ */
+#define FX_FLAC_ALLOC_SUBSET_FORMAT_DAT() \
+	FX_FLAC_ALLOC(FLAC_SUBSET_MAX_BLOCK_SIZE_48KHZ, 2U)
+
+/**
+ * Returns a new fx_flac instance that is sufficient to decode FLAC streams in
+ * the FLAC Subset format. This will allocate about 1.5 MiB of memory.
+ */
+#define FX_FLAC_ALLOC_SUBSET_FORMAT_ANY() \
+	FX_FLAC_ALLOC(FLAC_SUBSET_MAX_BLOCK_SIZE, FLAC_MAX_CHANNEL_COUNT)
+
+/**
+ * Returns a new fx_flac instance that is sufficient to decode any valid FLAC
+ * stream. Note that this will allocate between 2-3 MiB of memory.
+ */
+#define FX_FLAC_ALLOC_DEFAULT() \
+	FX_FLAC_ALLOC(FLAC_MAX_BLOCK_SIZE, FLAC_MAX_CHANNEL_COUNT)
 
 /**
  * Resets the FLAC decoder.
@@ -201,10 +273,12 @@ int64_t fx_flac_get_streaminfo(const fx_flac_t *inst,
  * @param out is a pointer at a memory region that will accept the decoded
  * interleaved audio data. Samples are decoded as 32-bit signed integer; the
  * minimum and maximum value will depend on the original bit depth of the audio
- * stored in the bitstream.
+ * stored in the bitstream. If this is NULL, the decoder will silently discard
+ * the output.
  * @param out_len is a pointer at an integer containing the number of available
  * signed 32-bit integers at the memory address pointed at by out. After the
- * function returns, this value will contain the
+ * function returns, this value will contain the number of samples that were
+ * written. If this is NULL, the deocder will silently discard the output.
  * @return the current state of the decoder. If the state transitions to
  * FLAC_END_OF_METADATA, FLAC_END_OF_FRAME or FLAC_END_OF_STREAM this function
  * will return immediately; only the data up to the point causing the transition

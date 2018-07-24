@@ -102,43 +102,43 @@ const uint8_t FLAC_LONG_HEADER[] = {
 
 void check_flac_metadata_short(fx_flac_t *inst)
 {
-	EXPECT_EQ(4096U, fx_flac_get_streaminfo(inst, FLAC_MIN_BLOCK_SIZE));
-	EXPECT_EQ(4096U, fx_flac_get_streaminfo(inst, FLAC_MAX_BLOCK_SIZE));
-	EXPECT_EQ(16U, fx_flac_get_streaminfo(inst, FLAC_MIN_FRAME_SIZE));
-	EXPECT_EQ(12695U, fx_flac_get_streaminfo(inst, FLAC_MAX_FRAME_SIZE));
-	EXPECT_EQ(44100U, fx_flac_get_streaminfo(inst, FLAC_SAMPLE_RATE));
-	EXPECT_EQ(2U, fx_flac_get_streaminfo(inst, FLAC_N_CHANNELS));
-	EXPECT_EQ(16U, fx_flac_get_streaminfo(inst, FLAC_SAMPLE_SIZE));
-	EXPECT_EQ(9062550U, fx_flac_get_streaminfo(inst, FLAC_N_SAMPLES));
-	EXPECT_EQ(0x45, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_0));
-	EXPECT_EQ(0x61, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_1));
-	EXPECT_EQ(0x31, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_2));
-	EXPECT_EQ(0x02, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_3));
-	EXPECT_EQ(0x8B, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_4));
-	EXPECT_EQ(0xFB, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_5));
-	EXPECT_EQ(0x21, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_6));
-	EXPECT_EQ(0xE5, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_7));
-	EXPECT_EQ(0x5F, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_8));
-	EXPECT_EQ(0xFB, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_9));
-	EXPECT_EQ(0x6E, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_A));
-	EXPECT_EQ(0xDF, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_B));
-	EXPECT_EQ(0x48, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_C));
-	EXPECT_EQ(0xCE, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_D));
-	EXPECT_EQ(0x9F, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_E));
-	EXPECT_EQ(0xAE, fx_flac_get_streaminfo(inst, FLAC_MD5_SUM_F));
+	EXPECT_EQ(4096U, fx_flac_get_streaminfo(inst, FLAC_KEY_MIN_BLOCK_SIZE));
+	EXPECT_EQ(4096U, fx_flac_get_streaminfo(inst, FLAC_KEY_MAX_BLOCK_SIZE));
+	EXPECT_EQ(16U, fx_flac_get_streaminfo(inst, FLAC_KEY_MIN_FRAME_SIZE));
+	EXPECT_EQ(12695U, fx_flac_get_streaminfo(inst, FLAC_KEY_MAX_FRAME_SIZE));
+	EXPECT_EQ(44100U, fx_flac_get_streaminfo(inst, FLAC_KEY_SAMPLE_RATE));
+	EXPECT_EQ(2U, fx_flac_get_streaminfo(inst, FLAC_KEY_N_CHANNELS));
+	EXPECT_EQ(16U, fx_flac_get_streaminfo(inst, FLAC_KEY_SAMPLE_SIZE));
+	EXPECT_EQ(9062550U, fx_flac_get_streaminfo(inst, FLAC_KEY_N_SAMPLES));
+	EXPECT_EQ(0x45, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_0));
+	EXPECT_EQ(0x61, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_1));
+	EXPECT_EQ(0x31, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_2));
+	EXPECT_EQ(0x02, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_3));
+	EXPECT_EQ(0x8B, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_4));
+	EXPECT_EQ(0xFB, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_5));
+	EXPECT_EQ(0x21, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_6));
+	EXPECT_EQ(0xE5, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_7));
+	EXPECT_EQ(0x5F, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_8));
+	EXPECT_EQ(0xFB, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_9));
+	EXPECT_EQ(0x6E, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_A));
+	EXPECT_EQ(0xDF, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_B));
+	EXPECT_EQ(0x48, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_C));
+	EXPECT_EQ(0xCE, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_D));
+	EXPECT_EQ(0x9F, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_E));
+	EXPECT_EQ(0xAE, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_F));
 }
 
 void check_flac_metadata_long(fx_flac_t *inst)
 {
-	EXPECT_EQ(4608U, fx_flac_get_streaminfo(inst, FLAC_MIN_BLOCK_SIZE));
-	EXPECT_EQ(4608U, fx_flac_get_streaminfo(inst, FLAC_MAX_BLOCK_SIZE));
-	EXPECT_EQ(0U, fx_flac_get_streaminfo(inst, FLAC_MIN_FRAME_SIZE));
-	EXPECT_EQ(0U, fx_flac_get_streaminfo(inst, FLAC_MAX_FRAME_SIZE));
-	EXPECT_EQ(44100U, fx_flac_get_streaminfo(inst, FLAC_SAMPLE_RATE));
-	EXPECT_EQ(2U, fx_flac_get_streaminfo(inst, FLAC_N_CHANNELS));
-	EXPECT_EQ(16U, fx_flac_get_streaminfo(inst, FLAC_SAMPLE_SIZE));
-	EXPECT_EQ(13935600U, fx_flac_get_streaminfo(inst, FLAC_N_SAMPLES));
-	for (int key = FLAC_MD5_SUM_0; key <= FLAC_MD5_SUM_F; key++) {
+	EXPECT_EQ(4608U, fx_flac_get_streaminfo(inst, FLAC_KEY_MIN_BLOCK_SIZE));
+	EXPECT_EQ(4608U, fx_flac_get_streaminfo(inst, FLAC_KEY_MAX_BLOCK_SIZE));
+	EXPECT_EQ(0U, fx_flac_get_streaminfo(inst, FLAC_KEY_MIN_FRAME_SIZE));
+	EXPECT_EQ(0U, fx_flac_get_streaminfo(inst, FLAC_KEY_MAX_FRAME_SIZE));
+	EXPECT_EQ(44100U, fx_flac_get_streaminfo(inst, FLAC_KEY_SAMPLE_RATE));
+	EXPECT_EQ(2U, fx_flac_get_streaminfo(inst, FLAC_KEY_N_CHANNELS));
+	EXPECT_EQ(16U, fx_flac_get_streaminfo(inst, FLAC_KEY_SAMPLE_SIZE));
+	EXPECT_EQ(13935600U, fx_flac_get_streaminfo(inst, FLAC_KEY_N_SAMPLES));
+	for (int key = FLAC_KEY_MD5_SUM_0; key <= FLAC_KEY_MD5_SUM_F; key++) {
 		EXPECT_EQ(0x00,
 		          fx_flac_get_streaminfo(inst, (fx_flac_streaminfo_key_t)key));
 	}
@@ -146,7 +146,8 @@ void check_flac_metadata_long(fx_flac_t *inst)
 
 void test_flac_metadata_single()
 {
-	fx_flac_t *inst = fx_flac_init(malloc(fx_flac_size()));
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	ASSERT_NE(NULL, inst);
 	uint32_t len = sizeof(FLAC_SHORT_HEADER);
 	EXPECT_EQ(FLAC_END_OF_METADATA,
 	          fx_flac_process(inst, FLAC_SHORT_HEADER, &len, NULL, NULL));
@@ -157,7 +158,8 @@ void test_flac_metadata_single()
 
 void test_flac_metadata_multiple()
 {
-	fx_flac_t *inst = fx_flac_init(malloc(fx_flac_size()));
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	ASSERT_NE(NULL, inst);
 	uint32_t len = sizeof(FLAC_LONG_HEADER);
 	EXPECT_EQ(FLAC_END_OF_METADATA,
 	          fx_flac_process(inst, FLAC_LONG_HEADER, &len, NULL, NULL));
@@ -168,7 +170,8 @@ void test_flac_metadata_multiple()
 
 void test_flac_metadata_single_one_byte()
 {
-	fx_flac_t *inst = fx_flac_init(malloc(fx_flac_size()));
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	ASSERT_NE(NULL, inst);
 	for (uint32_t i = 0; i < sizeof(FLAC_SHORT_HEADER); i++) {
 		uint32_t len = 1U;
 		fx_flac_process(inst, &FLAC_SHORT_HEADER[i], &len, NULL, NULL);
@@ -181,7 +184,8 @@ void test_flac_metadata_single_one_byte()
 
 void test_flac_metadata_multiple_one_byte()
 {
-	fx_flac_t *inst = fx_flac_init(malloc(fx_flac_size()));
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	ASSERT_NE(NULL, inst);
 	for (uint32_t i = 0; i < sizeof(FLAC_LONG_HEADER); i++) {
 		uint32_t len = 1U;
 		fx_flac_process(inst, &FLAC_LONG_HEADER[i], &len, NULL, NULL);

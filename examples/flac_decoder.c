@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
 	uint8_t buf[128];
 	uint32_t buf_wr_cur = 0;
-	fx_flac_t *flac = fx_flac_init(malloc(fx_flac_size()));
+	fx_flac_t *flac = FX_FLAC_ALLOC_DEFAULT();
 	bool done = false;
 	while (!done) {
 		/* Read data from the input file */
@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
 		switch (fx_flac_process(flac, buf, &buf_len, NULL, NULL)) {
 			case FLAC_END_OF_METADATA:
 				fprintf(stderr, "%s: Min/Max Block size %ld/%ld\n", argv[1],
-				        fx_flac_get_streaminfo(flac, FLAC_MIN_BLOCK_SIZE),
-				        fx_flac_get_streaminfo(flac, FLAC_MAX_BLOCK_SIZE));
+				        fx_flac_get_streaminfo(flac, FLAC_KEY_MIN_BLOCK_SIZE),
+				        fx_flac_get_streaminfo(flac, FLAC_KEY_MAX_BLOCK_SIZE));
 				break;
 			case FLAC_ERR:
 				fprintf(stderr, "FLAC decoder in error state!\n");
