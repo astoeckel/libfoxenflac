@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/astoeckel/libfoxenflac.svg?branch=master)](https://travis-ci.org/astoeckel/libfoxenflac)
 
-`libfoxenflac` is a tiny FLAC decoder written in C99. It does not depend on
-any C library function, including memory allocations. It provides a simple,
-state-machine based interface
-that allows you to decode FLAC streams as a sequence of arbitrarily sized
-byte buffers.
+`libfoxenflac` is a tiny FLAC ([Free Lossless Audio Codec](https://xiph.org/flac/))
+decoder written in C99. It does not depend on any C library function,
+including memory allocations. It provides a simple, state-machine based
+interface that allows you to decode a FLAC stream as a sequence of arbitrarily
+sized byte buffers.
 
 **Disclaimer** The library is currently in a beta state. While all features of
 the FLAC format have been implemented, the library has not been thoroughly
@@ -35,7 +35,7 @@ int main() {
 	int32_t out_buf[512];
 	fx_flac_t *flac = FX_FLAC_ALLOC_SUBSET_FORMAT_DAT();
 	while (true) {
-		/* Append data to buf, adjust buf_len */
+		/* TODO: Append data to buf, adjust buf_len */
 		uint32_t buf_len = /* Available input data in bytes */
 
 		/* Run fx_flac_process, buf_len will be set to the number of bytes
@@ -43,20 +43,20 @@ int main() {
 		   of samples (individual int32_t integers) that have been written. */
 		uint32_t out_buf_len = 512;
 		if (fx_flac_process(flac, buf, &buf_len, out_buf, &out_buf_len) == FLAC_ERR) {
-			/* Handle error */
+			/* TODO: Handle error */
 			break;
 		}
 
 		if (out_buf_len > 0) {
-			/* Do something with the channel-interlaced data in out_buf */
+			/* TODO: Do something with the channel-interlaced data in out_buf */
 			/* Note that this data is always shifted such that it uses the
 			   entire 32-bit signed integer; shift to the right to the desired
 			   output bit depth. You can obtain the bit-depth used in the file
 			   using fx_flac_get_streaminfo(). */
 		}
 
-		/* Discard the first buf_len bytes in buf, pass the remaining bytes to
-		   fx_flac_process() in the next iteration. */
+		/* TODO: Discard the first buf_len bytes in buf, pass the remaining
+		   bytes to fx_flac_process() in the next iteration. */
 	}
 
 	free(flac); /* Need to free the flac instance because we implicitly used
