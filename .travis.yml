@@ -1,0 +1,18 @@
+language: c
+compiler:
+  - clang
+  - gcc
+env: PYENV_VERSION='3.6'
+install:
+  - mkdir .tmp
+  - curl -L https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip -o .tmp/ninja-linux.zip
+  - unzip .tmp/ninja-linux.zip -d .tmp
+  - pip3 install --user meson
+before_script:
+  - export PATH=$PATH:$PWD/.tmp
+script:
+  - mkdir build
+  - cd build
+  - meson ..
+  - ninja && ninja test
+

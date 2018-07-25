@@ -37,8 +37,7 @@ int main(int argc, char *argv[])
 	uint8_t buf[128];
 	int32_t out_buf[512];
 	uint32_t buf_wr_cur = 0;
-/*	fx_flac_t *flac = FX_FLAC_ALLOC_DEFAULT();*/
-	fx_flac_t *flac = FX_FLAC_ALLOC_SUBSET_FORMAT_DAT();
+	fx_flac_t *flac = FX_FLAC_ALLOC_DEFAULT();
 	bool done = false;
 	while (!done) {
 		/* Read data from the input file */
@@ -73,11 +72,7 @@ int main(int argc, char *argv[])
 		}
 
 		/* Write decoded samples to stdout */
-		/*fwrite(out_buf, 4, out_buf_len, stdout);*/
-		for (uint32_t i = 0U; i < out_buf_len; i++) {
-			int16_t out = out_buf[i] >> 16U;
-			fwrite(&out, 2, 1, stdout);
-		}
+		fwrite(out_buf, 4, out_buf_len, stdout);
 
 		/* Copy unread bytes to the beginning of the buffer and adjust the write
 		   cursor. */
