@@ -18,19 +18,22 @@
 
 #include <stdint.h>
 
-#include <stdio.h>  /* XXX */
-#include <stdlib.h> /* XXX */
-
 #include <foxen/bitstream.h>
 #include <foxen/flac.h>
 #include <foxen/mem.h>
+
+#if 0
+/* Set FX_FLAC_NO_CRC if you control the input data and already performed other
+   integrity checks. This makes the decoder significantly faster. */
+#define FX_FLAC_NO_CRC
+#endif
 
 /******************************************************************************
  * DATATYPES                                                                  *
  ******************************************************************************/
 
 /******************************************************************************
- * Enums defined in the FLAC format specifiction                              *
+ * Enums and constants defined in the FLAC format specifiction                *
  ******************************************************************************/
 
 /**
@@ -215,15 +218,31 @@ typedef struct {
 	/**
 	 * LPC coefficients. Number of used coefficients corresponds to the order.
 	 */
-	int32_t lpc_coeffs[32];
+	int32_t *lpc_coeffs;
 
+	/**
+	 * Method used to code the residual. FLAC currently only supports RICE and
+	 * RICE2.
+	 */
 	fx_flac_residual_method_t residual_method;
 
+	/**
+	 * Number of partitions the signal is divided into.
+	 */
 	uint8_t rice_partition_order;
 
+	/**
+	 * RICE parameter, i.e. the logarithm of the divisor.
+	 */
 	uint8_t rice_parameter;
 
 } fx_flac_subframe_header_t;
+
+/**
+ * Array containing the LPC coefficients for the fixed coding mode.
+ */
+static const int32_t _fx_flac_fixed_coeffs[][4] = {
+    {}, {1}, {2, -1}, {3, -3, 1}, {4, -6, 4, -1}};
 
 /******************************************************************************
  * Internal state machine enums                                               *
@@ -361,6 +380,11 @@ struct fx_flac {
 	 * Structure holding the subframe header.
 	 */
 	fx_flac_subframe_header_t *subframe_header;
+
+	/**
+	 * Buffer used for storing the LPC coefficients.
+	 */
+	int32_t *qbuf;
 
 	/**
 	 * Structure holding the temporary/output buffers for each channel.
@@ -505,11 +529,35 @@ static bool _fx_flac_decode_channel_count(
  * Decoding functions                                                         *
  ******************************************************************************/
 
-static inline void _fx_flac_post_process_stereo(fx_flac_t *inst, int c1l,
-                                                int c1r, int c2l, int c2r,
-                                                int div)
+static inline void _fx_flac_post_process_stereo(int32_t *blk1, int32_t *blk2,
+                                                uint32_t blk_size, int64_t c1l,
+                                                int64_t c2l, int64_t c1r,
+                                                int64_t c2r, int shl)
 {
-	/* TODO */
+	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
+	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
+	for (uint32_t i = 0U; i < blk_size; i++) {
+		int32_t l = (c1l * (int64_t)blk1[i] + c2l * (int64_t)blk2[i]) >> shl;
+		int32_t r = (c1r * (int64_t)blk1[i] + c2r * (int64_t)blk2[i]) >> shl;
+		blk1[i] = l, blk2[i] = r;
+	}
+}
+
+static inline void _fx_flac_restore_lpc_signal(int32_t *blk, uint32_t blk_size,
+                                               int32_t *lpc_coeffs,
+                                               uint8_t lpc_order,
+                                               int8_t lpc_shift)
+{
+	blk = (int32_t *)FX_ASSUME_ALIGNED(blk);
+	lpc_coeffs = (int32_t *)FX_ASSUME_ALIGNED(lpc_coeffs);
+
+	for (uint32_t i = lpc_order; i < blk_size; i++) {
+		int64_t accu = 0;
+		for (uint8_t j = 0; j < lpc_order; j++) {
+			accu += (int64_t)lpc_coeffs[j] * (int64_t)blk[i - j - 1];
+		}
+		blk[i] = blk[i] + (accu >> lpc_shift);
+	}
 }
 
 /******************************************************************************
@@ -537,11 +585,11 @@ static inline void _fx_flac_post_process_stereo(fx_flac_t *inst, int c1l,
 
 /* Update the frame checksum while reading data */
 
-#define READ_BITS_CRC(n)                                 \
+#define READ_BITS_CRC(n)                                     \
 	(tmp_ = fx_bitstream_try_read_msb(&inst->bitstream, n)); \
-	if (tmp_ < 0) {                                      \
-		return false; /* Need more data */               \
-	}                                                    \
+	if (tmp_ < 0) {                                          \
+		return false; /* Need more data */                   \
+	}                                                        \
 	_fx_flac_crc16(tmp_, n, &inst->crc16);
 
 #define READ_BITS_FAST_CRC(n)                            \
@@ -550,12 +598,12 @@ static inline void _fx_flac_post_process_stereo(fx_flac_t *inst, int c1l,
 
 /* DCRC -> Dual CRC, update both the header and the frame checksum */
 
-#define READ_BITS_DCRC(n)                                \
+#define READ_BITS_DCRC(n)                                    \
 	(tmp_ = fx_bitstream_try_read_msb(&inst->bitstream, n)); \
-	if (tmp_ < 0) {                                      \
-		return false; /* Need more data */               \
-	}                                                    \
-	_fx_flac_crc8(tmp_, n, &inst->crc8);                 \
+	if (tmp_ < 0) {                                          \
+		return false; /* Need more data */                   \
+	}                                                        \
+	_fx_flac_crc8(tmp_, n, &inst->crc8);                     \
 	_fx_flac_crc16(tmp_, n, &inst->crc16);
 
 #define READ_BITS_FAST_DCRC(n)                           \
@@ -563,30 +611,32 @@ static inline void _fx_flac_post_process_stereo(fx_flac_t *inst, int c1l,
 	_fx_flac_crc8(tmp_, n, &inst->crc8);                 \
 	_fx_flac_crc16(tmp_, n, &inst->crc16);
 
-#define SYNC_BYTESTREAM() \
-{ \
-	uint8_t n_ = inst->bitstream.pos & 0x07; \
-	if (n_) { \
-		READ_BITS(8U - n_); \
-	} \
-} \
+#define SYNC_BYTESTREAM()                        \
+	{                                            \
+		uint8_t n_ = inst->bitstream.pos & 0x07; \
+		if (n_) {                                \
+			READ_BITS(8U - n_);                  \
+		}                                        \
+	}
 
-#define SYNC_BYTESTREAM_CRC() \
-{ \
-	uint8_t n_ = inst->bitstream.pos & 0x07; \
-	if (n_) { \
-		READ_BITS_CRC(8U - n_); \
-	} \
-} \
+#define SYNC_BYTESTREAM_CRC()                    \
+	{                                            \
+		uint8_t n_ = inst->bitstream.pos & 0x07; \
+		if (n_) {                                \
+			READ_BITS_CRC(8U - n_);              \
+		}                                        \
+	}
 
 /* http://graphics.stanford.edu/~seander/bithacks.html#FixedSignExtend */
-#define SIGN_EXTEND(x, b) ((x) ^ (1U << ((b) - 1U))) - (1U << ((b) - 1U))
+#define SIGN_EXTEND(x, b) \
+	(int64_t)((x) ^ (1LU << ((b)-1U))) - (int64_t)(1LU << ((b)-1U))
 
 /**
  * Updates the header checksum with the given data.
  */
 static void _fx_flac_crc8(uint64_t in, uint8_t n_bits, uint8_t *crc8)
 {
+#ifndef FX_FLAC_NO_CRC
 	for (uint8_t i = n_bits; i > 0U; i--) {
 		if (in & (1U << (i - 1U))) {
 			*crc8 = (*crc8) ^ 0x80U;
@@ -598,6 +648,7 @@ static void _fx_flac_crc8(uint64_t in, uint8_t n_bits, uint8_t *crc8)
 			*crc8 = (*crc8) << 1U;
 		}
 	}
+#endif
 }
 
 /**
@@ -605,6 +656,7 @@ static void _fx_flac_crc8(uint64_t in, uint8_t n_bits, uint8_t *crc8)
  */
 static void _fx_flac_crc16(uint64_t in, uint8_t n_bits, uint16_t *crc16)
 {
+#ifndef FX_FLAC_NO_CRC
 	for (uint8_t i = n_bits; i > 0U; i--) {
 		if (in & (1U << (i - 1U))) {
 			*crc16 = (*crc16) ^ 0x8000U;
@@ -616,6 +668,7 @@ static void _fx_flac_crc16(uint64_t in, uint8_t n_bits, uint16_t *crc16)
 			*crc16 = (*crc16) << 1U;
 		}
 	}
+#endif
 }
 
 static bool _fx_flac_reader_utf8_coded_int(fx_flac_t *inst, uint8_t max_n,
@@ -660,6 +713,31 @@ static bool _fx_flac_reader_utf8_coded_int(fx_flac_t *inst, uint8_t max_n,
  * Private decoder state machine                                              *
  ******************************************************************************/
 
+/*
+ * Note: the boolean return value of these functions indicates whether they
+ * rand out of data -- true indicates that there is still enough data left,
+ * false indicates that the outer state machine should return to the user code
+ * to read more data. The return value does NOT indicate success/failure. This
+ * is what inst->state == FLAC_ERR is for.
+ */
+
+static bool _fx_flac_handle_err(fx_flac_t *inst)
+{
+	/* TODO: Add flags to fx_flac_t which control this behaviour */
+
+	/* If an error happens while searching for metadata, this is fatal. */
+	if (inst->state < FLAC_END_OF_METADATA) {
+		inst->state = FLAC_ERR;
+		return false;
+	}
+
+	/* Otherwise just try to re-synchronise with the stream by searching for the
+	   next frame */
+	inst->state = FLAC_SEARCH_FRAME;
+	inst->priv_state = FLAC_FRAME_SYNC;
+	return true;
+}
+
 /**
  * Statemachine used to search the beginning of the stream. This (for example)
  * skips IDv3 tags prepended to the file.
@@ -701,8 +779,7 @@ static bool _fx_flac_process_init(fx_flac_t *inst)
 			}
 			break;
 		default:
-			inst->state = FLAC_ERR;
-			break;
+			return _fx_flac_handle_err(inst);
 	}
 	return true;
 }
@@ -716,16 +793,14 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
 			inst->metadata->is_last = READ_BITS_FAST(1U);
 			inst->metadata->type = (fx_flac_metadata_type_t)READ_BITS_FAST(7U);
 			if (inst->metadata->type == META_TYPE_INVALID) {
-				inst->state = FLAC_ERR;
-				break;
+				return _fx_flac_handle_err(inst);
 			}
 			inst->metadata->length = inst->n_bytes_rem = READ_BITS_FAST(24);
 			if (inst->metadata->type == META_TYPE_STREAMINFO) {
 				inst->priv_state = FLAC_METADATA_SINFO;
 				/* The stream info header must be exactly 33 bytes long */
 				if (inst->metadata->length != 34U) {
-					inst->state = FLAC_ERR;
-					break;
+					return _fx_flac_handle_err(inst);
 				}
 			}
 			else {
@@ -771,8 +846,7 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
 					inst->priv_state = FLAC_METADATA_SKIP;
 					break;
 				default:
-					inst->state = FLAC_ERR;
-					break;
+					return _fx_flac_handle_err(inst);
 			}
 			break;
 		case FLAC_METADATA_SKIP: {
@@ -794,8 +868,7 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
 			break;
 		}
 		default:
-			inst->state = FLAC_ERR; /* Internal error */
-			break;
+			return _fx_flac_handle_err(inst); /* Internal error */
 	}
 	return true;
 }
@@ -839,8 +912,7 @@ static bool _fx_flac_process_search_frame(fx_flac_t *inst)
 			    (fx_flac_sample_size_t)READ_BITS_FAST_DCRC(3U);
 			READ_BITS_FAST_DCRC(1U);
 			if (tmp_ != 0U || fh->channel_assignment > MID_SIDE_STEREO) {
-				inst->priv_state = FLAC_FRAME_SYNC; /* Invalid header */
-				return true;
+				return _fx_flac_handle_err(inst); /* Invalid header */
 			}
 
 			/* Copy sample rate and sample size from the streaminfo */
@@ -903,25 +975,16 @@ static bool _fx_flac_process_search_frame(fx_flac_t *inst)
 			   to the header. If not, this is not a valid header. Continue
 			   searching. */
 			fh->crc8 = READ_BITS_CRC(8U);
+#ifndef FX_FLAC_NO_CRC
 			if (fh->crc8 != inst->crc8) {
-				inst->priv_state = FLAC_FRAME_SYNC;
-				return true;
+				return _fx_flac_handle_err(inst);
 			}
-
-/*			fprintf(stderr, "--------------FRAME-----------------\n");
-			fprintf(stderr, "Found frame, sync info %ld\n", fh->sync_info);
-			fprintf(stderr, "Variable block size %d\n", fh->blocking_strategy);
-			fprintf(stderr, "Sample rate %d\n", fh->sample_rate);
-			fprintf(stderr, "Bit depth %d\n", fh->sample_size);
-			fprintf(stderr, "Block size %d\n", fh->block_size);
-			fprintf(stderr, "Channel assignment %d\n", fh->channel_assignment);
-			fprintf(stderr, "CRC8 %d %d\n", fh->crc8, inst->crc8);*/
+#endif
 
 			/* Make sure the decode has enough space */
 			if ((fh->block_size > inst->max_block_size) ||
 			    (fh->channel_count > inst->max_channels)) {
-				inst->priv_state = FLAC_FRAME_SYNC;
-				return true;
+				return _fx_flac_handle_err(inst);
 			}
 
 			/* Decode the subframes */
@@ -930,8 +993,7 @@ static bool _fx_flac_process_search_frame(fx_flac_t *inst)
 			inst->chan_cur = 0U; /* Start with the first channel */
 			break;
 		default:
-			inst->state = FLAC_ERR;
-			break;
+			return _fx_flac_handle_err(inst);
 	}
 	return true;
 }
@@ -942,41 +1004,60 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 	fx_flac_frame_header_t *fh = inst->frame_header;
 	fx_flac_subframe_header_t *sfh = inst->subframe_header;
 	int32_t *blk = inst->blkbuf[inst->chan_cur % FLAC_MAX_CHANNEL_COUNT];
-	uint8_t bps = fh->sample_size - sfh->wasted_bits;
-	bool valid = true;
+	const uint32_t blk_n = fh->block_size;
 
+	/* Figure out the number of bits to read for sample. This depends on the
+	   channel assignment. */
+	uint8_t bps = fh->sample_size - sfh->wasted_bits;
+	if ((fh->channel_assignment == LEFT_SIDE_STEREO && inst->chan_cur == 1) ||
+	    (fh->channel_assignment == RIGHT_SIDE_STEREO && inst->chan_cur == 0) ||
+	    (fh->channel_assignment == MID_SIDE_STEREO && inst->chan_cur == 1)) {
+		bps++;
+	}
+
+	/* This flag is set to false whenever a state in the state machine
+	   encounters and error. */
 	switch (inst->priv_state) {
 		case FLAC_SUBFRAME_HEADER: {
 			ENSURE_BITS(40U);
-/*)			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_HEADER\n");*/
+
 			/* Erase all old data */
 			FX_MEM_ZERO_ALIGNED(inst->subframe_header);
 
 			/* Reset the block write cursor */
 			inst->blk_cur = 0U;
+			for (uint32_t i = 0; i < blk_n; i++) {
+				blk[i] = 0U;
+			}
 
 			/* Read a zero padding bit. This must be zero. */
 			uint8_t padding = READ_BITS_FAST_CRC(1U);
-			valid = padding == 0U;
+			bool valid = padding == 0U;
 
 			/* Read the frame type and order */
 			uint8_t type = READ_BITS_FAST_CRC(6U);
 			if (type & 0x20U) {
 				sfh->order = (type & 0x1FU) + 1U;
 				sfh->type = SFT_LPC;
+				sfh->lpc_coeffs = inst->qbuf;
+				FX_MEM_ZERO_ALIGNED(sfh->lpc_coeffs);
 				inst->priv_state = FLAC_SUBFRAME_LPC;
 			}
 			else if (type & 0x10U) {
-				valid = false;
+				return _fx_flac_handle_err(inst);
 			}
 			else if (type & 0x08U) {
 				sfh->order = type & 0x07U;
 				sfh->type = SFT_FIXED;
 				inst->priv_state = FLAC_SUBFRAME_FIXED;
 				valid = valid && (sfh->order <= 4U);
+				if (valid) {
+					sfh->lpc_coeffs =
+					    (int32_t *)_fx_flac_fixed_coeffs[sfh->order];
+				}
 			}
 			else if ((type & 0x04U) || (type & 0x02U)) {
-				valid = false;
+				return _fx_flac_handle_err(inst);
 			}
 			else if (type & 0x01U) {
 				sfh->type = SFT_VERBATIM;
@@ -1002,24 +1083,18 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 
 			/* Make sure the block is large enough for the initial samples */
-			valid = valid && (fh->block_size >= sfh->order);
-
-/*			if (valid) {
-				fprintf(stderr, "-------------SUBFRAME---------------\n");
-				fprintf(stderr, "Type %d\n", (int)sfh->type);
-				fprintf(stderr, "Order %d\n", sfh->order);
-				fprintf(stderr, "Wasted bits %d\n", sfh->wasted_bits);
-			}*/
+			valid = valid && (blk_n >= sfh->order);
+			if (!valid) {
+				_fx_flac_handle_err(inst);
+			}
 			break;
 		}
 		case FLAC_SUBFRAME_CONSTANT: {
-			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_CONSTANT\n");
-
 			/* Read a single sample value and spread it over the entire block
 			   buffer for this subframe. */
 			blk[0U] = READ_BITS_CRC(bps);
 			blk[0U] = SIGN_EXTEND(blk[0U], bps);
-			for (uint16_t i = 1U; i < fh->block_size; i++) {
+			for (uint16_t i = 1U; i < blk_n; i++) {
 				blk[i] = blk[0U];
 			}
 			inst->priv_state = FLAC_SUBFRAME_FINALIZE;
@@ -1028,14 +1103,8 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 		case FLAC_SUBFRAME_VERBATIM:
 		case FLAC_SUBFRAME_FIXED:
 		case FLAC_SUBFRAME_LPC: {
-/*			fprintf(stderr,
-			        "FLAC_IN_FRAME -> "
-			        "FLAC_SUBFRAME_VERBATIM/FLAC_SUBFRAME_FIXED/"
-			        "FLAC_SUBFRAME_LPC\n");*/
-
 			/* Either just read up to "order" samples, or the entire block */
-			const uint32_t n =
-			    (sfh->type == SFT_VERBATIM) ? fh->block_size : sfh->order;
+			const uint32_t n = (sfh->type == SFT_VERBATIM) ? blk_n : sfh->order;
 			while (inst->blk_cur < n) {
 				blk[inst->blk_cur] = READ_BITS_CRC(bps);
 				blk[inst->blk_cur] = SIGN_EXTEND(blk[inst->blk_cur], bps);
@@ -1050,21 +1119,21 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 		case FLAC_SUBFRAME_LPC_HEADER: {
 			/* Read the coefficient precision as well as the shift value */
 			ENSURE_BITS(9U);
-/*			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_LPC_HEADER\n");*/
 			const uint8_t prec = READ_BITS_FAST_CRC(4U);
 			const uint8_t shift = READ_BITS_FAST_CRC(5U);
 			if (prec == 15U) { /* Precision of 15 bits is invalid */
-				valid = false;
+				return _fx_flac_handle_err(inst);
 			}
 			sfh->lpc_prec = prec + 1U;
 			sfh->lpc_shift = SIGN_EXTEND(shift, 5U);
+			if (sfh->lpc_shift < 0) {
+				return _fx_flac_handle_err(inst);
+			}
 			inst->coef_cur = 0U;
 			inst->priv_state = FLAC_SUBFRAME_LPC_COEFFS;
 			break;
 		}
 		case FLAC_SUBFRAME_LPC_COEFFS:
-/*			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_LPC_COEFFS\n");*/
-
 			/* Read the individual predictor coefficients */
 			while (inst->coef_cur < sfh->order) {
 				uint32_t coef = READ_BITS_CRC(sfh->lpc_prec);
@@ -1077,16 +1146,12 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 		case FLAC_SUBFRAME_FIXED_RESIDUAL:
 		case FLAC_SUBFRAME_LPC_RESIDUAL: {
 			ENSURE_BITS(6U);
-/*			fprintf(
-			    stderr,
-			    "FLAC_IN_FRAME -> "
-			    "FLAC_SUBFRAME_FIXED_RESIDUAL/FLAC_SUBFRAME_LPC_RESIDUAL\n");*/
 
 			/* Read the residual encoding type and the rice partition order */
 			sfh->residual_method =
 			    (fx_flac_residual_method_t)READ_BITS_FAST_CRC(2U);
 			if (sfh->residual_method > RES_RICE2) {
-				valid = false;
+				return _fx_flac_handle_err(inst);
 			}
 			sfh->rice_partition_order = READ_BITS_FAST_CRC(4U);
 			inst->partition_cur = 0U;
@@ -1096,7 +1161,6 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 		case FLAC_SUBFRAME_RICE_INIT: {
 			/* Read the Rice parameter */
 			ENSURE_BITS(10U);
-/*			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_RICE_INIT\n");*/
 
 			uint8_t n_bits = (sfh->residual_method == RES_RICE) ? 4U : 5U;
 			sfh->rice_parameter = READ_BITS_FAST_CRC(n_bits);
@@ -1110,34 +1174,25 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 
 			/* Compute the number of samples to read */
-			inst->partition_sample =
-			    fh->block_size >> sfh->rice_partition_order;
+			inst->partition_sample = blk_n >> sfh->rice_partition_order;
 			if (inst->partition_cur == 0U) {
 				/* First partition alread includes verbatim samples */
 				if (inst->partition_sample < sfh->order) {
-					valid = false; /* Number of samples is negative */
+					return _fx_flac_handle_err(
+					    inst); /* Number of samples is negative */
 				}
 				inst->partition_sample -= sfh->order;
 			}
 
-/*			if (valid) {
-				fprintf(stderr, "------------RICE PARTITION----------\n");
-				fprintf(stderr, "Rice partition order %d\n",
-				        sfh->rice_partition_order);
-				fprintf(stderr, "Rice partition_cur %d\n", inst->partition_cur);
-				fprintf(stderr, "Rice param %d\n", (int)sfh->rice_parameter);
-				fprintf(stderr, "Verbatim %d\n",
-				        (int)(inst->priv_state == FLAC_SUBFRAME_RICE_VERBATIM));
-			}*/
-
+			/* Make sure we're never writing beyond the buffer for this
+			   channel */
+			if ((inst->partition_sample + inst->blk_cur) > blk_n) {
+				return _fx_flac_handle_err(inst);
+			}
 			break;
 		}
 		case FLAC_SUBFRAME_RICE:
 		case FLAC_SUBFRAME_RICE_UNARY:
-/*			fprintf(stderr,
-			        "FLAC_IN_FRAME -> "
-			        "FLAC_SUBFRAME_RICE/FLAC_SUBFRAME_RICE_UNARY\n");*/
-
 			/* Read the individual rice samples */
 			while (inst->partition_sample > 0U) {
 				/* Read the unary part of the Rice encoded sample bit-by-bit */
@@ -1180,8 +1235,6 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			inst->priv_state = FLAC_SUBFRAME_RICE_FINALIZE;
 			break;
 		case FLAC_SUBFRAME_RICE_VERBATIM: {
-/*			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_RICE_VERBATIM\n");*/
-
 			/* Samples are encoded in verbatim in this partition */
 			/* TODO: What if rice_parameter == 0? */
 			const uint8_t bps = sfh->rice_parameter;
@@ -1195,11 +1248,12 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			break;
 		}
 		case FLAC_SUBFRAME_RICE_FINALIZE:
-/*			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_RICE_FINALIZE\n");*/
-
 			/* Go to the next partition or finalize this subframe */
 			inst->partition_cur++;
 			if (inst->partition_cur == (1U << sfh->rice_partition_order)) {
+				/* Decode the residual */
+				_fx_flac_restore_lpc_signal(blk, blk_n, sfh->lpc_coeffs,
+				                            sfh->order, sfh->lpc_shift);
 				inst->priv_state = FLAC_SUBFRAME_FINALIZE;
 			}
 			else {
@@ -1207,8 +1261,6 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 			break;
 		case FLAC_SUBFRAME_FINALIZE: {
-/*			fprintf(stderr, "FLAC_IN_FRAME -> FLAC_SUBFRAME_FINALIZE\n");*/
-
 			/* There is another subframe to read, continue! */
 			inst->chan_cur++; /* Go to the next channel */
 			if (inst->chan_cur < fh->channel_count) {
@@ -1217,40 +1269,44 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 
 			/* Synchronise with the underlying byte stream */
-			/* Note: multiple READ_BITS calls without ENSURE_BITS only works
-			   because we will never read bits twice here */
 			SYNC_BYTESTREAM_CRC();
 
 			/* Read the CRC16 sum, resync if it doesn't match our own */
 			uint16_t crc16 = READ_BITS(16U);
+#ifndef FX_FLAC_NO_CRC
 			if (crc16 != inst->crc16) {
-				valid = false;
-				break;
+				return _fx_flac_handle_err(inst);
 			}
-
-			/* Apply linear prediction */
-			/* TODO */
+#else
+			(void)crc16;
+#endif
 
 			/* Post process side-stereo */
+			int32_t *c1 = inst->blkbuf[0], *c2 = inst->blkbuf[1];
 			switch (fh->channel_assignment) {
 				case LEFT_SIDE_STEREO:
-					_fx_flac_post_process_stereo(inst, 1, 0, 1, 1, 1);
+					_fx_flac_post_process_stereo(c1, c2, blk_n, 1, 0, 1, -1, 0);
 					break;
 				case RIGHT_SIDE_STEREO:
-					_fx_flac_post_process_stereo(inst, 1, 1, 0, 0, 1);
+					_fx_flac_post_process_stereo(c1, c2, blk_n, 1, 1, 0, 1, 0);
 					break;
 				case MID_SIDE_STEREO:
-					_fx_flac_post_process_stereo(inst, 1, -1, -1, 1, 2);
+					_fx_flac_post_process_stereo(c1, c2, blk_n, 2, 1, 2, -1, 1);
 					break;
 				default:
 					break;
 			}
 
 			/* Apply the "wasted bits" transformation, i.e. multiply the output
-			   by the corresponding power of two. */
-			if (sfh->wasted_bits) {
-				for (uint16_t i = 0; i < fh->block_size; i++) {
-					blk[i] = blk[i] << sfh->wasted_bits;
+			   by the corresponding power of two. Furthermore, shift the output
+			   such that the resulting int32 stream can be played back. */
+			uint8_t shift = sfh->wasted_bits + (32U - fh->sample_size);
+			if (shift) {
+				for (uint8_t c = 0U; c < fh->channel_count; c++) {
+					int32_t *blk = inst->blkbuf[c];
+					for (uint16_t i = 0U; i < blk_n; i++) {
+						blk[i] = blk[i] * (1 << shift);
+					}
 				}
 			}
 
@@ -1264,24 +1320,12 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			inst->state = FLAC_ERR;
 			break;
 	}
-
-	if (!valid) {
-		fprintf(stderr, "Reached invalid state while decoding subframe.\n");
-		inst->state = FLAC_SEARCH_FRAME;
-		inst->priv_state = FLAC_FRAME_SYNC;
-	}
 	return true;
 }
 
 static bool _fx_flac_process_decoded_frame(fx_flac_t *inst, int32_t *out,
                                            uint32_t *out_len)
 {
-	/* If no output buffers are given, just discard the data. */
-	if (!out || !out_len) {
-		inst->state = FLAC_END_OF_FRAME;
-		return true;
-	}
-
 	/* Fetch the current stream and frame info. */
 	const fx_flac_frame_header_t *fh = inst->frame_header;
 
@@ -1337,7 +1381,8 @@ uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels)
 	          fx_mem_update_size(&size, sizeof(fx_flac_metadata_t)) &&
 	          fx_mem_update_size(&size, sizeof(fx_flac_streaminfo_t)) &&
 	          fx_mem_update_size(&size, sizeof(fx_flac_frame_header_t)) &&
-	          fx_mem_update_size(&size, sizeof(fx_flac_subframe_header_t));
+	          fx_mem_update_size(&size, sizeof(fx_flac_subframe_header_t)) &&
+	          fx_mem_update_size(&size, sizeof(int32_t) * 32U);
 
 	/* Calculate the size of the structures depending on the given parameters.
 	 */
@@ -1376,6 +1421,7 @@ fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
 		    &mem, sizeof(fx_flac_frame_header_t));
 		inst->subframe_header = (fx_flac_subframe_header_t *)fx_mem_align(
 		    &mem, sizeof(fx_flac_subframe_header_t));
+		inst->qbuf = (int32_t *)fx_mem_align(&mem, sizeof(int32_t) * 32U);
 
 		/* Compute the addresses of the per-channel buffers */
 		for (uint8_t i = 0; i < FLAC_MAX_CHANNEL_COUNT; i++) {
@@ -1471,6 +1517,7 @@ fx_flac_state_t fx_flac_process(fx_flac_t *inst, const uint8_t *in,
 
 	/* Advance the statemachine */
 	bool done = false;
+	uint32_t out_len_ = 0U;
 	fx_flac_state_t old_state = inst->state;
 	while (!done) {
 		/* Abort once we've reached an error state. */
@@ -1485,7 +1532,6 @@ fx_flac_state_t fx_flac_process(fx_flac_t *inst, const uint8_t *in,
 			old_state = inst->state;
 			switch (inst->state) {
 				case FLAC_END_OF_METADATA:
-				case FLAC_END_OF_STREAM:
 				case FLAC_END_OF_FRAME:
 					done = true; /* Good point to return to the caller */
 					continue;
@@ -1516,7 +1562,13 @@ fx_flac_state_t fx_flac_process(fx_flac_t *inst, const uint8_t *in,
 				done = !_fx_flac_process_in_frame(inst);
 				break;
 			case FLAC_DECODED_FRAME:
-				done = !_fx_flac_process_decoded_frame(inst, out, out_len);
+				/* If no output buffers are given, just discard the data. */
+				if (!out || !out_len) {
+					inst->state = FLAC_END_OF_FRAME;
+					break;
+				}
+				out_len_ = *out_len;
+				done = !_fx_flac_process_decoded_frame(inst, out, &out_len_);
 				break;
 			default:
 				inst->state = FLAC_ERR; /* Internal error */
@@ -1525,7 +1577,11 @@ fx_flac_state_t fx_flac_process(fx_flac_t *inst, const uint8_t *in,
 	}
 
 	/* Write the number of bytes we read from the input stream to in_len, the
-	 * caller must not provide these bytes again. */
+	   caller must not provide these bytes again. Also write the number of
+	   samples we wrote to the output buffer. */
+	if (out_len) {
+		*out_len = out_len_;
+	}
 	*in_len = bs->src - in;
 
 	/* Return the current state */

@@ -120,12 +120,7 @@ typedef enum {
 	/**
 	 * The decoder reached the end of a block.
 	 */
-	FLAC_END_OF_FRAME = 6,
-
-	/**
-	 * The decoder reached the end of the stream.
-	 */
-	FLAC_END_OF_STREAM = 7,
+	FLAC_END_OF_FRAME = 6
 } fx_flac_state_t;
 
 /**
