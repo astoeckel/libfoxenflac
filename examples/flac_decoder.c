@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Usage: %s <FLAC FILE>\n", argv[0]);
 		return 1;
 	}
-	FILE *f = fopen(argv[1], "rb");
+	FILE *f = *argv[1] == '-' ? stdin : fopen(argv[1], "rb");
 	if (!f) {
 		fprintf(stderr, "Error opening file \"%s\"", argv[1]);
 		return 1;
@@ -59,9 +59,7 @@ int main(int argc, char *argv[])
 		uint32_t out_buf_len = 512;
 		switch (fx_flac_process(flac, buf, &buf_len, out_buf, &out_buf_len)) {
 			case FLAC_END_OF_METADATA:
-				fprintf(stderr, "%s: Min/Max Block size %ld/%ld\n", argv[1],
-				        fx_flac_get_streaminfo(flac, FLAC_KEY_MIN_BLOCK_SIZE),
-				        fx_flac_get_streaminfo(flac, FLAC_KEY_MAX_BLOCK_SIZE));
+				/* Can read metadata here */
 				break;
 			case FLAC_ERR:
 				fprintf(stderr, "FLAC decoder in error state!\n");
@@ -83,5 +81,7 @@ int main(int argc, char *argv[])
 	}
 	free(flac);
 
-	fclose(f);
+	if (f != stdin) {
+		fclose(f);
+	}
 }

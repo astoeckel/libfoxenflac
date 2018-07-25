@@ -89,15 +89,11 @@ Run the unit tests by executing
 ninja test
 ```
 
-To test, grab a FLAC file, for example by running
-```sh
-wget http://helpguide.sony.net/high-res/sample1/v1/data/Sample_BeeMoved_96kHz24bit.flac.zip
-unzip Sample_BeeMoved_96kHz24bit.flac.zip
+To test the library in action, you can for example run the following (assumes
+you have `curl` and `aplay` installed, which is the default on most Linux
+distributions)
 ```
-
-You can play back the above FLAC file by running
-```sh
-./flac_decoder Sample_BeeMoved_96kHz24bit.flac | aplay -f S32_LE -r 96000 -c 2
+curl http://www.hyperion-records.co.uk/audiotest/1%20Vaet%20Videns%20Dominus.FLAC | ./flac_decoder - | aplay -f S32_LE -r 44100 -c 2
 ```
 
 ### Web Assembly Build
