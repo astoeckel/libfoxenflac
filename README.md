@@ -6,7 +6,13 @@
 decoder written in C99. It does not depend on any C library function,
 including memory allocations. It provides a simple, state-machine based
 interface that allows you to decode a FLAC stream as a sequence of arbitrarily
-sized byte buffers.
+sized byte buffers. Depending on maximum number of channels and the maximum
+block size, `libfoxenflac` requires between 40 kiB (FLAC Subset format,
+stereo, up to 48000 kHz) and 2 MiB of memory (all standard-conformant FLAC
+files).
+
+This library is perfect for environments without runtime library, such as
+embedded devices or Web Assembly (WASM).
 
 **Disclaimer** The library is currently in a beta state. While all features of
 the FLAC format have been implemented, the library has not been thoroughly
@@ -78,6 +84,11 @@ meson -Dbuildtype=release -Db_lto=True ..
 ninja
 ```
 
+Run the unit tests by executing
+```sh
+ninja test
+```
+
 To test, grab a FLAC file, for example by running
 ```sh
 wget http://helpguide.sony.net/high-res/sample1/v1/data/Sample_BeeMoved_96kHz24bit.flac.zip
@@ -87,6 +98,23 @@ unzip Sample_BeeMoved_96kHz24bit.flac.zip
 You can play back the above FLAC file by running
 ```sh
 ./flac_decoder Sample_BeeMoved_96kHz24bit.flac | aplay -f S32_LE -r 96000 -c 2
+```
+
+### Web Assembly Build
+
+`libfoxenflac` should work out of the box with WASM. For example, to compile and
+run the Unit tests just run the the following from the `build` directory
+```
+emcc -Oz \
+    ../test/test_flac.c \
+    ../foxen/flac.c \
+    ../subprojects/libfoxenbitstream/foxen/bitstream.c \
+    -I ../subprojects/libfoxenbitstream/ \
+    -I ../subprojects/libfoxenmem \
+    -I ../subprojects/libfoxenunit \
+    -I ../ \
+    -o test_flac.js
+node test_flac.js
 ```
 
 
