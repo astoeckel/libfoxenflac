@@ -132,10 +132,6 @@ void generic_test_flac_single_frame_ex(const uint8_t *in_,
                                        const uint32_t out_len_,
                                        bool samplewise)
 {
-	FILE *f = fopen("/home/andreas/flac_fragment2.flac", "w");
-	fwrite(in_, 1, in_len_, f);
-	fclose(f);
-
 	/* For a single frame we expect the following state transitions if the data
 	   is read bytewise. */
 	const fx_flac_state_t expected_states[7][2] = {
