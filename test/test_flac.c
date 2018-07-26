@@ -199,7 +199,7 @@ void generic_test_flac_single_frame_ex(const uint8_t *in_,
 void generic_test_flac_single_frame(const uint8_t *in, const uint32_t in_len,
                                     const int32_t *out, const uint32_t out_len)
 {
-/*	generic_test_flac_single_frame_ex(in, in_len, out, out_len, false);*/
+	generic_test_flac_single_frame_ex(in, in_len, out, out_len, false);
 	generic_test_flac_single_frame_ex(in, in_len, out, out_len, true);
 }
 
