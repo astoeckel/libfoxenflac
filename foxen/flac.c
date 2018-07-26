@@ -529,17 +529,38 @@ static bool _fx_flac_decode_channel_count(
  * Decoding functions                                                         *
  ******************************************************************************/
 
-static inline void _fx_flac_post_process_stereo(int32_t *blk1, int32_t *blk2,
-                                                uint32_t blk_size, int64_t c1l,
-                                                int64_t c2l, int64_t c1r,
-                                                int64_t c2r, int shl)
+static inline void _fx_flac_post_process_left_side(int32_t *blk1, int32_t *blk2,
+                                                uint32_t blk_size)
 {
 	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
 	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
 	for (uint32_t i = 0U; i < blk_size; i++) {
-		int32_t l = (c1l * (int64_t)blk1[i] + c2l * (int64_t)blk2[i]) >> shl;
-		int32_t r = (c1r * (int64_t)blk1[i] + c2r * (int64_t)blk2[i]) >> shl;
-		blk1[i] = l, blk2[i] = r;
+		blk2[i] = blk1[i] - blk2[i];
+	}
+}
+
+static inline void _fx_flac_post_process_right_side(int32_t *blk1, int32_t *blk2, uint32_t blk_size)
+{
+	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
+	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
+	for (uint32_t i = 0U; i < blk_size; i++) {
+		blk1[i] = blk1[i] + blk2[i];
+	}
+}
+
+static inline void _fx_flac_post_process_mid_side(int32_t *blk1, int32_t *blk2,
+                                                uint32_t blk_size)
+{
+	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
+	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
+	for (uint32_t i = 0U; i < blk_size; i++) {
+		/* Code libflac from stream_decoder.c */
+		int32_t mid = blk1[i];
+		int32_t side = blk2[i];
+		mid = ((uint32_t)mid) << 1;
+		mid |= (side & 1); /* Round correctly */
+		blk1[i] = (mid + side) >> 1;
+		blk2[i] = (mid - side) >> 1;
 	}
 }
 
@@ -1285,13 +1306,13 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			int32_t *c1 = inst->blkbuf[0], *c2 = inst->blkbuf[1];
 			switch (fh->channel_assignment) {
 				case LEFT_SIDE_STEREO:
-					_fx_flac_post_process_stereo(c1, c2, blk_n, 1, 0, 1, -1, 0);
+					_fx_flac_post_process_left_side(c1, c2, blk_n);
 					break;
 				case RIGHT_SIDE_STEREO:
-					_fx_flac_post_process_stereo(c1, c2, blk_n, 1, 1, 0, 1, 0);
+					_fx_flac_post_process_right_side(c1, c2, blk_n);
 					break;
 				case MID_SIDE_STEREO:
-					_fx_flac_post_process_stereo(c1, c2, blk_n, 2, 1, 2, -1, 1);
+					_fx_flac_post_process_mid_side(c1, c2, blk_n);
 					break;
 				default:
 					break;
