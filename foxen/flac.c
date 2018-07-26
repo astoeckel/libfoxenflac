@@ -1045,11 +1045,10 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			/* Erase all old data */
 			FX_MEM_ZERO_ALIGNED(inst->subframe_header);
 
-			/* Reset the block write cursor */
+			/* Reset the block write cursor, make sure initial blk sample is set
+			   to zero for zero-order fixed LPC */
 			inst->blk_cur = 0U;
-			for (uint32_t i = 0; i < blk_n; i++) {
-				blk[i] = 0U;
-			}
+			blk[0U] = 0U;
 
 			/* Read a zero padding bit. This must be zero. */
 			uint8_t padding = READ_BITS_FAST_CRC(1U);
