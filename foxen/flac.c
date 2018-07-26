@@ -241,7 +241,7 @@ typedef struct {
 /**
  * Array containing the LPC coefficients for the fixed coding mode.
  */
-static const int32_t _fx_flac_fixed_coeffs[][4] = {
+static const int32_t _fx_flac_fixed_coeffs[5][4] = {
     {}, {1}, {2, -1}, {3, -3, 1}, {4, -6, 4, -1}};
 
 /******************************************************************************
@@ -816,7 +816,7 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
 			if (inst->metadata->type == META_TYPE_INVALID) {
 				return _fx_flac_handle_err(inst);
 			}
-			inst->metadata->length = inst->n_bytes_rem = READ_BITS_FAST(24);
+			inst->metadata->length = inst->n_bytes_rem = READ_BITS_FAST(24U);
 			if (inst->metadata->type == META_TYPE_STREAMINFO) {
 				inst->priv_state = FLAC_METADATA_SINFO;
 				/* The stream info header must be exactly 33 bytes long */
@@ -1146,7 +1146,7 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 			sfh->lpc_prec = prec + 1U;
 			sfh->lpc_shift = SIGN_EXTEND(shift, 5U);
-			if (sfh->lpc_shift < 0) {
+			if (sfh->lpc_shift < 0U) {
 				return _fx_flac_handle_err(inst);
 			}
 			inst->coef_cur = 0U;
