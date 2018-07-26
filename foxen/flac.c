@@ -1146,7 +1146,7 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 			sfh->lpc_prec = prec + 1U;
 			sfh->lpc_shift = SIGN_EXTEND(shift, 5U);
-			if (sfh->lpc_shift < 0U) {
+			if (sfh->lpc_shift < 0) {
 				return _fx_flac_handle_err(inst);
 			}
 			inst->coef_cur = 0U;

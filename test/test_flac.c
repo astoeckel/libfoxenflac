@@ -166,7 +166,7 @@ void generic_test_flac_single_frame_ex(const uint8_t *in_,
 			if (state == FLAC_END_OF_METADATA) {
 				bps = fx_flac_get_streaminfo(inst, FLAC_KEY_SAMPLE_SIZE);
 			}
-			EXPECT_GT(7U, state_transition_idx);
+			EXPECT_GT(7, state_transition_idx);
 			EXPECT_EQ(expected_states[state_transition_idx][0], last_state);
 			EXPECT_EQ(expected_states[state_transition_idx][1], state);
 			state_transition_idx++;
@@ -188,7 +188,7 @@ void generic_test_flac_single_frame_ex(const uint8_t *in_,
 
 		/* Abort once all input data has been read and all output data has been
 		   written. */
-		if (state == FLAC_ERR || (out_len == 0U && (in - in_) >= in_len_)) {
+		if (state == FLAC_ERR || (out_len == 0U && (uint32_t)(in - in_) >= in_len_)) {
 			break;
 		}
 	}
