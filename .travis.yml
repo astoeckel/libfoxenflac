@@ -8,6 +8,7 @@ install:
   - curl -L https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip -o .tmp/ninja-linux.zip
   - unzip .tmp/ninja-linux.zip -d .tmp
   - pip3 install --user meson
+  - sudo apt-get install flac
 before_script:
   - export PATH=$PATH:$PWD/.tmp
 script:

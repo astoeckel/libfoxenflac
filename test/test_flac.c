@@ -1,5 +1,5 @@
 /*
- *  libstanchion -- Introduces musical acts at the EOLIAN
+ *  libfoxenflac -- FLAC decoder
  *  Copyright (C) 2018  Andreas Stöckel
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -126,11 +126,20 @@ void test_flac_metadata_multiple_one_byte()
 	free(inst);
 }
 
+void test_flac_metadata_err()
+{
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	ASSERT_NE(NULL, inst);
+	uint32_t len = sizeof(FLAC_HEADER_ERR_METADATA_TOO_LONG);
+	EXPECT_EQ(FLAC_ERR, fx_flac_process(inst, FLAC_HEADER_ERR_METADATA_TOO_LONG,
+	                                    &len, NULL, NULL));
+	free(inst);
+}
+
 void generic_test_flac_single_frame_ex(const uint8_t *in_,
                                        const uint32_t in_len_,
                                        const int32_t *out_,
-                                       const uint32_t out_len_,
-                                       bool samplewise)
+                                       const uint32_t out_len_, bool samplewise)
 {
 	/* For a single frame we expect the following state transitions if the data
 	   is read bytewise. */
@@ -188,7 +197,8 @@ void generic_test_flac_single_frame_ex(const uint8_t *in_,
 
 		/* Abort once all input data has been read and all output data has been
 		   written. */
-		if (state == FLAC_ERR || (out_len == 0U && (uint32_t)(in - in_) >= in_len_)) {
+		if (state == FLAC_ERR ||
+		    (out_len == 0U && (uint32_t)(in - in_) >= in_len_)) {
 			break;
 		}
 	}
@@ -227,6 +237,7 @@ int main()
 	RUN(test_flac_metadata_multiple);
 	RUN(test_flac_metadata_single_one_byte);
 	RUN(test_flac_metadata_multiple_one_byte);
+	RUN(test_flac_metadata_err);
 	RUN(test_flac_fixed_1);
 	RUN(test_flac_fixed_2);
 	DONE;

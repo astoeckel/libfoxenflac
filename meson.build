@@ -60,6 +60,23 @@ exe_test_flac = executable(
     install: false)
 test('test_flac', exe_test_flac)
 
+exe_test_flac_integration = executable(
+    'test_flac_integration',
+    'test/test_flac_integration.c',
+    include_directories: inc_foxen,
+    link_with: lib_foxenflac,
+    dependencies: [dep_foxenunit, dep_foxenbitstream],
+    install: false)
+# TODO: Use Python script instead
+test(
+    'test_flac_integration_wasted_bits',
+    exe_test_flac_integration,
+    args: [join_paths(meson.source_root(), 'test/data/wasted_bits.flac')])
+test(
+    'test_flac_integration_short',
+    exe_test_flac_integration,
+    args: [join_paths(meson.source_root(), 'test/data/short.flac')])
+
 # Install the header file
 install_headers(
     ['foxen/flac.h'],
