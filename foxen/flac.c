@@ -919,7 +919,6 @@ static bool _fx_flac_process_search_frame(fx_flac_t *inst)
 			break;
 		case FLAC_FRAME_HEADER:
 			ENSURE_BITS(17U);
-			FX_MEM_ZERO_ALIGNED(fh); /* Reset the frame header */
 
 			/* Read the frame header bits */
 			fh->blocking_strategy =
@@ -1042,9 +1041,6 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 		case FLAC_SUBFRAME_HEADER: {
 			ENSURE_BITS(40U);
 
-			/* Erase all old data */
-			FX_MEM_ZERO_ALIGNED(inst->subframe_header);
-
 			/* Reset the block write cursor, make sure initial blk sample is set
 			   to zero for zero-order fixed LPC */
 			inst->blk_cur = 0U;
@@ -1060,7 +1056,6 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 				sfh->order = (type & 0x1FU) + 1U;
 				sfh->type = SFT_LPC;
 				sfh->lpc_coeffs = inst->qbuf;
-				FX_MEM_ZERO_ALIGNED(sfh->lpc_coeffs);
 				inst->priv_state = FLAC_SUBFRAME_LPC;
 			}
 			else if (type & 0x10U) {
