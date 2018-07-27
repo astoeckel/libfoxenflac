@@ -971,7 +971,7 @@ static bool _fx_flac_process_search_frame(fx_flac_t *inst)
 					fh->block_size = 1U + READ_BITS_FAST_DCRC(8U);
 					break;
 				case BLK_SIZE_READ_16BIT:
-					fh->block_size = READ_BITS_FAST_DCRC(16U);
+					fh->block_size = 1U + READ_BITS_FAST_DCRC(16U);
 					break;
 				default:
 					break;
