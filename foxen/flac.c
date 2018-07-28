@@ -1064,6 +1064,7 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			else if (type & 0x08U) {
 				sfh->order = type & 0x07U;
 				sfh->type = SFT_FIXED;
+				sfh->lpc_shift = 0;
 				inst->priv_state = FLAC_SUBFRAME_FIXED;
 				valid = valid && (sfh->order <= 4U);
 				if (valid) {
