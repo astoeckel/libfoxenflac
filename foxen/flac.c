@@ -1252,10 +1252,9 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			break;
 		case FLAC_SUBFRAME_RICE_VERBATIM: {
 			/* Samples are encoded in verbatim in this partition */
-			/* TODO: What if rice_parameter == 0? */
 			const uint8_t bps = sfh->rice_parameter;
 			while (inst->partition_sample > 0U) {
-				blk[inst->blk_cur] = READ_BITS_CRC(bps);
+				blk[inst->blk_cur] = (bps == 0) ? 0U : READ_BITS_CRC(bps);
 				blk[inst->blk_cur] = SIGN_EXTEND(blk[inst->blk_cur], bps);
 				inst->blk_cur++;
 				inst->partition_sample--;

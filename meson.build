@@ -80,6 +80,10 @@ test(
     'test_flac_integration_subframe_header_reset',
     exe_test_flac_integration,
     args: [join_paths(meson.source_root(), 'test/data/subframe_header_reset.flac')])
+test(
+    'test_flac_integration_afl_rice_parameter_zero',
+    exe_test_flac_integration,
+    args: [join_paths(meson.source_root(), 'test/data/afl_rice_parameter_zero.flac')])
 
 # Install the header file
 install_headers(
