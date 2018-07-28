@@ -1035,6 +1035,11 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 		bps++;
 	}
 
+	/* Discard frames with invalid bits per sample values */
+	if (bps == 0U || bps > 32U) {
+		return _fx_flac_handle_err(inst);
+	}
+
 	/* This flag is set to false whenever a state in the state machine
 	   encounters and error. */
 	switch (inst->priv_state) {
