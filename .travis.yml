@@ -1,7 +1,7 @@
 language: c
 compiler:
-  - clang
-#  - gcc
+#  - clang
+  - gcc
 env: PYENV_VERSION='3.6'
 install:
   - mkdir .tmp
