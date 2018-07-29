@@ -67,7 +67,10 @@ exe_test_flac_integration = executable(
     link_with: lib_foxenflac,
     dependencies: [dep_foxenunit, dep_foxenbitstream],
     install: false)
-# TODO: Use Python script instead
+test(
+    'test_flac_integration_noise',
+    exe_test_flac_integration,
+    args: [join_paths(meson.source_root(), 'test/data/noise.flac')])
 test(
     'test_flac_integration_wasted_bits',
     exe_test_flac_integration,
