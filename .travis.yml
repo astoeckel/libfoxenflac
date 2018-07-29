@@ -15,8 +15,8 @@ before_script:
 script:
   - mkdir build_release
   - cd build_release
-  - meson -Dbuildtype=release -Db_lto=True -Db_coverage=True ..
+  - meson -Dbuildtype=release -Db_coverage=True ..
   - ninja && ninja test && ninja coverage
   - cp -Rf ../examples ../subprojects ../test .
-  - coveralls --exclude test --exclude examples
+  - if [[ "$CC" != "clang" ]]; then coveralls --exclude test --exclude examples; fi
 
