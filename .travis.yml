@@ -1,7 +1,7 @@
 language: c
 compiler:
   - clang
-  - gcc
+#  - gcc
 env: PYENV_VERSION='3.6'
 install:
   - mkdir .tmp
@@ -17,6 +17,5 @@ script:
   - cd build_release
   - meson -Dbuildtype=release -Db_coverage=True ..
   - ninja && ninja test && ninja coverage
-  - cp -Rf ../examples ../subprojects ../test .
-  - if [[ "$CC" != "clang" ]]; then coveralls --exclude test --exclude examples; fi
+  - coveralls -r .. -b . --exclude subprojects --exclude examples --exclude test
 
