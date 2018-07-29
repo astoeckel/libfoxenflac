@@ -30,7 +30,7 @@
 #include "data_fixed_2.h"
 #include "data_header.h"
 
-void check_flac_metadata_short(fx_flac_t *inst)
+static void check_flac_metadata_short(fx_flac_t *inst)
 {
 	EXPECT_EQ(4096U, fx_flac_get_streaminfo(inst, FLAC_KEY_MIN_BLOCK_SIZE));
 	EXPECT_EQ(4096U, fx_flac_get_streaminfo(inst, FLAC_KEY_MAX_BLOCK_SIZE));
@@ -58,7 +58,7 @@ void check_flac_metadata_short(fx_flac_t *inst)
 	EXPECT_EQ(0xAE, fx_flac_get_streaminfo(inst, FLAC_KEY_MD5_SUM_F));
 }
 
-void check_flac_metadata_long(fx_flac_t *inst)
+static void check_flac_metadata_long(fx_flac_t *inst)
 {
 	EXPECT_EQ(4608U, fx_flac_get_streaminfo(inst, FLAC_KEY_MIN_BLOCK_SIZE));
 	EXPECT_EQ(4608U, fx_flac_get_streaminfo(inst, FLAC_KEY_MAX_BLOCK_SIZE));
@@ -74,59 +74,62 @@ void check_flac_metadata_long(fx_flac_t *inst)
 	}
 }
 
-void test_flac_metadata_single()
+static void test_flac_header_variant(fx_flac_t *inst, const uint8_t *buf,
+                                     uint32_t len_)
+{
+	ASSERT_NE(NULL, inst);
+	uint32_t len = len_;
+	EXPECT_EQ(FLAC_END_OF_METADATA,
+	          fx_flac_process(inst, buf, &len, NULL, NULL));
+	EXPECT_EQ(len_, len);
+}
+
+static void test_flac_header_variant_one_byte(fx_flac_t *inst, const uint8_t *buf, uint32_t len_)
+{
+	for (uint32_t i = 0; i < len_; i++) {
+		uint32_t len = 1U;
+		fx_flac_process(inst, &buf[i], &len, NULL, NULL);
+		ASSERT_EQ(1U, len);
+	}
+	EXPECT_EQ(FLAC_END_OF_METADATA, fx_flac_get_state(inst));
+}
+
+static void test_flac_metadata_single()
 {
 	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
-	ASSERT_NE(NULL, inst);
-	uint32_t len = sizeof(FLAC_SHORT_HEADER);
-	EXPECT_EQ(FLAC_END_OF_METADATA,
-	          fx_flac_process(inst, FLAC_SHORT_HEADER, &len, NULL, NULL));
-	EXPECT_EQ(sizeof(FLAC_SHORT_HEADER), len);
+	test_flac_header_variant(inst, FLAC_SHORT_HEADER,
+	                         sizeof(FLAC_SHORT_HEADER));
 	check_flac_metadata_short(inst);
 	free(inst);
 }
 
-void test_flac_metadata_multiple()
+static void test_flac_metadata_multiple()
 {
 	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
-	ASSERT_NE(NULL, inst);
-	uint32_t len = sizeof(FLAC_LONG_HEADER);
-	EXPECT_EQ(FLAC_END_OF_METADATA,
-	          fx_flac_process(inst, FLAC_LONG_HEADER, &len, NULL, NULL));
-	EXPECT_EQ(sizeof(FLAC_LONG_HEADER), len);
+	test_flac_header_variant(inst, FLAC_LONG_HEADER, sizeof(FLAC_LONG_HEADER));
 	check_flac_metadata_long(inst);
 	free(inst);
 }
 
-void test_flac_metadata_single_one_byte()
+static void test_flac_metadata_single_one_byte()
 {
 	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
-	ASSERT_NE(NULL, inst);
-	for (uint32_t i = 0; i < sizeof(FLAC_SHORT_HEADER); i++) {
-		uint32_t len = 1U;
-		fx_flac_process(inst, &FLAC_SHORT_HEADER[i], &len, NULL, NULL);
-		ASSERT_EQ(1U, len);
-	}
-	EXPECT_EQ(FLAC_END_OF_METADATA, fx_flac_get_state(inst));
+	test_flac_header_variant_one_byte(inst, FLAC_SHORT_HEADER,
+	                                  sizeof(FLAC_SHORT_HEADER));
 	check_flac_metadata_short(inst);
 	free(inst);
 }
 
-void test_flac_metadata_multiple_one_byte()
+static void test_flac_metadata_multiple_one_byte()
 {
 	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
-	ASSERT_NE(NULL, inst);
-	for (uint32_t i = 0; i < sizeof(FLAC_LONG_HEADER); i++) {
-		uint32_t len = 1U;
-		fx_flac_process(inst, &FLAC_LONG_HEADER[i], &len, NULL, NULL);
-		ASSERT_EQ(1U, len);
-	}
-	EXPECT_EQ(FLAC_END_OF_METADATA, fx_flac_get_state(inst));
+	test_flac_header_variant_one_byte(inst, FLAC_LONG_HEADER,
+	                                  sizeof(FLAC_LONG_HEADER));
 	check_flac_metadata_long(inst);
 	free(inst);
 }
 
-void test_flac_metadata_err()
+static void test_flac_metadata_err()
 {
 	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
 	ASSERT_NE(NULL, inst);
@@ -136,10 +139,47 @@ void test_flac_metadata_err()
 	free(inst);
 }
 
-void generic_test_flac_single_frame_ex(const uint8_t *in_,
-                                       const uint32_t in_len_,
-                                       const int32_t *out_,
-                                       const uint32_t out_len_, bool samplewise)
+static void test_flac_header_shift_1()
+{
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	test_flac_header_variant(inst, FLAC_SHORT_HEADER_SHIFT1,
+	                         sizeof(FLAC_SHORT_HEADER_SHIFT1));
+	check_flac_metadata_short(inst);
+	free(inst);
+}
+
+static void test_flac_header_shift_2()
+{
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	test_flac_header_variant(inst, FLAC_SHORT_HEADER_SHIFT2,
+	                         sizeof(FLAC_SHORT_HEADER_SHIFT2));
+	check_flac_metadata_short(inst);
+	free(inst);
+}
+
+static void test_flac_header_shift_3()
+{
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	test_flac_header_variant(inst, FLAC_SHORT_HEADER_SHIFT3,
+	                         sizeof(FLAC_SHORT_HEADER_SHIFT3));
+	check_flac_metadata_short(inst);
+	free(inst);
+}
+
+static void test_flac_header_shift_4()
+{
+	fx_flac_t *inst = FX_FLAC_ALLOC_DEFAULT();
+	test_flac_header_variant(inst, FLAC_SHORT_HEADER_SHIFT4,
+	                         sizeof(FLAC_SHORT_HEADER_SHIFT4));
+	check_flac_metadata_short(inst);
+	free(inst);
+}
+
+static void generic_test_flac_single_frame_ex(const uint8_t *in_,
+                                              const uint32_t in_len_,
+                                              const int32_t *out_,
+                                              const uint32_t out_len_,
+                                              bool samplewise)
 {
 	/* For a single frame we expect the following state transitions if the data
 	   is read bytewise. */
@@ -206,21 +246,23 @@ void generic_test_flac_single_frame_ex(const uint8_t *in_,
 	free(inst);
 }
 
-void generic_test_flac_single_frame(const uint8_t *in, const uint32_t in_len,
-                                    const int32_t *out, const uint32_t out_len)
+static void generic_test_flac_single_frame(const uint8_t *in,
+                                           const uint32_t in_len,
+                                           const int32_t *out,
+                                           const uint32_t out_len)
 {
 	generic_test_flac_single_frame_ex(in, in_len, out, out_len, false);
 	generic_test_flac_single_frame_ex(in, in_len, out, out_len, true);
 }
 
-void test_flac_fixed_1()
+static void test_flac_fixed_1()
 {
 	generic_test_flac_single_frame(FLAC_FIXED_1, sizeof(FLAC_FIXED_1),
 	                               FLAC_FIXED_1_OUT,
 	                               sizeof(FLAC_FIXED_1_OUT) / 4U);
 }
 
-void test_flac_fixed_2()
+static void test_flac_fixed_2()
 {
 	generic_test_flac_single_frame(FLAC_FIXED_2, sizeof(FLAC_FIXED_2),
 	                               FLAC_FIXED_2_OUT,
@@ -238,6 +280,10 @@ int main()
 	RUN(test_flac_metadata_single_one_byte);
 	RUN(test_flac_metadata_multiple_one_byte);
 	RUN(test_flac_metadata_err);
+	RUN(test_flac_header_shift_1);
+	RUN(test_flac_header_shift_2);
+	RUN(test_flac_header_shift_3);
+	RUN(test_flac_header_shift_4);
 	RUN(test_flac_fixed_1);
 	RUN(test_flac_fixed_2);
 	DONE;
