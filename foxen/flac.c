@@ -1079,10 +1079,8 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 				blk[inst->blk_cur] = SIGN_EXTEND(blk[inst->blk_cur], bps);
 				inst->blk_cur++;
 			}
-			if (inst->blk_cur == n) { /* Go to the next state */
-				inst->priv_state =
-				    (fx_flac_private_state_t)((int)inst->priv_state + 1U);
-			}
+			inst->priv_state =
+			    (fx_flac_private_state_t)((int)inst->priv_state + 1U);
 			break;
 		}
 		case FLAC_SUBFRAME_LPC_HEADER: {
