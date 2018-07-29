@@ -75,11 +75,11 @@ for i, url in enumerate(URLS):
         print('Downloading {}...'.format(url))
         try:
             response = urllib.request.urlopen(url)
-            print('Done.')
             data = response.read()
             os.makedirs(os.path.dirname(file), exist_ok=True)
             with open(file, 'wb') as f:
                 f.write(data)
+            print('Done.')
         except:
             print('Warning: Error downloading file. Skipping...')
 
