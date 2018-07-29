@@ -6,7 +6,7 @@
 `libfoxenflac` is a tiny FLAC ([Free Lossless Audio Codec](https://xiph.org/flac/))
 decoder written in C99. It does not depend on any C library function,
 including memory allocations. It provides a simple, state-machine based
-interface that allows you to decode a FLAC stream as a sequence of arbitrarily
+interface that allows you to decode a FLAC stream from a sequence of arbitrarily
 sized byte buffers. Depending on maximum number of channels and the maximum
 block size, `libfoxenflac` requires between 40 kiB (FLAC Subset format,
 stereo, up to 48000 kHz) and 2 MiB of memory (all standard-conformant FLAC
@@ -15,11 +15,29 @@ files).
 This library is perfect for environments without runtime library, such as
 embedded devices or Web Assembly (WASM).
 
-**Disclaimer** The library is currently in a beta state. While all features of
-the FLAC format have been implemented, the library has not been thoroughly
-tested! Furthermore, the library has not been optimized for performance.
-However, if you deactivate CRCs, the library will be a bit faster than the
-reference `libflac`. With CRCs it is about 50% slower.
+## Features
+
+* **Small footprint**. Zero dependencies on the C runtime (runs on bare metal)
+* Supports reading/writing to/from **arbitrarily sized memory buffers**. If you
+  want to, you can decode from single bytes trickeling in and write to
+  individual samples.
+* Compiles to **WebAssembly** (though no JavaScript binding is provided at the moment).
+* Supports **all FLAC features**.
+* Quite thoroughly tested, considerable **test coverage**.
+* Roboust **resynchronisation** on corrupted files.
+* Implements all **CRC checks**.
+
+The following list of items is *not* implemented at the moment:
+* Reading headers other than `STREAMINFO`, such as the metadata header or the
+  seek table. Support for the metadata is planned in the future.
+* Access to information stored in the frame header, such as synchronisation
+  information.
+* **Seeking**. There is no intention to implement seeking directly in the
+  library. The library solely operates on a stream of data; there is no notion
+  of position within a file. However, once access to the frame header
+  information is provided, it is quite simple to implement seeking on top of
+  this library.
+
 
 ## Usage
 
