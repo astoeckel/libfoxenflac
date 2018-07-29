@@ -85,6 +85,10 @@ typedef enum {
 	BLK_SIZE_32768 = 15
 } fx_flac_block_size_t;
 
+static const int32_t fx_flac_block_sizes_[] = {
+    -1,  192, 576,  1152, 2304, 4608, 0,     0,
+    256, 512, 1204, 2048, 4096, 8192, 16384, 32768};
+
 typedef enum {
 	FS_STREAMINFO = 0,
 	FS_88_2KHZ = 1,
@@ -104,6 +108,10 @@ typedef enum {
 	FS_INVALID = 15
 } fx_flac_sample_rate_t;
 
+static const int32_t fx_flac_sample_rates_[] = {
+    0,     88200, 176400, 192000, 8000, 16000, 22050, 24000,
+    32000, 44100, 48000,  96000,  0,    0,     0,     -1};
+
 typedef enum {
 	SS_STREAMINFO = 0,
 	SS_8BIT = 1,
@@ -114,6 +122,8 @@ typedef enum {
 	SS_24BIT = 6,
 	SS_RESERVED_2 = 7
 } fx_flac_sample_size_t;
+
+static const int8_t fx_flac_sample_sizes_[] = {0, 8, 12, -1, 16, 20, 24, -1};
 
 typedef enum {
 	SFT_CONSTANT,
@@ -413,104 +423,40 @@ static bool _fx_flac_check_params(uint16_t max_block_size, uint8_t max_channels)
 static bool _fx_flac_decode_block_size(fx_flac_block_size_t block_size_enum,
                                        uint32_t *block_size)
 {
-	switch (block_size_enum) {
-		case BLK_SIZE_RESERVED:
-			return false;
-		case BLK_SIZE_192:
-			*block_size = 192U;
-			return true;
-		case BLK_SIZE_576:
-			*block_size = 576U;
-			return true;
-		case BLK_SIZE_1152:
-			*block_size = 1152U;
-			return true;
-		case BLK_SIZE_2304:
-			*block_size = 2304U;
-			return true;
-		case BLK_SIZE_4608:
-			*block_size = 4608U;
-			return true;
-		case BLK_SIZE_256 ... BLK_SIZE_32768:
-			*block_size = (1U << (int)block_size_enum);
-			return true;
-		default:
-			return true; /* Will read later */
+	const int32_t bs = fx_flac_block_sizes_[(int)block_size_enum];
+	if (bs < 0) {
+		return false; /* Invalid */
 	}
+	else if (bs > 0) {
+		*block_size = bs;
+	}
+	return true;
 }
 
 static bool _fx_flac_decode_sample_rate(fx_flac_sample_rate_t sample_rate_enum,
                                         uint32_t *sample_rate)
 {
-	switch (sample_rate_enum) {
-		case FS_STREAMINFO:
-			return true; /* Already set to the STREAMINFO value */
-		case FS_88_2KHZ:
-			*sample_rate = 88200U;
-			return true;
-		case FS_176_4KHZ:
-			*sample_rate = 176400U;
-			return true;
-		case FS_192KHZ:
-			*sample_rate = 192000U;
-			return true;
-		case FS_8KHZ:
-			*sample_rate = 8000U;
-			return true;
-		case FS_16KHZ:
-			*sample_rate = 16000U;
-			return true;
-		case FS_22_05KHZ:
-			*sample_rate = 22050U;
-			return true;
-		case FS_24KHZ:
-			*sample_rate = 24000U;
-			return true;
-		case FS_32KHZ:
-			*sample_rate = 32000U;
-			return true;
-		case FS_44_1KHZ:
-			*sample_rate = 44100U;
-			return true;
-		case FS_48KHZ:
-			*sample_rate = 48000U;
-			return true;
-		case FS_96KHZ:
-			*sample_rate = 96000U;
-			return true;
-		case FS_INVALID:
-			return false;
-		default:
-			return true; /* Will read later */
+	const int32_t fs = fx_flac_sample_rates_[(int)sample_rate_enum];
+	if (fs < 0) {
+		return false; /* Invalid */
 	}
+	else if (fs > 0) {
+		*sample_rate = fs;
+	}
+	return true;
 }
 
 static bool _fx_flac_decode_sample_size(fx_flac_sample_size_t sample_size_enum,
                                         uint8_t *sample_size)
 {
-	switch (sample_size_enum) {
-		case SS_STREAMINFO:
-			return true; /* Already set to the STREAMINFO value */
-		case SS_8BIT:
-			*sample_size = 8U;
-			return true;
-		case SS_12BIT:
-			*sample_size = 12U;
-			return true;
-		case SS_16BIT:
-			*sample_size = 16U;
-			return true;
-		case SS_20BIT:
-			*sample_size = 20U;
-			return true;
-		case SS_24BIT:
-			*sample_size = 24U;
-			return true;
-		default:
-		case SS_RESERVED_1:
-		case SS_RESERVED_2:
-			return false;
+	const int8_t ss = fx_flac_sample_sizes_[(int)sample_size_enum];
+	if (ss < 0) {
+		return false; /* Invalid */
 	}
+	else if (ss > 0) {
+		*sample_size = ss;
+	}
+	return true;
 }
 
 /**
