@@ -58,7 +58,6 @@ int main() {
 
 	uint8_t buf[128];
 	int32_t out_buf[512];
-	fx_flac_t *flac = FX_FLAC_ALLOC_SUBSET_FORMAT_DAT();
 	while (true) {
 		/* TODO: Append data to buf, adjust buf_len */
 		uint32_t buf_len = /* Available input data in bytes */
