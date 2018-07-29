@@ -1,6 +1,7 @@
 # libfoxenflac ― Tiny, heap-allocation free FLAC decoder written in C 
 
 [![Build Status](https://travis-ci.org/astoeckel/libfoxenflac.svg?branch=master)](https://travis-ci.org/astoeckel/libfoxenflac)
+[![Coverage Status](https://coveralls.io/repos/github/astoeckel/libfoxenflac/badge.svg)](https://coveralls.io/github/astoeckel/libfoxenflac)
 
 `libfoxenflac` is a tiny FLAC ([Free Lossless Audio Codec](https://xiph.org/flac/))
 decoder written in C99. It does not depend on any C library function,
