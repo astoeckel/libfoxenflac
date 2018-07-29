@@ -29,6 +29,15 @@
 
 #include <stdint.h>
 
+#ifndef FX_EXPORT
+#if __EMSCRIPTEN__
+#import <emscripten.h>
+#define FX_EXPORT EMSCRIPTEN_KEEPALIVE
+#else
+#define FX_EXPORT
+#endif /* __EMSCRIPTEN__ */
+#endif /* FX_EXPORT */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -161,7 +170,7 @@ typedef enum {
  * @return zero if the given parameters are out of range, the number of bytes
  * required to hold the FLAC decoder structure otherwise.
  */
-uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels);
+FX_EXPORT uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels);
 
 /**
  * Initializes the FLAC decoder at the given memory location. Each decoder can
@@ -181,8 +190,8 @@ uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels);
  * original `mem` as `inst` parameter to other functions. Returns NULL if the
  * input pointer is NULL or the given parameters are invalid.
  */
-fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
-                        uint8_t max_channels);
+FX_EXPORT fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
+                                  uint8_t max_channels);
 
 /**
  * Macro which calls malloc to allocate memory for a new fx_flac instance. The
@@ -197,7 +206,6 @@ fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
 	    ? NULL                                                                 \
 	    : fx_flac_init(malloc(fx_flac_size((max_block_size), (max_channels))), \
 	                   (max_block_size), (max_channels))
-
 
 /**
  * Returns a new fx_flac instance that is sufficient to decode FLAC streams in
@@ -226,7 +234,7 @@ fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
  *
  * @param inst is the FLAC decoder that should be reset.
  */
-void fx_flac_reset(fx_flac_t *inst);
+FX_EXPORT void fx_flac_reset(fx_flac_t *inst);
 
 /**
  * Returns the current decoder state.
@@ -235,7 +243,7 @@ void fx_flac_reset(fx_flac_t *inst);
  * returned.
  * @return the current state of the decoder.
  */
-fx_flac_state_t fx_flac_get_state(const fx_flac_t *inst);
+FX_EXPORT fx_flac_state_t fx_flac_get_state(const fx_flac_t *inst);
 
 /**
  * Returns metadata about the FLAC stream that is currently being parsed. This
@@ -249,8 +257,8 @@ fx_flac_state_t fx_flac_get_state(const fx_flac_t *inst);
  * @return the requested metadata value or FLAC_INVALID_METADATA_KEY if the
  * given key is unknown.
  */
-int64_t fx_flac_get_streaminfo(const fx_flac_t *inst,
-                               fx_flac_streaminfo_key_t key);
+FX_EXPORT int64_t fx_flac_get_streaminfo(const fx_flac_t *inst,
+                                         fx_flac_streaminfo_key_t key);
 
 /**
  * Decodes the given raw FLAC data; the given data must be RAW FLAC data as
@@ -279,9 +287,9 @@ int64_t fx_flac_get_streaminfo(const fx_flac_t *inst,
  * will return immediately; only the data up to the point causing the transition
  * has been read.
  */
-fx_flac_state_t fx_flac_process(fx_flac_t *inst, const uint8_t *in,
-                                uint32_t *in_len, int32_t *out,
-                                uint32_t *out_len);
+FX_EXPORT fx_flac_state_t fx_flac_process(fx_flac_t *inst, const uint8_t *in,
+                                          uint32_t *in_len, int32_t *out,
+                                          uint32_t *out_len);
 
 #ifdef __cplusplus
 }

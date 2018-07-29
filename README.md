@@ -21,7 +21,7 @@ embedded devices or Web Assembly (WASM).
 * Supports reading/writing to/from **arbitrarily sized memory buffers**. If you
   want to, you can decode from single bytes trickeling in and write to
   individual samples.
-* Compiles to **WebAssembly** (though no JavaScript binding is provided at the moment).
+* Compiles to 8.5 kiB of **WebAssembly** (4 kiB compressed). However, no JavaScript binding is provided at the moment.
 * Supports **all FLAC features**.
 * Quite thoroughly tested, considerable **test coverage**.
 * Roboust **resynchronisation** on corrupted files.
