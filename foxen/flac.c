@@ -476,7 +476,7 @@ static bool _fx_flac_decode_channel_count(
  ******************************************************************************/
 
 static inline void _fx_flac_post_process_left_side(int32_t *blk1, int32_t *blk2,
-                                                uint32_t blk_size)
+                                                   uint32_t blk_size)
 {
 	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
 	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
@@ -485,7 +485,9 @@ static inline void _fx_flac_post_process_left_side(int32_t *blk1, int32_t *blk2,
 	}
 }
 
-static inline void _fx_flac_post_process_right_side(int32_t *blk1, int32_t *blk2, uint32_t blk_size)
+static inline void _fx_flac_post_process_right_side(int32_t *blk1,
+                                                    int32_t *blk2,
+                                                    uint32_t blk_size)
 {
 	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
 	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
@@ -495,7 +497,7 @@ static inline void _fx_flac_post_process_right_side(int32_t *blk1, int32_t *blk2
 }
 
 static inline void _fx_flac_post_process_mid_side(int32_t *blk1, int32_t *blk2,
-                                                uint32_t blk_size)
+                                                  uint32_t blk_size)
 {
 	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
 	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
