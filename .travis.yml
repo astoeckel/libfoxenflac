@@ -16,6 +16,7 @@ script:
   - mkdir build_release
   - cd build_release
   - meson -Dbuildtype=release -Db_coverage=True ..
+  - ../test/test_flac_integration_runner.py --no-run --song-dir ../test/data/extra/ --exe ./test_flac_integration
   - ninja && ninja test && ninja coverage
   - coveralls -r .. -b . --exclude subprojects --exclude examples --exclude test
 

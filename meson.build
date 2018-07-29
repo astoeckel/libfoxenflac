@@ -97,7 +97,8 @@ test(
         '--song-dir',
         join_paths(meson.source_root(), 'test/data/extra/'),
         '--exe',
-        exe_test_flac_integration],
+        exe_test_flac_integration,
+        '--no-download'],
     timeout: 600)
 
 # Install the header file

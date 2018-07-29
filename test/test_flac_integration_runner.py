@@ -48,11 +48,15 @@ HASHES = [
 
 # Parse the arguments
 import argparse
-parser = argparse.ArgumentParser(description='Downloads a bunch of FLAC files and runs test_flac_integration on them')
-parser.add_argument('--song-dir', type=str, required=True,
-                    help='Directory in which the downloaded songs shall be placed. Will be created if it does not exist.')
-parser.add_argument('--exe', type=str, required=True,
-                    help='Integration test executable')
+parser = argparse.ArgumentParser()
+parser.add_argument('--song-dir', type=str, required=True)
+parser.add_argument('--exe', type=str, required=True)
+parser.add_argument('--download', dest='download', action='store_true')
+parser.add_argument('--no-download', dest='download', action='store_false')
+parser.add_argument('--run', dest='run', action='store_true')
+parser.add_argument('--no-run', dest='run', action='store_false')
+parser.set_defaults(download=True)
+parser.set_defaults(run=True)
 args = parser.parse_args()
 
 # Download the files if they do not exist yet
@@ -66,7 +70,7 @@ for i, url in enumerate(URLS):
     files.append(file)
 
     # Download the file if it does not yet exist
-    if not os.path.isfile(file):
+    if (not os.path.isfile(file)) and args.download:
         import urllib.request
         print('Downloading {}...'.format(url))
         try:
@@ -92,7 +96,7 @@ def wait_for_processes():
 import subprocess
 import multiprocessing
 for i, file in enumerate(files):
-    if os.path.isfile(file):
+    if os.path.isfile(file) and args.run:
         # Compute the file hash
         with open(file, 'rb') as f:
             data = f.read()
