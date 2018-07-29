@@ -88,6 +88,18 @@ test(
     exe_test_flac_integration,
     args: [join_paths(meson.source_root(), 'test/data/afl_rice_parameter_zero.flac')])
 
+exe_python = find_program('python3')
+test(
+    'test_flac_integration_runner',
+    exe_python,
+    args: [
+        join_paths(meson.source_root(), 'test/test_flac_integration_runner.py'),
+        '--song-dir',
+        join_paths(meson.source_root(), 'test/data/extra/'),
+        '--exe',
+        exe_test_flac_integration],
+    timeout: 600)
+
 # Install the header file
 install_headers(
     ['foxen/flac.h'],
