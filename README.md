@@ -28,7 +28,7 @@ embedded devices or Web Assembly (WASM).
 * Roboust **resynchronisation** on corrupted files.
 * Implements all **CRC checks**.
 * **Fast**. Although the code is not optimized, `libfoxenflac` is reasonably
-  fast, being about 1.25 times faster than the `flac` reference decoder
+  fast, being about 25% faster than the `flac` reference decoder
   application on `x86_64` systems.
 
 The following list of items is *not* implemented at the moment:
