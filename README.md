@@ -29,7 +29,8 @@ embedded devices or Web Assembly (WASM).
 * Implements all **CRC checks**.
 * **Fast**. Although the code is not optimized, `libfoxenflac` is reasonably
   fast, being about 25% faster than the `flac` reference decoder
-  application on `x86_64` systems.
+  application on `x86_64` systems. Performance on `ARM6` systems is significantly
+  worse.
 
 The following list of items is *not* implemented at the moment:
 * Reading headers other than `STREAMINFO`, such as the metadata header or the
