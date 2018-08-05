@@ -21,11 +21,15 @@ embedded devices or Web Assembly (WASM).
 * Supports reading/writing to/from **arbitrarily sized memory buffers**. If you
   want to, you can decode from single bytes trickeling in and write to
   individual samples.
-* Compiles to 8.5 kiB of **WebAssembly** (4 kiB compressed). However, no JavaScript binding is provided at the moment.
+* Compiles to 8.8 kiB of **WebAssembly** (4.5 kiB compressed). However, no
+  JavaScript binding is provided at the moment.
 * Supports **all FLAC features**.
 * Quite thoroughly tested, considerable **test coverage**.
 * Roboust **resynchronisation** on corrupted files.
 * Implements all **CRC checks**.
+* **Fast**. Although the code is not optimized, `libfoxenflac` is reasonably
+  fast, being about 1.25 times faster than the `flac` reference decoder
+  application.
 
 The following list of items is *not* implemented at the moment:
 * Reading headers other than `STREAMINFO`, such as the metadata header or the
