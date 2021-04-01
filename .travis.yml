@@ -5,7 +5,7 @@ compiler:
 python:
   - "3.6"
 before_install:
-  - sudo apt-get install -y g++ ninja-build flac python3-pip
+  - sudo apt-get install -y g++ ninja-build flac python3-setuptools python3-pip
   - sudo pip3 install meson gcovr cpp-coveralls
 script:
   - mkdir build_release
