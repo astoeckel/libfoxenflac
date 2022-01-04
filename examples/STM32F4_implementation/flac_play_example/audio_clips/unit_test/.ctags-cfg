@@ -1,0 +1,7 @@
+DIR_ARR=(
+  ".."
+  "./mocks"
+  "../../sub/audio"
+  "../../peripherals/memory"
+  "../../peripherals"
+  )

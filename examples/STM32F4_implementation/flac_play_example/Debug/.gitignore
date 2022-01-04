@@ -1,0 +1,10 @@
+/Core/
+/Drivers/
+/Middlewares/
+/RTOS/
+/audio_clips/
+/makefile
+/objects.list
+/objects.mk
+/peripherals/
+/sources.mk
