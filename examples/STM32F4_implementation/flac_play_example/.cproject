@@ -215,13 +215,13 @@
                     					
                     <sourceEntries>
                         						
-                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+                        <entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="RTOS"/>
                         						
-                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
                         						
                         <entry excluding="Third_Party/btstack/platform/embedded/btstack_audio_embedded.c|Third_Party/btstack/3rd-party/segger-rtt|Third_Party/btstack/3rd-party/micro-ecc/scripts|Third_Party/btstack/3rd-party/micro-ecc/test|Third_Party/btstack/platform/embedded/hci_dump_segger_rtt_stdout.c|Third_Party/btstack/platform/embedded/hci_dump_segger_rtt_binary.c|Third_Party/btstack/platform/embedded/btstack_em9304_spi_embedded.c|Third_Party/btstack/port|Third_Party/btstack/platform/windows|Third_Party/btstack/platform/wiced|Third_Party/btstack/platform/qt|Third_Party/btstack/platform/posix|Third_Party/btstack/platform/msp430|Third_Party/btstack/platform/lwip|Third_Party/btstack/platform/libusb|Third_Party/btstack/platform/daemon|Third_Party/btstack/platform/corefoundation|Third_Party/btstack/test|Third_Party/btstack/tool|Third_Party/btstack/example|Third_Party/btstack/doc|Third_Party/btstack/chipset/zephyr|Third_Party/btstack/chipset/tc3566x|Third_Party/btstack/chipset/sx128x|Third_Party/btstack/chipset/stlc2500d|Third_Party/btstack/chipset/intel|Third_Party/btstack/chipset/em9301|Third_Party/btstack/chipset/da14581|Third_Party/btstack/chipset/csr|Third_Party/btstack/chipset/cinnamon|Third_Party/btstack/chipset/bcm|Third_Party/btstack/chipset/atwilc3000|Third_Party/btstack/3rd-party/tinydir|Third_Party/btstack/3rd-party/rijndael|Third_Party/btstack/3rd-party/lwip|Third_Party/btstack/3rd-party/hxcmod-player|Third_Party/btstack/src/mesh" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
                         						
-                        <entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="RTOS"/>
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
                         						
                         <entry excluding="libfoxenflac/contrib|mock|libfoxenflac/test|libfoxenflac/examples|unit_test" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="audio_clips"/>
                         					

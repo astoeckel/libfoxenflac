@@ -18,6 +18,11 @@ The relevant code is found in two folders:
 - RTOS: Here we have some general purpose functions that act as wrappers for FREE-RTOS' functionality. If you use another RTOS implementation, you will need to modify the files found here.
 - audio_clips: All code related to FLAC playback is found here.
 
+To get started you'll need an STM32F4 development board (Nucleo or equivalent), equipped with a microcontroller comparable to the STM32F411. 
+That means it'll needb an I2S channel, 128kB of RAM, and a clock of at least 96MHz (this is what we've tested). You'll have to change the .ioc file accordingly and recompile the project.
+
+Note that the folder is missing our STM32 drivers, CMSIS and FREERTOS, so this project won't compile out of the box. You'll have to use STM32CubeMX/STM32CubeIDE to add them back in.
+
 
 ## Usage
 
