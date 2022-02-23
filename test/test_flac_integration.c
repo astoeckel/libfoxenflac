@@ -146,7 +146,9 @@ static bool compare_to_reference_decoder(const char *file)
 			case FLAC_END_OF_METADATA:
 				bps = fx_flac_get_streaminfo(flac, FLAC_KEY_SAMPLE_SIZE);
 				if (bps != 16 && bps != 24) {
-					/* Not supported by reference decoder right now */
+					fprintf(stderr, "\n[WRN] %s: Not supported by reference decoder RAW output!\n", file);
+					/* Not supported by reference decoder right now; we're probably fine :-) */
+					ok = true;
 					goto fail;
 				}
 				break;
@@ -168,7 +170,7 @@ static bool compare_to_reference_decoder(const char *file)
 			while (!fx_bitstream_can_read(&flac_bitstream, bps)) {
 				size_t n = fread(flac_buf, 1, sizeof(flac_buf), fflac);
 				if (n == 0) {
-					fprintf(stderr, "\n[ERR] Decoder producing phantom data.\n");
+					fprintf(stderr, "\n[ERR] %s: Decoder producing phantom data.\n", file);
 					goto fail;
 				}
 				fx_bitstream_set_source(&flac_bitstream, flac_buf, n);
@@ -177,8 +179,8 @@ static bool compare_to_reference_decoder(const char *file)
 			int32_t expected = SIGN_EXTEND(in, bps);
 			int32_t is = (out_buf[i]) >> (32 - bps);
 			if (is != expected) {
-				fprintf(stderr, "\n[ERR] 0x%08lX #%011ld %-11d != %-11d\n",
-				        byte_idx, smpl_idx, is, expected);
+				fprintf(stderr, "\n[ERR] %s: 0x%08lX #%011ld %-11d != %-11d\n",
+				        file, byte_idx, smpl_idx, is, expected);
 				goto fail;
 			}
 			smpl_idx++;
@@ -200,7 +202,7 @@ static bool compare_to_reference_decoder(const char *file)
 	/* Make sure the flac decoder does not have any data left */
 	/* TODO */
 	if (fx_bitstream_can_read(&flac_bitstream, 1U)) {
-		fprintf(stderr, "\n[ERR] Premature end.\n");
+		fprintf(stderr, "\n[ERR] %s: Premature end.\n", file);
 		goto fail;
 	}
 
