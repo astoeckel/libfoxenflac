@@ -34,13 +34,13 @@ embedded devices or Web Assembly (WASM).
 
 The following list of items is *not* implemented at the moment:
 * Reading headers other than `STREAMINFO`, such as the metadata header or the
-  seek table. Support for the metadata is planned in the future.
+  seek table. Support for metadata could be implemented in the future.
 * Access to information stored in the frame header, such as synchronisation
   information.
 * **Seeking**. There is no intention to implement seeking directly in the
   library. The library solely operates on a stream of data; there is no notion
   of position within a file. However, once access to the frame header
-  information is provided, it is quite simple to implement seeking on top of
+  information is provided, it should be quite simple to implement seeking on top of
   this library.
 
 
