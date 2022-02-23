@@ -77,7 +77,7 @@ typedef enum {
 	BLK_SIZE_READ_16BIT = 7,
 	BLK_SIZE_256 = 8,
 	BLK_SIZE_512 = 9,
-	BLK_SIZE_1204 = 10,
+	BLK_SIZE_1024 = 10,
 	BLK_SIZE_2048 = 11,
 	BLK_SIZE_4096 = 12,
 	BLK_SIZE_8192 = 13,
@@ -87,7 +87,7 @@ typedef enum {
 
 static const int32_t fx_flac_block_sizes_[] = {
     -1,  192, 576,  1152, 2304, 4608, 0,     0,
-    256, 512, 1204, 2048, 4096, 8192, 16384, 32768};
+    256, 512, 1024, 2048, 4096, 8192, 16384, 32768};
 
 typedef enum {
 	FS_STREAMINFO = 0,
