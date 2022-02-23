@@ -1083,8 +1083,8 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 
 			/* Read the "wasted_bits" flag */
-			uint8_t wasted_bits = READ_BITS_FAST_CRC(1U);
-			if (wasted_bits) {
+			sfh->wasted_bits = READ_BITS_FAST_CRC(1U);
+			if (sfh->wasted_bits) {
 				for (uint8_t i = 1U; i <= 30U; i++) {
 					const uint8_t bit = READ_BITS_FAST_CRC(1U);
 					if (bit == 1U) {
@@ -1272,6 +1272,14 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			}
 			break;
 		case FLAC_SUBFRAME_FINALIZE: {
+			/* Apply the wasted bits transformation */
+			if (sfh->wasted_bits) {
+				uint8_t shift = sfh->wasted_bits;
+				for (uint16_t i = 0U; i < blk_n; i++) {
+					blk[i] = blk[i] * (1 << shift);
+				}
+			}
+
 			/* There is another subframe to read, continue! */
 			inst->chan_cur++; /* Go to the next channel */
 			if (inst->chan_cur < fh->channel_count) {
@@ -1308,10 +1316,9 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 					break;
 			}
 
-			/* Apply the "wasted bits" transformation, i.e. multiply the output
-			   by the corresponding power of two. Furthermore, shift the output
-			   such that the resulting int32 stream can be played back. */
-			uint8_t shift = sfh->wasted_bits + (32U - fh->sample_size);
+			/* Shift the output such that the resulting int32 stream can be
+			   played back. */
+			uint8_t shift = 32U - fh->sample_size;
 			if (shift) {
 				for (uint8_t c = 0U; c < fh->channel_count; c++) {
 					int32_t *blk = inst->blkbuf[c];
