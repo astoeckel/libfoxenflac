@@ -27,16 +27,13 @@ inc_foxen = include_directories('.')
 dep_foxenbitstream = dependency(
     'libfoxenbitstream',
     fallback:['libfoxenbitstream', 'dep_foxenbitstream'])
-dep_foxenmem = dependency(
-    'libfoxenmem',
-    fallback:['libfoxenmem', 'dep_foxenmem'])
 
 # Define the contents of the actual library
 lib_foxenflac = library(
     'foxenflac',
     'foxen/flac.c',
     include_directories: inc_foxen,
-    dependencies: [dep_foxenbitstream, dep_foxenmem],
+    dependencies: [dep_foxenbitstream],
     install: true)
 
 # Compile the example programs

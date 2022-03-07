@@ -20,7 +20,6 @@
 
 #include <foxen/bitstream.h>
 #include <foxen/flac.h>
-#include <foxen/mem.h>
 
 #if 0
 /* Set FX_FLAC_NO_CRC if you control the input data and already performed other
@@ -469,6 +468,59 @@ static bool _fx_flac_decode_channel_count(
 	                     ? 2U
 	                     : (uint8_t)channel_assignment + 1U;
 	return true;
+}
+
+/******************************************************************************
+ * Copy of libfoxenmem mem.h functions                                        *
+ ******************************************************************************/
+
+#define FX_ALIGN 16
+
+#define FX_ASSUME_ALIGNED_EX(P, ALIGN) P
+#ifdef __GNUC__
+#if (__GNUC__ == 4 && __GNUC_MINOR__ >= 7) || (__GNUC__ > 4)
+#undef FX_ASSUME_ALIGNED_EX
+#define FX_ASSUME_ALIGNED_EX(P, ALIGN) (__builtin_assume_aligned(P, ALIGN))
+#endif /* (__GNUC__ == 4 && __GNUC_MINOR__ >= 7) || (__GNUC__ > 4) */
+#endif /* __GNUC__ */
+
+#define FX_ASSUME_ALIGNED(P) FX_ASSUME_ALIGNED_EX(P, FX_ALIGN)
+
+#define FX_ALIGN_ADDR(P)                                                    \
+	(FX_ASSUME_ALIGNED_EX(                                                  \
+	    (void *)(((uintptr_t)(P) + FX_ALIGN - 1) & (~(uintptr_t)(FX_ALIGN - 1))), \
+	    FX_ALIGN))
+
+static inline bool fx_mem_init_size(uint32_t *size) {
+	*size = FX_ALIGN;
+	return true;
+}
+
+static inline bool fx_mem_update_size(uint32_t *size, uint32_t n_bytes) {
+	const uint32_t new_size =
+        ((*size + n_bytes + FX_ALIGN - 1) & (~(FX_ALIGN - 1)));
+	if (new_size < *size) {
+		return false; /* error, there has been an overflow */
+	}
+	*size = new_size;
+	return true; /* success */
+}
+
+static inline void fx_mem_zero_aligned(void *mem, uint32_t size) {
+	assert((((uintptr_t)mem) & (FX_ALIGN - 1)) == 0); /* mem must be aligned */
+	mem = FX_ASSUME_ALIGNED(mem);
+	for (uint32_t i = 0; i < (size + FX_ALIGN - 1) / FX_ALIGN; i++) {
+		((uint64_t *)mem)[2 * i + 0] = 0; /* If we're lucky, this loop is */
+		((uint64_t *)mem)[2 * i + 1] = 0; /* unrolled and vectorised. */
+	}
+}
+
+#define FX_MEM_ZERO_ALIGNED(P)  fx_mem_zero_aligned(P, sizeof(*(P)))
+
+static inline void *fx_mem_align(void **mem, uint32_t size) {
+	void *res = FX_ALIGN_ADDR(*mem);
+	*mem = (void *)((uintptr_t)res + size);
+	return res;
 }
 
 /******************************************************************************
