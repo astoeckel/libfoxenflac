@@ -23,11 +23,6 @@ endif
 # Include directory
 inc_foxen = include_directories('.')
 
-# FLAC depends on the bitstream and memory library
-dep_foxenbitstream = dependency(
-    'libfoxenbitstream',
-    fallback:['libfoxenbitstream', 'dep_foxenbitstream'])
-
 # Define the contents of the actual library
 lib_foxenflac = library(
     'foxenflac',

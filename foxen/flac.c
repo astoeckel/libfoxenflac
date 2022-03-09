@@ -16,9 +16,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <assert.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
-#include <foxen/bitstream.h>
 #include <foxen/flac.h>
 
 #if 0
@@ -26,6 +28,119 @@
    integrity checks. This makes the decoder significantly faster. */
 #define FX_FLAC_NO_CRC
 #endif
+
+/******************************************************************************
+ * Copy of foxen bitstream.h functions
+ ******************************************************************************/
+
+struct fx_bitstream {
+	uint64_t buf;
+	uint8_t const *src;
+	uint8_t const *src_end;
+	uint8_t pos;
+};
+
+typedef struct fx_bitstream fx_bitstream_t;
+typedef void (*fx_bitstream_byte_callback_t)(uint8_t byte, void *data);
+
+static inline void fx_bitstream_init(fx_bitstream_t *reader) {
+	reader->buf = 0U;
+	reader->pos = sizeof(reader->buf) * 8U;
+	reader->src = NULL;
+	reader->src_end = NULL;
+}
+
+#define BUFSIZE (sizeof(((fx_bitstream_t *)NULL)->buf) * 8U)
+
+static inline bool fx_bitstream_can_read(fx_bitstream_t *reader,
+                                         uint8_t n_bits) {
+	return (sizeof(reader->buf) * 8U) >= (n_bits + reader->pos);
+}
+
+static inline uint64_t fx_bitstream_peek_msb(fx_bitstream_t *reader,
+                                             uint8_t n_bits) {
+	assert((n_bits >= 1U) && (n_bits <= (BUFSIZE - 7U)));
+	return (reader->buf << reader->pos) >> (BUFSIZE - n_bits);
+}
+
+static inline int64_t fx_bitstream_try_peek_msb(fx_bitstream_t *reader,
+                                                uint8_t n_bits) {
+	return fx_bitstream_can_read(reader, n_bits)
+	           ? (int64_t)fx_bitstream_peek_msb(reader, n_bits)
+	           : -1;
+}
+
+static inline void _fx_bitstream_fill_buf(fx_bitstream_t *reader) {
+	while (reader->pos >= 8U && reader->src != reader->src_end) {
+		reader->buf = (reader->buf << 8U) | *(reader->src++);
+		reader->pos -= 8U;
+	}
+}
+
+static inline uint64_t _fx_bitstream_read_msb(
+    fx_bitstream_t *reader, uint8_t n_bits,
+    fx_bitstream_byte_callback_t callback, void *callback_data) {
+	assert((n_bits >= 1U) && (n_bits <= (BUFSIZE - 7U)));
+
+	/* Copy the current buffer content, skip already read bits */
+	uint64_t bits = reader->buf << reader->pos;
+
+	/* If the callback is specified, issue bytes that were read entirely */
+	const uint8_t pos_new = reader->pos + n_bits;
+	if (callback) {
+		const uint8_t i0 = reader->pos / 8U, i1 = pos_new / 8U;
+		uint64_t buf = reader->buf << (i0 * 8U);
+		for (uint8_t i = i0; i < i1; i++) {
+			uint8_t byte = buf >> (BUFSIZE - 8U);
+			callback(byte, callback_data);
+			buf = buf << 8U;
+		}
+	}
+
+	/* Advance the position */
+	reader->pos = pos_new;
+
+	/* Read new bytes from the byte stream */
+	_fx_bitstream_fill_buf(reader);
+
+	/* Mask out the "low" bits */
+	return bits >> (BUFSIZE - n_bits);
+}
+
+static inline void fx_bitstream_set_source(fx_bitstream_t *reader,
+                                           const uint8_t *src,
+                                           uint32_t src_len) {
+	reader->src = src;
+	reader->src_end = src + src_len;
+	_fx_bitstream_fill_buf(reader);
+}
+
+static inline uint64_t fx_bitstream_read_msb(fx_bitstream_t *reader,
+                                             uint8_t n_bits) {
+	return _fx_bitstream_read_msb(reader, n_bits, NULL, NULL);
+}
+
+static inline int64_t fx_bitstream_try_read_msb(fx_bitstream_t *reader,
+                                                uint8_t n_bits) {
+	return fx_bitstream_can_read(reader, n_bits)
+	           ? (int64_t)fx_bitstream_read_msb(reader, n_bits)
+	           : -1;
+}
+
+static inline uint64_t fx_bitstream_read_msb_ex(
+    fx_bitstream_t *reader, uint8_t n_bits,
+    fx_bitstream_byte_callback_t callback, void *callback_data) {
+	return _fx_bitstream_read_msb(reader, n_bits, callback, callback_data);
+}
+
+static inline int64_t fx_bitstream_try_read_msb_ex(
+    fx_bitstream_t *reader, uint8_t n_bits,
+    fx_bitstream_byte_callback_t callback, void *callback_data) {
+	return fx_bitstream_can_read(reader, n_bits)
+	           ? (int64_t)fx_bitstream_read_msb_ex(reader, n_bits, callback,
+	                                               callback_data)
+	           : -1;
+}
 
 /******************************************************************************
  * DATATYPES                                                                  *
