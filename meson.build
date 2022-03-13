@@ -23,20 +23,11 @@ endif
 # Include directory
 inc_foxen = include_directories('.')
 
-# FLAC depends on the bitstream and memory library
-dep_foxenbitstream = dependency(
-    'libfoxenbitstream',
-    fallback:['libfoxenbitstream', 'dep_foxenbitstream'])
-dep_foxenmem = dependency(
-    'libfoxenmem',
-    fallback:['libfoxenmem', 'dep_foxenmem'])
-
 # Define the contents of the actual library
 lib_foxenflac = library(
     'foxenflac',
     'foxen/flac.c',
     include_directories: inc_foxen,
-    dependencies: [dep_foxenbitstream, dep_foxenmem],
     install: true)
 
 # Compile the example programs
@@ -65,7 +56,7 @@ exe_test_flac_integration = executable(
     'test/test_flac_integration.c',
     include_directories: inc_foxen,
     link_with: lib_foxenflac,
-    dependencies: [dep_foxenunit, dep_foxenbitstream],
+    dependencies: [dep_foxenunit],
     install: false)
 test(
     'test_flac_integration_noise',

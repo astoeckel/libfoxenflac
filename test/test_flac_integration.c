@@ -22,8 +22,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <foxen/bitstream.h>
 #include <foxen/flac.h>
+
+#include "bitstream.h"
 
 /* http://graphics.stanford.edu/~seander/bithacks.html#FixedSignExtend */
 #define SIGN_EXTEND(x, b) \
@@ -33,8 +34,7 @@
  * Safe version of strcpy copying to buffer of fixed size. Resulting string is
  * always NULL terminated.
  */
-static char *strcpy_safe(char *tar, int *l, const char *src)
-{
+static char *strcpy_safe(char *tar, int *l, const char *src) {
 	if (tar) {
 		while (*l > 1U && *src) {
 			*(tar++) = *(src++);
@@ -48,8 +48,7 @@ static char *strcpy_safe(char *tar, int *l, const char *src)
 /**
  * Escapes argument for passing it to popen()
  */
-static char *strcpy_escape_safe(char *tar, int *l, const char *src)
-{
+static char *strcpy_escape_safe(char *tar, int *l, const char *src) {
 	if (tar) {
 		while (*l > 1U && *src) {
 			const char c = *(src++);
@@ -59,8 +58,7 @@ static char *strcpy_escape_safe(char *tar, int *l, const char *src)
 					*(tar++) = '\\';
 					*(tar++) = '\'';
 					(*l) -= 3U;
-				}
-				else {
+				} else {
 					return NULL; /* Abort, do not use half-escaped string */
 				}
 			}
@@ -75,8 +73,7 @@ static char *strcpy_escape_safe(char *tar, int *l, const char *src)
 /**
  * Assembles the call to the reference flac decoder.
  */
-static bool build_flac_command(char *tar, int l, const char *file)
-{
+static bool build_flac_command(char *tar, int l, const char *file) {
 	const char *P = "flac -d '";
 	const char *S =
 	    "' --totally-silent --force-raw-format --endian big --sign signed -o -";
@@ -92,8 +89,7 @@ static void progress(fx_flac_t *flac, const char *fmt, uint64_t smpl_idx) {
 	        fx_flac_get_streaminfo(flac, FLAC_KEY_N_SAMPLES));
 }
 
-static bool compare_to_reference_decoder(const char *file)
-{
+static bool compare_to_reference_decoder(const char *file) {
 	FILE *fin = NULL, *fflac = NULL;
 	fx_flac_t *flac = NULL;
 	bool ok = false;
@@ -115,7 +111,9 @@ static bool compare_to_reference_decoder(const char *file)
 	/* Open the reference FLAC decoder */
 	fflac = popen(buf, "r");
 	if (!fflac) {
-		fprintf(stderr, "Command %s failed; cannot launch flac reference decoder.\n", buf);
+		fprintf(stderr,
+		        "Command %s failed; cannot launch flac reference decoder.\n",
+		        buf);
 		goto fail;
 	}
 
@@ -146,8 +144,12 @@ static bool compare_to_reference_decoder(const char *file)
 			case FLAC_END_OF_METADATA:
 				bps = fx_flac_get_streaminfo(flac, FLAC_KEY_SAMPLE_SIZE);
 				if (bps != 16 && bps != 24) {
-					fprintf(stderr, "\n[WRN] %s: Not supported by reference decoder RAW output!\n", file);
-					/* Not supported by reference decoder right now; we're probably fine :-) */
+					fprintf(stderr,
+					        "\n[WRN] %s: Not supported by reference decoder "
+					        "RAW output!\n",
+					        file);
+					/* Not supported by reference decoder right now; we're
+					 * probably fine :-) */
 					ok = true;
 					goto fail;
 				}
@@ -170,7 +172,9 @@ static bool compare_to_reference_decoder(const char *file)
 			while (!fx_bitstream_can_read(&flac_bitstream, bps)) {
 				size_t n = fread(flac_buf, 1, sizeof(flac_buf), fflac);
 				if (n == 0) {
-					fprintf(stderr, "\n[ERR] %s: Decoder producing phantom data.\n", file);
+					fprintf(stderr,
+					        "\n[ERR] %s: Decoder producing phantom data.\n",
+					        file);
 					goto fail;
 				}
 				fx_bitstream_set_source(&flac_bitstream, flac_buf, n);
@@ -185,7 +189,8 @@ static bool compare_to_reference_decoder(const char *file)
 			}
 			smpl_idx++;
 			if (smpl_idx % 200000 == 0) {
-				progress(flac, "\r[-->] Compared %11ld/%11ld samples...", smpl_idx);
+				progress(flac, "\r[-->] Compared %11ld/%11ld samples...",
+				         smpl_idx);
 			}
 		}
 
@@ -223,8 +228,7 @@ fail:
 	return ok;
 }
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
 	if (argc != 2) {
 		fprintf(stderr, "Usage: ./test_flac_integration <FLAC FILE>\n");
 		return 1;

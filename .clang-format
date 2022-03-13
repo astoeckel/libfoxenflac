@@ -1,0 +1,21 @@
+BasedOnStyle: Google
+AccessModifierOffset: -4
+Standard: Cpp11
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+AllowShortIfStatementsOnASingleLine: false
+NamespaceIndentation: None
+DerivePointerAlignment: false
+PointerAlignment: Right
+BreakBeforeBraces: Attach
+KeepEmptyLinesAtTheStartOfBlocks: true
+
+AllowShortBlocksOnASingleLine: true
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+AlwaysBreakTemplateDeclarations: true
+
+SpacesInAngles: false
