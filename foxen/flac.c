@@ -30,19 +30,58 @@
 #endif
 
 /******************************************************************************
- * Copy of foxen bitstream.h functions
+ * CODE MERGED FROM OTHER LIBFOXEN PROJECTS                                   *
  ******************************************************************************/
 
+/******************************************************************************
+ * Copy of foxen/bitstream.h                                                  *
+ ******************************************************************************/
+
+/**
+ * Structure holding the current state of the bitstream reader.
+ */
 struct fx_bitstream {
+	/**
+	 * 64 bit word from which the data is extracted.
+	 */
 	uint64_t buf;
+
+	/**
+	 * Pointer at the source byte stream.
+	 */
 	uint8_t const *src;
+
+	/**
+	 * Pointer at the end of the source byte stream.
+	 */
 	uint8_t const *src_end;
+
+	/**
+	 * Position within the source byte stream in bits, i.e. the number of bits
+	 * that have been consumed.
+	 */
 	uint8_t pos;
 };
 
+/**
+ * Typedef for the fx_bitstream struct.
+ */
 typedef struct fx_bitstream fx_bitstream_t;
+
+/**
+ * Callback called whenever a fully byte has been consumed. This is useful for
+ * CRC calculations.
+ */
 typedef void (*fx_bitstream_byte_callback_t)(uint8_t byte, void *data);
 
+/**
+ * Initializes the bitstream reader instance. Call fx_bitstream_set_source()
+ * to set the byte buffer from which the bitstream reader should read its
+ * data.
+ *
+ * @param reader is the bitstream reader instance that should be
+ * initialized.
+ */
 static inline void fx_bitstream_init(fx_bitstream_t *reader) {
 	reader->buf = 0U;
 	reader->pos = sizeof(reader->buf) * 8U;
@@ -50,25 +89,149 @@ static inline void fx_bitstream_init(fx_bitstream_t *reader) {
 	reader->src_end = NULL;
 }
 
-#define BUFSIZE (sizeof(((fx_bitstream_t *)NULL)->buf) * 8U)
+/**
+ * Sets the backing source buffer for the bitstream. This function may only be
+ * called if the given pointer is a direct continuation of the previous data,
+ * i.e. are essentially set to reader->src.
+ *
+ * @param reader is the bitstream reader instance for which the source byte
+ * buffer should be set.
+ * @param src is a pointer at the source byte buffer.
+ * @param src_len is the length of the source byte buffer in bytes.
+ */
+static inline void fx_bitstream_set_source(fx_bitstream_t *reader,
+                                           const uint8_t *src,
+                                           uint32_t src_len);
 
+/**
+ * Returns true if the corresponding read operation will be successful.
+ *
+ * @param reader is the bitstream reader instance from which the data should be
+ * read.
+ * @param n_bits is the number of bits that should be read from the bitstream
+ * reader. Must be in 1 <= n_bits <= 57.
+ * @return true if the number of available bits is smaller or equal to n_bits.
+ */
 static inline bool fx_bitstream_can_read(fx_bitstream_t *reader,
                                          uint8_t n_bits) {
 	return (sizeof(reader->buf) * 8U) >= (n_bits + reader->pos);
 }
 
+/**
+ * Reads up to 64 bits from the input buffer in MSB order. Note that this
+ * function does not check whether the read operation returns valid data, so
+ * make sure to call fx_bitstream_can_read() before reading.
+ *
+ * @param reader is the bitstream reader instance from which the data should be
+ * read.
+ * @param n_bits is the number of bits that should be read. Must be in
+ * 1 <= n_bits <= 57.
+ * @return an integer corresponding the the specified number of bits.
+ */
+static inline uint64_t fx_bitstream_read_msb(fx_bitstream_t *reader,
+                                             uint8_t n_bits);
+
+/**
+ * Reads up to 64 bits from the input buffer in MSB order. Note that this
+ * function does not check whether the read operation returns valid data, so
+ * make sure to call fx_bitstream_can_read() before reading.
+ *
+ * @param reader is the bitstream reader instance from which the data should be
+ * read.
+ * @param n_bits is the number of bits that should be read. Must be in
+ * 1 <= n_bits <= 57.
+ * @param callback is called whenever a full byte is consumed. Note that this
+ * includes a "virtual" set of zeros at the beginning of the bitstream.
+ * @param callback_data is a user-defined pointer passed to the byte callback.
+ * @return an integer corresponding the the specified number of bits.
+ */
+static inline uint64_t fx_bitstream_read_msb_ex(
+    fx_bitstream_t *reader, uint8_t n_bits,
+    fx_bitstream_byte_callback_t callback, void *callback_data);
+
+/**
+ * Reads up to 64 bits from the input buffer in MSB order without advancing the
+ * buffer location. Note that this function does not check whether the read
+ * operation returns valid data, so make sure to call fx_bitstream_can_read()
+ * before reading.
+ *
+ * @param reader is the bitstream reader instance from which the data should be
+ * read.
+ * @param n_bits is the number of bits that should be read. Must be in
+ * 1 <= n_bits <= 57.
+ * @return an integer corresponding to the specified number of bits.
+ */
 static inline uint64_t fx_bitstream_peek_msb(fx_bitstream_t *reader,
-                                             uint8_t n_bits) {
-	assert((n_bits >= 1U) && (n_bits <= (BUFSIZE - 7U)));
-	return (reader->buf << reader->pos) >> (BUFSIZE - n_bits);
+                                             uint8_t n_bits);
+
+/**
+ * Combination of fx_bitstream_can_read and fx_bitstream_read_msb. Returns a
+ * negative value if the desired number of bits cannot be read from the source.
+ * If the given number of threads are available, returns the desired integer.
+ *
+ * @param reads is the bitstream reader instance from which the data should be
+ * read.
+ * @param n_bits is the number of bits that should be read. Must be in
+ * 1 <= n_bits <= 57.
+ * @return -1 if the desired number of bits is not available in the bitstream.
+ * Otherwise the integer corresponding to the specified number of bits is
+ * returned.
+ */
+static inline int64_t fx_bitstream_try_read_msb(fx_bitstream_t *reader,
+                                                uint8_t n_bits) {
+	return fx_bitstream_can_read(reader, n_bits)
+	           ? (int64_t)fx_bitstream_read_msb(reader, n_bits)
+	           : -1;
 }
 
+/**
+ * Combination of fx_bitstream_can_read and fx_bitstream_read_msb. Returns a
+ * negative value if the desired number of bits cannot be read from the source.
+ * If the given number of threads are available, returns the desired integer.
+ *
+ * @param reads is the bitstream reader instance from which the data should be
+ * read.
+ * @param n_bits is the number of bits that should be read. Must be in
+ * 1 <= n_bits <= 57.
+ * @param callback is called whenever a full byte is consumed. Note that this
+ * includes a "virtual" set of zeros at the beginning of the bitstream.
+ * @param callback_data is a user-defined pointer passed to the byte callback.
+ * @return -1 if the desired number of bits is not available in the bitstream.
+ * Otherwise the integer corresponding to the specified number of bits is
+ * returned.
+ */
+static inline int64_t fx_bitstream_try_read_msb_ex(
+    fx_bitstream_t *reader, uint8_t n_bits,
+    fx_bitstream_byte_callback_t callback, void *callback_data) {
+	return fx_bitstream_can_read(reader, n_bits)
+	           ? (int64_t)fx_bitstream_read_msb_ex(reader, n_bits, callback,
+	                                               callback_data)
+	           : -1;
+}
+
+/**
+ * Combination of fx_bitstream_can_read and fx_bitstream_peek. Returns a
+ * negative value if the desired number of bits cannot be read from the source.
+ * If the given number of threads are available, returns the desired integer.
+ * In contrast to fx_bitstream_try_read_msb() this function does not advance
+ * the actual reader pointer.
+ *
+ * @param reads is the bitstream reader instance from which the data should be
+ * read.
+ * @param n_bits is the number of bits that should be read. Must be in
+ * 1 <= n_bits <= 57.
+ * @return -1 if the desired number of bits is not available in the bitstream.
+ * Otherwise the integer corresponding to the specified number of bits is
+ * returned.
+ */
 static inline int64_t fx_bitstream_try_peek_msb(fx_bitstream_t *reader,
                                                 uint8_t n_bits) {
 	return fx_bitstream_can_read(reader, n_bits)
 	           ? (int64_t)fx_bitstream_peek_msb(reader, n_bits)
 	           : -1;
 }
+
+#define BUFSIZE (sizeof(((fx_bitstream_t *)NULL)->buf) * 8U)
 
 static inline void _fx_bitstream_fill_buf(fx_bitstream_t *reader) {
 	while (reader->pos >= 8U && reader->src != reader->src_end) {
@@ -120,26 +283,173 @@ static inline uint64_t fx_bitstream_read_msb(fx_bitstream_t *reader,
 	return _fx_bitstream_read_msb(reader, n_bits, NULL, NULL);
 }
 
-static inline int64_t fx_bitstream_try_read_msb(fx_bitstream_t *reader,
-                                                uint8_t n_bits) {
-	return fx_bitstream_can_read(reader, n_bits)
-	           ? (int64_t)fx_bitstream_read_msb(reader, n_bits)
-	           : -1;
-}
-
 static inline uint64_t fx_bitstream_read_msb_ex(
     fx_bitstream_t *reader, uint8_t n_bits,
     fx_bitstream_byte_callback_t callback, void *callback_data) {
 	return _fx_bitstream_read_msb(reader, n_bits, callback, callback_data);
 }
 
-static inline int64_t fx_bitstream_try_read_msb_ex(
-    fx_bitstream_t *reader, uint8_t n_bits,
-    fx_bitstream_byte_callback_t callback, void *callback_data) {
-	return fx_bitstream_can_read(reader, n_bits)
-	           ? (int64_t)fx_bitstream_read_msb_ex(reader, n_bits, callback,
-	                                               callback_data)
-	           : -1;
+static inline uint64_t fx_bitstream_peek_msb(fx_bitstream_t *reader,
+                                             uint8_t n_bits) {
+	assert((n_bits >= 1U) && (n_bits <= (BUFSIZE - 7U)));
+	return (reader->buf << reader->pos) >> (BUFSIZE - n_bits);
+}
+
+/******************************************************************************
+ * Copy of foxen/mem.h                                                        *
+ ******************************************************************************/
+
+/**
+ * Memory alignment for pointers internally used by Stanchion. Aligning memory
+ * and telling the compiler about it allows the compiler to perform better
+ * optimization. Furthermore, some platforms (WASM) do not allow unaligned
+ * memory access.
+ */
+#define FX_ALIGN 16
+
+/**
+ * Macro telling the compiler that P is aligned with the specified alignment
+ * ALIGN.
+ */
+#define FX_ASSUME_ALIGNED_EX(P, ALIGN) P
+#ifdef __GNUC__
+#if (__GNUC__ == 4 && __GNUC_MINOR__ >= 7) || (__GNUC__ > 4)
+#undef FX_ASSUME_ALIGNED_EX
+#define FX_ASSUME_ALIGNED_EX(P, ALIGN) (__builtin_assume_aligned(P, ALIGN))
+#endif /* (__GNUC__ == 4 && __GNUC_MINOR__ >= 7) || (__GNUC__ > 4) */
+#endif /* __GNUC__ */
+
+/**
+ * Macro telling the compiler that P is aligned with the alignment defined
+ * above.
+ */
+#define FX_ASSUME_ALIGNED(P) FX_ASSUME_ALIGNED_EX(P, FX_ALIGN)
+
+/**
+ * Forces a pointer to have the specified alignment.
+ */
+#define FX_ALIGN_ADDR_EX(P, ALIGN)                                          \
+	(FX_ASSUME_ALIGNED_EX(                                                  \
+	    (void *)(((uintptr_t)(P) + ALIGN - 1) & (~(uintptr_t)(ALIGN - 1))), \
+	    ALIGN))
+
+/**
+ * Forces a pointer to have the alignment defined above.
+ */
+#define FX_ALIGN_ADDR(P) FX_ALIGN_ADDR_EX(P, FX_ALIGN)
+
+/**
+ * Macro that fills the structure pointed at by P with zeros. See
+ * fx_mem_zero_aligned() regarding potential dangers.
+ */
+#define FX_MEM_ZERO_ALIGNED(P)                \
+	do {                                      \
+		fx_mem_zero_aligned(P, sizeof(*(P))); \
+	} while (0)
+
+/**
+ * Call this first in a chain of fx_mem_update_size() calls. It will make sure
+ * that there is enough space to align the datastructure whenever the user
+ * provides a non-aligned target memory pointer.
+ *
+ * @param size is a pointer at a variable that holds the size of the object
+ * that we're describing. This function initializes this value to FX_ALIGN - 1.
+ * @return Always returns true to facilitate chaining with other fx_mem_*_size()
+ * functions.
+ */
+static inline bool fx_mem_init_size(uint32_t *size) {
+	*size = FX_ALIGN;
+	return true;
+}
+
+/**
+ * Function used to compute the total size of a datastructure consisting of
+ * multiple substructures. Calling this function updates the size of the outer
+ * datastructure by adding a substructure of size n_bytes. Assumes that the
+ * beginning of the substructure must be aligned to the given alignment.
+ *
+ * @param size is a pointer at the variable holding the size of the
+ * datastructure. This must always be a multiple of FX_ALIGN.
+ * @param n_bytes size of the sub-structure that should be added.
+ * @return zero if there was an overflow, one otherwise.
+ */
+static inline bool fx_mem_update_size_ex(uint32_t *size, uint32_t n_bytes,
+                                         uint32_t align) {
+	const uint32_t new_size = ((*size + n_bytes + align - 1) & (~(align - 1)));
+	if (new_size < *size) {
+		return false; /* error, there has been an overflow */
+	}
+	*size = new_size;
+	return true; /* success */
+}
+
+/**
+ * Function used to compute the total size of a datastructure consisting of
+ * multiple substructures. Calling this function updates the size of the outer
+ * datastructure by adding a substructure of size n_bytes. Assumes that the
+ * beginning of the substructure must be aligned to the default alignment.
+ *
+ * @param size is a pointer at the variable holding the size of the
+ * datastructure. This must always be a multiple of FX_ALIGN.
+ * @param n_bytes size of the sub-structure that should be added.
+ * @return zero if there was an overflow, one otherwise.
+ */
+static inline bool fx_mem_update_size(uint32_t *size, uint32_t n_bytes) {
+	return fx_mem_update_size_ex(size, n_bytes, FX_ALIGN);
+}
+
+/**
+ * Computes the aligned pointer pointing at the substructure of the given size
+ * for the specified alignment.
+ *
+ * @param mem pointer at the variable holding the pointer at the current
+ * pointer. The pointer is advanced by the given size after the return value is
+ * computed.
+ * @param size is the size of the substructure for which the pointer should be
+ * returned.
+ * @param align is the memory alignment to use.
+ * @return an aligned pointer pointing at the beginning of the substructure.
+ */
+static inline void *fx_mem_align_ex(void **mem, uint32_t size, uint32_t align) {
+	void *res = FX_ALIGN_ADDR_EX(*mem, align);
+	*mem = (void *)((uintptr_t)res + size);
+	return res;
+}
+
+/**
+ * Computes the default-aligned pointer pointing at the substructure of the
+ * given size.
+ *
+ * @param mem pointer at the variable holding the pointer at the current
+ * pointer. The pointer is advanced by the given size after the return value is
+ * computed.
+ * @param size is the size of the substructure for which the pointer should be
+ * returned.
+ * @return an aligned pointer pointing at the beginning of the substructure.
+ */
+static inline void *fx_mem_align(void **mem, uint32_t size) {
+	return fx_mem_align_ex(mem, size, FX_ALIGN);
+}
+
+/**
+ * Fills the given memory region with zeros. In contrast to memset(mem, 0, size)
+ * this assumes that the pointer is at least aligned at the FX_ALIGN boundary
+ * and that we can write multiples of FX_ALIGN bytes at once. This is
+ * potentially dangerous, so do not use this function if you don't know exactly
+ * what you're doing.
+ *
+ * @param mem is a pointer at the memory region that should be zeroed out. This
+ * pointer is assumed to be aligned.
+ * @param size is the size of the memory region that should be zeroed in bytes.
+ * This value is effectively rounded up to a multiple of FX_ALIGN
+ */
+static inline void fx_mem_zero_aligned(void *mem, uint32_t size) {
+	assert((((uintptr_t)mem) & (FX_ALIGN - 1)) == 0); /* mem must be aligned */
+	mem = FX_ASSUME_ALIGNED(mem);
+	for (uint32_t i = 0; i < (size + FX_ALIGN - 1) / FX_ALIGN; i++) {
+		((uint64_t *)mem)[2 * i + 0] = 0; /* If we're lucky, this loop is */
+		((uint64_t *)mem)[2 * i + 1] = 0; /* unrolled and vectorised. */
+	}
 }
 
 /******************************************************************************
@@ -576,59 +886,6 @@ static bool _fx_flac_decode_channel_count(
 	                     ? 2U
 	                     : (uint8_t)channel_assignment + 1U;
 	return true;
-}
-
-/******************************************************************************
- * Copy of libfoxenmem mem.h functions                                        *
- ******************************************************************************/
-
-#define FX_ALIGN 16
-
-#define FX_ASSUME_ALIGNED_EX(P, ALIGN) P
-#ifdef __GNUC__
-#if (__GNUC__ == 4 && __GNUC_MINOR__ >= 7) || (__GNUC__ > 4)
-#undef FX_ASSUME_ALIGNED_EX
-#define FX_ASSUME_ALIGNED_EX(P, ALIGN) (__builtin_assume_aligned(P, ALIGN))
-#endif /* (__GNUC__ == 4 && __GNUC_MINOR__ >= 7) || (__GNUC__ > 4) */
-#endif /* __GNUC__ */
-
-#define FX_ASSUME_ALIGNED(P) FX_ASSUME_ALIGNED_EX(P, FX_ALIGN)
-
-#define FX_ALIGN_ADDR(P)                                                    \
-	(FX_ASSUME_ALIGNED_EX(                                                  \
-	    (void *)(((uintptr_t)(P) + FX_ALIGN - 1) & (~(uintptr_t)(FX_ALIGN - 1))), \
-	    FX_ALIGN))
-
-static inline bool fx_mem_init_size(uint32_t *size) {
-	*size = FX_ALIGN;
-	return true;
-}
-
-static inline bool fx_mem_update_size(uint32_t *size, uint32_t n_bytes) {
-	const uint32_t new_size =
-        ((*size + n_bytes + FX_ALIGN - 1) & (~(FX_ALIGN - 1)));
-	if (new_size < *size) {
-		return false; /* error, there has been an overflow */
-	}
-	*size = new_size;
-	return true; /* success */
-}
-
-static inline void fx_mem_zero_aligned(void *mem, uint32_t size) {
-	assert((((uintptr_t)mem) & (FX_ALIGN - 1)) == 0); /* mem must be aligned */
-	mem = FX_ASSUME_ALIGNED(mem);
-	for (uint32_t i = 0; i < (size + FX_ALIGN - 1) / FX_ALIGN; i++) {
-		((uint64_t *)mem)[2 * i + 0] = 0; /* If we're lucky, this loop is */
-		((uint64_t *)mem)[2 * i + 1] = 0; /* unrolled and vectorised. */
-	}
-}
-
-#define FX_MEM_ZERO_ALIGNED(P)  fx_mem_zero_aligned(P, sizeof(*(P)))
-
-static inline void *fx_mem_align(void **mem, uint32_t size) {
-	void *res = FX_ALIGN_ADDR(*mem);
-	*mem = (void *)((uintptr_t)res + size);
-	return res;
 }
 
 /******************************************************************************
