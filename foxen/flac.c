@@ -524,8 +524,8 @@ struct fx_flac {
  * Initialization code utils                                                  *
  ******************************************************************************/
 
-static bool _fx_flac_check_params(uint16_t max_block_size, uint8_t max_channels)
-{
+static bool _fx_flac_check_params(uint16_t max_block_size,
+                                  uint8_t max_channels) {
 	return (max_block_size > 0U) && (max_channels > 0U) &&
 	       (max_channels <= FLAC_MAX_CHANNEL_COUNT);
 }
@@ -535,39 +535,33 @@ static bool _fx_flac_check_params(uint16_t max_block_size, uint8_t max_channels)
  ******************************************************************************/
 
 static bool _fx_flac_decode_block_size(fx_flac_block_size_t block_size_enum,
-                                       uint32_t *block_size)
-{
+                                       uint32_t *block_size) {
 	const int32_t bs = fx_flac_block_sizes_[(int)block_size_enum];
 	if (bs < 0) {
 		return false; /* Invalid */
-	}
-	else if (bs > 0) {
+	} else if (bs > 0) {
 		*block_size = bs;
 	}
 	return true;
 }
 
 static bool _fx_flac_decode_sample_rate(fx_flac_sample_rate_t sample_rate_enum,
-                                        uint32_t *sample_rate)
-{
+                                        uint32_t *sample_rate) {
 	const int32_t fs = fx_flac_sample_rates_[(int)sample_rate_enum];
 	if (fs < 0) {
 		return false; /* Invalid */
-	}
-	else if (fs > 0) {
+	} else if (fs > 0) {
 		*sample_rate = fs;
 	}
 	return true;
 }
 
 static bool _fx_flac_decode_sample_size(fx_flac_sample_size_t sample_size_enum,
-                                        uint8_t *sample_size)
-{
+                                        uint8_t *sample_size) {
 	const int8_t ss = fx_flac_sample_sizes_[(int)sample_size_enum];
 	if (ss < 0) {
 		return false; /* Invalid */
-	}
-	else if (ss > 0) {
+	} else if (ss > 0) {
 		*sample_size = ss;
 	}
 	return true;
@@ -577,8 +571,7 @@ static bool _fx_flac_decode_sample_size(fx_flac_sample_size_t sample_size_enum,
  * Returns the number of channels encoded in the frame header.
  */
 static bool _fx_flac_decode_channel_count(
-    fx_flac_channel_assignment_t channel_assignment, uint8_t *channel_count)
-{
+    fx_flac_channel_assignment_t channel_assignment, uint8_t *channel_count) {
 	*channel_count = (channel_assignment >= LEFT_SIDE_STEREO)
 	                     ? 2U
 	                     : (uint8_t)channel_assignment + 1U;
@@ -643,8 +636,7 @@ static inline void *fx_mem_align(void **mem, uint32_t size) {
  ******************************************************************************/
 
 static inline void _fx_flac_post_process_left_side(int32_t *blk1, int32_t *blk2,
-                                                   uint32_t blk_size)
-{
+                                                   uint32_t blk_size) {
 	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
 	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
 	for (uint32_t i = 0U; i < blk_size; i++) {
@@ -654,8 +646,7 @@ static inline void _fx_flac_post_process_left_side(int32_t *blk1, int32_t *blk2,
 
 static inline void _fx_flac_post_process_right_side(int32_t *blk1,
                                                     int32_t *blk2,
-                                                    uint32_t blk_size)
-{
+                                                    uint32_t blk_size) {
 	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
 	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
 	for (uint32_t i = 0U; i < blk_size; i++) {
@@ -664,8 +655,7 @@ static inline void _fx_flac_post_process_right_side(int32_t *blk1,
 }
 
 static inline void _fx_flac_post_process_mid_side(int32_t *blk1, int32_t *blk2,
-                                                  uint32_t blk_size)
-{
+                                                  uint32_t blk_size) {
 	blk1 = (int32_t *)FX_ASSUME_ALIGNED(blk1);
 	blk2 = (int32_t *)FX_ASSUME_ALIGNED(blk2);
 	for (uint32_t i = 0U; i < blk_size; i++) {
@@ -682,8 +672,7 @@ static inline void _fx_flac_post_process_mid_side(int32_t *blk1, int32_t *blk2,
 static inline void _fx_flac_restore_lpc_signal(int32_t *blk, uint32_t blk_size,
                                                int32_t *lpc_coeffs,
                                                uint8_t lpc_order,
-                                               int8_t lpc_shift)
-{
+                                               int8_t lpc_shift) {
 	blk = (int32_t *)FX_ASSUME_ALIGNED(blk);
 	lpc_coeffs = (int32_t *)FX_ASSUME_ALIGNED(lpc_coeffs);
 
@@ -832,29 +821,25 @@ static const uint16_t fx_flac_crc16_table_[256] = {
     0x022a, 0x823b, 0x023e, 0x0234, 0x8231, 0x8213, 0x0216, 0x021c, 0x8219,
     0x0208, 0x820d, 0x8207, 0x0202};
 
-static inline void _fx_flac_crc8_(uint8_t byte, void *data)
-{
+static inline void _fx_flac_crc8_(uint8_t byte, void *data) {
 	fx_flac_t *inst = (fx_flac_t *)FX_ASSUME_ALIGNED(data);
 	inst->crc8 = fx_flac_crc8_table_[inst->crc8 ^ byte];
 }
 
-static inline void _fx_flac_crc16_(uint8_t byte, void *data)
-{
+static inline void _fx_flac_crc16_(uint8_t byte, void *data) {
 	fx_flac_t *inst = (fx_flac_t *)FX_ASSUME_ALIGNED(data);
 	const uint8_t i = ((inst->crc16 >> 8U) ^ byte) & 0xFF;
 	inst->crc16 = fx_flac_crc16_table_[i] ^ (inst->crc16 << 8U);
 }
 
-static inline void _fx_flac_double_crc_(uint8_t byte, void *data)
-{
+static inline void _fx_flac_double_crc_(uint8_t byte, void *data) {
 	_fx_flac_crc8_(byte, data);
 	_fx_flac_crc16_(byte, data);
 }
 #endif /* FX_FLAC_NO_CRC */
 
 static bool _fx_flac_reader_utf8_coded_int(fx_flac_t *inst, uint8_t max_n,
-                                           uint64_t *tar)
-{
+                                           uint64_t *tar) {
 	int64_t tmp_; /* Used by the READ_BITS macro */
 
 	ENSURE_BITS(max_n * 8U);
@@ -902,8 +887,7 @@ static bool _fx_flac_reader_utf8_coded_int(fx_flac_t *inst, uint8_t max_n,
  * is what inst->state == FLAC_ERR is for.
  */
 
-static bool _fx_flac_handle_err(fx_flac_t *inst)
-{
+static bool _fx_flac_handle_err(fx_flac_t *inst) {
 	/* TODO: Add flags to fx_flac_t which control this behaviour */
 
 	/* If an error happens while searching for metadata, this is fatal. */
@@ -923,8 +907,7 @@ static bool _fx_flac_handle_err(fx_flac_t *inst)
  * Statemachine used to search the beginning of the stream. This (for example)
  * skips IDv3 tags prepended to the file.
  */
-static bool _fx_flac_process_init(fx_flac_t *inst)
-{
+static bool _fx_flac_process_init(fx_flac_t *inst) {
 	int64_t tmp_; /* Used by the READ_BITS macro */
 	/* Search for the 'fLaC' sync word */
 	uint8_t byte = READ_BITS(8);
@@ -937,16 +920,14 @@ static bool _fx_flac_process_init(fx_flac_t *inst)
 		case FLAC_SYNC_F:
 			if (byte == 'L') {
 				inst->priv_state = FLAC_SYNC_L;
-			}
-			else {
+			} else {
 				inst->priv_state = FLAC_SYNC_INIT;
 			}
 			break;
 		case FLAC_SYNC_L:
 			if (byte == 'a') {
 				inst->priv_state = FLAC_SYNC_A;
-			}
-			else {
+			} else {
 				inst->priv_state = FLAC_SYNC_INIT;
 			}
 			break;
@@ -954,8 +935,7 @@ static bool _fx_flac_process_init(fx_flac_t *inst)
 			if (byte == 'C') {
 				inst->state = FLAC_IN_METADATA;
 				inst->priv_state = FLAC_METADATA_HEADER;
-			}
-			else {
+			} else {
 				inst->priv_state = FLAC_SYNC_INIT;
 			}
 			break;
@@ -965,8 +945,7 @@ static bool _fx_flac_process_init(fx_flac_t *inst)
 	return true;
 }
 
-static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
-{
+static bool _fx_flac_process_in_metadata(fx_flac_t *inst) {
 	int64_t tmp_; /* Used by the READ_BITS macro */
 	switch (inst->priv_state) {
 		case FLAC_METADATA_HEADER:
@@ -983,8 +962,7 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
 				if (inst->metadata->length != 34U) {
 					return _fx_flac_handle_err(inst);
 				}
-			}
-			else {
+			} else {
 				inst->priv_state = FLAC_METADATA_SKIP;
 			}
 			break;
@@ -1037,8 +1015,7 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
 				if (inst->metadata->is_last) {
 					/* Last metadata block, transition to the next state */
 					inst->state = FLAC_END_OF_METADATA;
-				}
-				else {
+				} else {
 					/* End of metadata block, read the next one */
 					inst->priv_state = FLAC_METADATA_HEADER;
 				}
@@ -1054,8 +1031,7 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst)
 	return true;
 }
 
-static bool _fx_flac_process_search_frame(fx_flac_t *inst)
-{
+static bool _fx_flac_process_search_frame(fx_flac_t *inst) {
 	int64_t tmp_; /* Used by the READ_BITS macro */
 	fx_flac_frame_header_t *fh = inst->frame_header;
 	fx_flac_streaminfo_t *si = inst->streaminfo;
@@ -1069,8 +1045,7 @@ static bool _fx_flac_process_search_frame(fx_flac_t *inst)
 			if (sync_code != 0x7FFCU) {
 				READ_BITS(8U); /* Next byte (assume frames are byte aligned). */
 				return true;
-			}
-			else {
+			} else {
 				inst->crc8 = 0U; /* Reset the checksums */
 				inst->crc16 = 0U;
 				inst->priv_state = FLAC_FRAME_HEADER;
@@ -1178,8 +1153,7 @@ static bool _fx_flac_process_search_frame(fx_flac_t *inst)
 	return true;
 }
 
-static bool _fx_flac_process_in_frame(fx_flac_t *inst)
-{
+static bool _fx_flac_process_in_frame(fx_flac_t *inst) {
 	int64_t tmp_; /* Used by the READ_BITS macro */
 	fx_flac_frame_header_t *fh = inst->frame_header;
 	fx_flac_subframe_header_t *sfh = inst->subframe_header;
@@ -1222,11 +1196,9 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 				sfh->type = SFT_LPC;
 				sfh->lpc_coeffs = inst->qbuf;
 				inst->priv_state = FLAC_SUBFRAME_LPC;
-			}
-			else if (type & 0x10U) {
+			} else if (type & 0x10U) {
 				return _fx_flac_handle_err(inst);
-			}
-			else if (type & 0x08U) {
+			} else if (type & 0x08U) {
 				sfh->order = type & 0x07U;
 				sfh->type = SFT_FIXED;
 				sfh->lpc_shift = 0;
@@ -1236,15 +1208,12 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 					sfh->lpc_coeffs =
 					    (int32_t *)_fx_flac_fixed_coeffs[sfh->order];
 				}
-			}
-			else if ((type & 0x04U) || (type & 0x02U)) {
+			} else if ((type & 0x04U) || (type & 0x02U)) {
 				return _fx_flac_handle_err(inst);
-			}
-			else if (type & 0x01U) {
+			} else if (type & 0x01U) {
 				sfh->type = SFT_VERBATIM;
 				inst->priv_state = FLAC_SUBFRAME_VERBATIM;
-			}
-			else {
+			} else {
 				sfh->type = SFT_CONSTANT;
 				inst->priv_state = FLAC_SUBFRAME_CONSTANT;
 			}
@@ -1346,8 +1315,7 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 			if (sfh->rice_parameter == ((1U << n_bits) - 1U)) {
 				sfh->rice_parameter = READ_BITS_FAST_CRC(5U);
 				inst->priv_state = FLAC_SUBFRAME_RICE_VERBATIM;
-			}
-			else {
+			} else {
 				inst->priv_state = FLAC_SUBFRAME_RICE_UNARY;
 				inst->rice_unary_counter = 0U;
 			}
@@ -1400,8 +1368,7 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 				/* Last bit determines sign */
 				if (val & 1) {
 					blk[inst->blk_cur] = -((int32_t)(val >> 1)) - 1;
-				}
-				else {
+				} else {
 					blk[inst->blk_cur] = (int32_t)(val >> 1);
 				}
 
@@ -1433,8 +1400,7 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 				_fx_flac_restore_lpc_signal(blk, blk_n, sfh->lpc_coeffs,
 				                            sfh->order, sfh->lpc_shift);
 				inst->priv_state = FLAC_SUBFRAME_FINALIZE;
-			}
-			else {
+			} else {
 				inst->priv_state = FLAC_SUBFRAME_RICE_INIT;
 			}
 			break;
@@ -1509,8 +1475,7 @@ static bool _fx_flac_process_in_frame(fx_flac_t *inst)
 }
 
 static bool _fx_flac_process_decoded_frame(fx_flac_t *inst, int32_t *out,
-                                           uint32_t *out_len)
-{
+                                           uint32_t *out_len) {
 	/* Fetch the current stream and frame info. */
 	const fx_flac_frame_header_t *fh = inst->frame_header;
 
@@ -1556,8 +1521,7 @@ static bool _fx_flac_process_decoded_frame(fx_flac_t *inst, int32_t *out,
  * PUBLIC API                                                                 *
  ******************************************************************************/
 
-uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels)
-{
+uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels) {
 	/* Calculate the size of the fixed-size structures */
 	uint32_t size;
 	bool ok = _fx_flac_check_params(max_block_size, max_channels) &&
@@ -1578,8 +1542,7 @@ uint32_t fx_flac_size(uint32_t max_block_size, uint8_t max_channels)
 }
 
 fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
-                        uint8_t max_channels)
-{
+                        uint8_t max_channels) {
 	/* Make sure the parameters are valid. */
 	if (!_fx_flac_check_params(max_block_size, max_channels)) {
 		return NULL;
@@ -1624,8 +1587,7 @@ fx_flac_t *fx_flac_init(void *mem, uint16_t max_block_size,
 	return inst_unaligned;
 }
 
-void fx_flac_reset(fx_flac_t *inst)
-{
+void fx_flac_reset(fx_flac_t *inst) {
 	inst = (fx_flac_t *)FX_ALIGN_ADDR(inst);
 
 	/* Initialize the bitstream reader */
@@ -1657,14 +1619,12 @@ void fx_flac_reset(fx_flac_t *inst)
 	inst->blk_cur = 0U;
 }
 
-fx_flac_state_t fx_flac_get_state(const fx_flac_t *inst)
-{
+fx_flac_state_t fx_flac_get_state(const fx_flac_t *inst) {
 	return ((const fx_flac_t *)FX_ALIGN_ADDR(inst))->state;
 }
 
 int64_t fx_flac_get_streaminfo(fx_flac_t const *inst,
-                               fx_flac_streaminfo_key_t key)
-{
+                               fx_flac_streaminfo_key_t key) {
 	inst = (fx_flac_t *)FX_ALIGN_ADDR(inst);
 	switch (key) {
 		case FLAC_KEY_MIN_BLOCK_SIZE:
@@ -1692,8 +1652,7 @@ int64_t fx_flac_get_streaminfo(fx_flac_t const *inst,
 
 fx_flac_state_t fx_flac_process(fx_flac_t *inst, const uint8_t *in,
                                 uint32_t *in_len, int32_t *out,
-                                uint32_t *out_len)
-{
+                                uint32_t *out_len) {
 	inst = (fx_flac_t *)FX_ALIGN_ADDR(inst);
 
 	/* Set the current bytestream source to the provided input buffer */
