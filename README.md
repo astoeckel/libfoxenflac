@@ -95,6 +95,15 @@ int main() {
 
 See `examples/flac_decoder.c` for a complete example.
 
+## Using libfoxenflac in your own project
+
+To use libfoxenflac, simply add `flac.c` and `flac.h` to your project.
+These files have no further dependencies (apart from the standard library
+headers `assert.h`, `stddef.h`, `stdint.h`, `stdbool.h`).
+
+However, if you'd like to, you can also use the `meson` build system to run
+unit tests and to add `libfoxenflac` into your own project.
+
 ## Building and running the test application
 
 `libfoxenflac` uses the `meson` build system for building and dependency
@@ -128,8 +137,6 @@ emcc -Oz \
     ../test/test_flac.c \
     ../foxen/flac.c \
     ../subprojects/libfoxenbitstream/foxen/bitstream.c \
-    -I ../subprojects/libfoxenbitstream/ \
-    -I ../subprojects/libfoxenmem \
     -I ../subprojects/libfoxenunit \
     -I ../ \
     -o test_flac.js
