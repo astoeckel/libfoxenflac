@@ -28,7 +28,6 @@ lib_foxenflac = library(
     'foxenflac',
     'foxen/flac.c',
     include_directories: inc_foxen,
-    dependencies: [dep_foxenbitstream],
     install: true)
 
 # Compile the example programs
@@ -57,7 +56,7 @@ exe_test_flac_integration = executable(
     'test/test_flac_integration.c',
     include_directories: inc_foxen,
     link_with: lib_foxenflac,
-    dependencies: [dep_foxenunit, dep_foxenbitstream],
+    dependencies: [dep_foxenunit],
     install: false)
 test(
     'test_flac_integration_noise',
