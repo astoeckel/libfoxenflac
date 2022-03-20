@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#   libfoxenbitstream -- Tiny, inflexible bitstream reader
+#   libfoxenflac -- Tiny FLAC Decoder Library
 #   Copyright (C) 2018-2022  Andreas Stöckel
 #
 #   This program is free software: you can redistribute it and/or modify

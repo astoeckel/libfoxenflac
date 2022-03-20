@@ -1,4 +1,4 @@
-#   libfoxenbitstream -- Tiny, inflexible bitstream reader
+#   libfoxenflac -- Tiny, inflexible bitstream reader
 #   Copyright (C) 2018-2022  Andreas Stöckel
 #
 #   This program is free software: you can redistribute it and/or modify
