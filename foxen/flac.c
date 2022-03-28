@@ -676,7 +676,8 @@ typedef struct {
  * Array containing the LPC coefficients for the fixed coding mode.
  */
 static const int32_t _fx_flac_fixed_coeffs[5][4] = {
-    {}, {1}, {2, -1}, {3, -3, 1}, {4, -6, 4, -1}};
+    {0,0,0,0}, {1,0,0,0}, {2, -1, 0, 0}, {3, -3, 1, 0}, {4, -6, 4, -1}
+};
 
 /******************************************************************************
  * Internal state machine enums                                               *
@@ -1252,7 +1253,22 @@ static bool _fx_flac_process_in_metadata(fx_flac_t *inst) {
 					inst->streaminfo->n_samples = READ_BITS(36U);
 					inst->n_bytes_rem -= 4U;
 					break;
-				case 1U ... 16U:
+				case 1U:
+				case 2U:
+				case 3U:
+				case 4U:
+				case 5U:
+				case 6U:
+				case 7U:
+				case 8U:
+				case 9U:
+				case 10U:
+				case 11U:
+				case 12U:
+				case 13U:
+				case 14U:
+				case 15U:
+				case 16U:
 					inst->streaminfo->md5_sum[16U - inst->n_bytes_rem] =
 					    READ_BITS(8);
 					inst->n_bytes_rem -= 1U;
@@ -1900,7 +1916,22 @@ int64_t fx_flac_get_streaminfo(fx_flac_t const *inst,
 			return inst->streaminfo->sample_size;
 		case FLAC_KEY_N_SAMPLES:
 			return inst->streaminfo->n_samples;
-		case FLAC_KEY_MD5_SUM_0 ... FLAC_KEY_MD5_SUM_F:
+		case FLAC_KEY_MD5_SUM_0:
+		case FLAC_KEY_MD5_SUM_1:
+		case FLAC_KEY_MD5_SUM_2:
+		case FLAC_KEY_MD5_SUM_3:
+		case FLAC_KEY_MD5_SUM_4:
+		case FLAC_KEY_MD5_SUM_5:
+		case FLAC_KEY_MD5_SUM_6:
+		case FLAC_KEY_MD5_SUM_7:
+		case FLAC_KEY_MD5_SUM_8:
+		case FLAC_KEY_MD5_SUM_9:
+		case FLAC_KEY_MD5_SUM_A:
+		case FLAC_KEY_MD5_SUM_B:
+		case FLAC_KEY_MD5_SUM_C:
+		case FLAC_KEY_MD5_SUM_D:
+		case FLAC_KEY_MD5_SUM_E:
+		case FLAC_KEY_MD5_SUM_F:
 			return inst->streaminfo->md5_sum[key - FLAC_KEY_MD5_SUM_0];
 		default:
 			return FLAC_INVALID_METADATA_KEY;
