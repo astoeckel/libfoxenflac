@@ -1,0 +1,7 @@
+-V
+--C-kinds=cdefglmnpstuvx
+--file-scope
+--language-force=C
+--links=yes
+--tag-relative=yes
+--sort=yes

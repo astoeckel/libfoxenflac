@@ -1,0 +1,4 @@
+[wrap-git]
+directory=libfoxenbitstream
+url=https://github.com/astoeckel/libfoxenbitstream
+revision=head

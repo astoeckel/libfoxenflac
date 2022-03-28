@@ -1,0 +1,6 @@
+build*/
+subprojects/libfoxenbitstream
+subprojects/libfoxenmem
+subprojects/libfoxenunit
+perf.data
+.gdb_history

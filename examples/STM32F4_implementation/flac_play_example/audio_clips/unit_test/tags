@@ -1,0 +1,632 @@
+AUDIO_AIF_CH_BT	../../sub/audio/audio.h	/^static const uint8_t AUDIO_AIF_CH_BT				= 2;$/;"	v
+AUDIO_AIF_CH_EXT	../../sub/audio/audio.h	/^static const uint8_t AUDIO_AIF_CH_EXT				= 0;$/;"	v
+AUDIO_AIF_CH_UC	../../sub/audio/audio.h	/^static const uint8_t AUDIO_AIF_CH_UC				= 1;$/;"	v
+AUDIO_AIF_DISABLE	../../sub/audio/audio.h	/^static const uint16_t AUDIO_AIF_DISABLE				= 0x0000;$/;"	v
+AUDIO_AIF_ENABLE	../../sub/audio/audio.h	/^static const uint16_t AUDIO_AIF_ENABLE				= 0x0002;$/;"	v
+AUDIO_AIF_JUMP	../../sub/audio/audio.h	/^static const uint16_t AUDIO_AIF_JUMP	       		= 0x0040;$/;"	v
+AUDIO_AIF_RX_START	../../sub/audio/audio.h	/^static const uint16_t AUDIO_AIF_RX_START       		= 0x051A;$/;"	v
+AUDIO_AIF_TX_START	../../sub/audio/audio.h	/^static const uint16_t AUDIO_AIF_TX_START       		= 0x0519;$/;"	v
+AUDIO_AUDIO_H_	../../sub/audio/audio.h	9;"	d
+AUDIO_AUDIO_MEM_H_	../../sub/audio/audio_mem.h	24;"	d
+AUDIO_CFG_CLK	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_CLK[AUDIO_CFG_CLK_SZ] = {$/;"	v	file:
+AUDIO_CFG_CLKDIS	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_CLKDIS[AUDIO_CFG_CLKDIS_SZ] = {$/;"	v	file:
+AUDIO_CFG_CLKDIS_SZ	../../sub/audio/audio_config.c	76;"	d	file:
+AUDIO_CFG_CLKEN	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_CLKEN[AUDIO_CFG_CLKEN_SZ] = {$/;"	v	file:
+AUDIO_CFG_CLKEN_SZ	../../sub/audio/audio_config.c	106;"	d	file:
+AUDIO_CFG_CLK_SZ	../../sub/audio/audio_config.c	85;"	d	file:
+AUDIO_CFG_INIT	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_INIT[AUDIO_CFG_INIT_SZ] = {$/;"	v	file:
+AUDIO_CFG_INIT_SZ	../../sub/audio/audio_config.c	45;"	d	file:
+AUDIO_CFG_MIC	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_MIC[AUDIO_CFG_MIC_SZ] = {$/;"	v	file:
+AUDIO_CFG_MIC_SZ	../../sub/audio/audio_config.c	143;"	d	file:
+AUDIO_CFG_PROC	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_PROC[AUDIO_CFG_PROC_SZ] = {$/;"	v	file:
+AUDIO_CFG_PROC_SZ	../../sub/audio/audio_config.c	156;"	d	file:
+AUDIO_CFG_ROUTE	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_ROUTE[AUDIO_CFG_ROUTE_SZ] = {$/;"	v	file:
+AUDIO_CFG_ROUTE_SZ	../../sub/audio/audio_config.c	115;"	d	file:
+AUDIO_CFG_RST	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_RST[AUDIO_CFG_RST_SZ] = {$/;"	v	file:
+AUDIO_CFG_RST_SZ	../../sub/audio/audio_config.c	33;"	d	file:
+AUDIO_CFG_SPK	../../sub/audio/audio_config.c	/^static const AudMemReg AUDIO_CFG_SPK[AUDIO_CFG_SPK_SZ] = {$/;"	v	file:
+AUDIO_CFG_SPK_SZ	../../sub/audio/audio_config.c	195;"	d	file:
+AUDIO_DSP_32BIT_START	../../sub/audio/audio_mem.h	/^static const uint32_t AUDIO_DSP_32BIT_START  = 0x3000;$/;"	v
+AUDIO_DSP_CONFIG1_ADDR	../../sub/audio/audio.h	/^static const uint32_t AUDIO_DSP_CONFIG1_ADDR        = 0xFFE00;$/;"	v
+AUDIO_DSP_CONFIG1_COREENABLE	../../sub/audio/audio.h	/^static const uint32_t AUDIO_DSP_CONFIG1_COREENABLE  = 0x00000012;$/;"	v
+AUDIO_DSP_CONFIG1_MEMEN	../../sub/audio/audio.h	/^static const uint32_t AUDIO_DSP_CONFIG1_MEMEN       = 0x00000010;$/;"	v
+AUDIO_DSP_CONFIG1_START	../../sub/audio/audio.h	/^static const uint32_t AUDIO_DSP_CONFIG1_START       = 0x00000013;$/;"	v
+AUDIO_DSP_CORES_MAX	../../sub/audio/audio_mem.h	151;"	d
+AUDIO_DSP_STATUS3_FREQSTS	../../sub/audio/audio.h	/^static const uint32_t AUDIO_DSP_STATUS3_FREQSTS     = 0xFFE08;$/;"	v
+AUDIO_SPIBUFF_BYTESZ	../../sub/audio/audio_mem.h	/^static const uint32_t AUDIO_SPIBUFF_BYTESZ = CS_SPI_WBYTEMAX - (CS_SPI_WBYTEMAX % sizeof(uint32_t));$/;"	v
+AUDIO_SPIBUFF_HEADERBYTESZ	../../sub/audio/audio_mem.h	/^static const uint32_t AUDIO_SPIBUFF_HEADERBYTESZ = CS_SPI_HEADERSZ * sizeof(uint16_t);$/;"	v
+AUDIO_SPIBUFF_HEADERWORDSZ	../../sub/audio/audio_mem.h	/^static const uint32_t AUDIO_SPIBUFF_HEADERWORDSZ = (CS_SPI_HEADERSZ * sizeof(uint16_t)) >> 1;$/;"	v
+AUDIO_SPI_BUFF_WORDSZ	../../sub/audio/audio_mem.h	/^static const uint32_t AUDIO_SPI_BUFF_WORDSZ = (CS_SPI_WBYTEMAX - (CS_SPI_WBYTEMAX % sizeof(uint32_t))) >> 1;$/;"	v
+AUDIO_SPI_RETRIES	../../sub/audio/audio_mem.h	/^static const uint32_t AUDIO_SPI_RETRIES     = 3;$/;"	v
+AUDMEMREG_HEADER_SZ	../../sub/audio/audio_mem.h	/^static const uint8_t AUDMEMREG_HEADER_SZ = 2;$/;"	v
+AUDMEM_BADDATA	../../sub/audio/audio_mem.h	/^    AUDMEM_BADDATA,$/;"	e	enum:__anon3
+AUDMEM_MEMFAIL	../../sub/audio/audio_mem.h	/^    AUDMEM_MEMFAIL,$/;"	e	enum:__anon3
+AUDMEM_NOELEM	../../sub/audio/audio_mem.h	/^    AUDMEM_NOELEM,$/;"	e	enum:__anon3
+AUDMEM_READBACKFAIL	../../sub/audio/audio_mem.h	/^    AUDMEM_READBACKFAIL$/;"	e	enum:__anon3
+AUDMEM_SPIR_FAIL	../../sub/audio/audio_mem.h	/^    AUDMEM_SPIR_FAIL,$/;"	e	enum:__anon3
+AUDMEM_SPIW_FAIL	../../sub/audio/audio_mem.h	/^    AUDMEM_SPIW_FAIL,$/;"	e	enum:__anon3
+AUDMEM_SUCCESS	../../sub/audio/audio_mem.h	/^    AUDMEM_SUCCESS = 0,$/;"	e	enum:__anon3
+AUD_BOOT_DONE	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_BOOT_DONE = 1;$/;"	v
+AUD_BOOT_INPROGRESS	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_BOOT_INPROGRESS = 0;$/;"	v
+AUD_DSPCFG_MEMELEM_INDEX	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_DSPCFG_MEMELEM_INDEX = 0;$/;"	v
+AUD_DSP_ADDR_JUMP	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_ADDR_JUMP           = 0x80000;$/;"	v
+AUD_DSP_CFG1_BASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_CFG1_BASE           = 0xFFE00;$/;"	v
+AUD_DSP_CFG1_COREEN	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_CFG1_COREEN         = 0x00000012;$/;"	v
+AUD_DSP_CFG1_MEMCLEAR	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_CFG1_MEMCLEAR       = 0x00000000;$/;"	v
+AUD_DSP_CFG1_MEMEN	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_CFG1_MEMEN          = 0x00000010;$/;"	v
+AUD_DSP_CFG1_START	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_CFG1_START          = 0x00000013;$/;"	v
+AUD_DSP_CFG2_BASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_CFG2_BASE           = 0xFFE02;$/;"	v
+AUD_DSP_CFG2_CLK	../../sub/audio/audio_mem.h	174;"	d
+AUD_DSP_DMACFG1_BASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_DMACFG1_BASE        = 0xFFE30;$/;"	v
+AUD_DSP_RDMACFG1_BASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_RDMACFG1_BASE       = 0xFFE34;$/;"	v
+AUD_DSP_STAT2_BASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_STAT2_BASE          = 0xFFE06;$/;"	v
+AUD_DSP_STAT3_BASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_STAT3_BASE          = 0xFFE08;$/;"	v
+AUD_DSP_WDMACFG2_BASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_DSP_WDMACFG2_BASE       = 0xFFE31;$/;"	v
+AUD_INPUTADJ_MEMELEM_INDEX	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_INPUTADJ_MEMELEM_INDEX = 2;$/;"	v
+AUD_INPUTVOL_MEMELEM_INDEX	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_INPUTVOL_MEMELEM_INDEX = 0;$/;"	v
+AUD_INPUT_LHPF_REGBASE	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_INPUT_LHPF_REGBASE = 0xEC0;$/;"	v
+AUD_INPUT_LHPF_REGHOP	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_INPUT_LHPF_REGHOP  = 4;$/;"	v
+AUD_INPUT_NUM_CHANNELS	../../sub/audio/audio_mem.h	203;"	d
+AUD_INPUT_VOL_REGBASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_INPUT_VOL_REGBASE  = 0x321;$/;"	v
+AUD_INPUT_VOL_REGHOP	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_INPUT_VOL_REGHOP   = 4;$/;"	v
+AUD_INVOL_DBMUL	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_INVOL_DBMUL        = 5;$/;"	v
+AUD_INVOL_MAXDB	../../sub/audio/audio_mem.h	/^static const int16_t AUD_INVOL_MAXDB        = 315;$/;"	v
+AUD_INVOL_MINDB	../../sub/audio/audio_mem.h	/^static const int16_t AUD_INVOL_MINDB        = -640;$/;"	v
+AUD_IRQ1_STAT1	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_IRQ1_STAT1 = 0x1880;$/;"	v
+AUD_IRQ2_STAT1	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_IRQ2_STAT1 = 0x1980;$/;"	v
+AUD_MEMCHUNK_ADJ_IND	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_MEMCHUNK_ADJ_IND = 1;$/;"	v
+AUD_MEMCHUNK_CFG_IND	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_MEMCHUNK_CFG_IND = 0;$/;"	v
+AUD_MEMCHUNK_CLIP_IND	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_MEMCHUNK_CLIP_IND = 7;$/;"	v
+AUD_MEMCHUNK_DSPCFG_IND	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_MEMCHUNK_DSPCFG_IND = 2;$/;"	v
+AUD_MEMCHUNK_DSPPARAM_IND	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_MEMCHUNK_DSPPARAM_IND = 3;$/;"	v
+AUD_MEMCHUNK_DSPPROG_IND	../../sub/audio/audio_mem.h	/^static const uint8_t AUD_MEMCHUNK_DSPPROG_IND = 4;$/;"	v
+AUD_OUTPUTADJ_MEMELEM_INDEX	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_OUTPUTADJ_MEMELEM_INDEX = 3;$/;"	v
+AUD_OUTPUTVOL_MEMELEM_INDEX	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_OUTPUTVOL_MEMELEM_INDEX = 1;$/;"	v
+AUD_OUTPUT_NUM_CHANNELS	../../sub/audio/audio_mem.h	271;"	d
+AUD_OUTPUT_VOL_REGBASE	../../sub/audio/audio_mem.h	/^static const uint32_t AUD_OUTPUT_VOL_REGBASE = 0x431;$/;"	v
+AUD_OUTPUT_VOL_REGHOP	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_OUTPUT_VOL_REGHOP  = 4;$/;"	v
+AUD_OUTVOL_DBMUL	../../sub/audio/audio_mem.h	/^static const uint16_t AUD_OUTVOL_DBMUL       = 5;$/;"	v
+AUD_OUTVOL_MAXDB	../../sub/audio/audio_mem.h	/^static const int16_t AUD_OUTVOL_MAXDB       = 315;$/;"	v
+AUD_OUTVOL_MINDB	../../sub/audio/audio_mem.h	/^static const int16_t AUD_OUTVOL_MINDB       = -640;$/;"	v
+AudMemBlock	../../sub/audio/audio_mem.h	/^} AudMemBlock;$/;"	t	typeref:struct:__anon2
+AudMemReg	../../sub/audio/audio_mem.h	/^} AudMemReg;$/;"	t	typeref:struct:__anon1
+AudMemStatus	../../sub/audio/audio_mem.h	/^} AudMemStatus;$/;"	t	typeref:enum:__anon3
+AudioDSPConfig	../../sub/audio/audio_types.h	/^} AudioDSPConfig;$/;"	t	typeref:struct:__anon7
+AudioInputConfig	../../sub/audio/audio_types.h	/^} AudioInputConfig;$/;"	t	typeref:struct:__anon5
+AudioOutputConfig	../../sub/audio/audio_types.h	/^} AudioOutputConfig;$/;"	t	typeref:struct:__anon6
+AudioState	../../sub/audio/audio_types.h	/^} AudioState;$/;"	t	typeref:struct:__anon8
+CHUNK_SIZE	../../peripherals/memory/sha-256.c	6;"	d	file:
+CSStatus	../../sub/audio/audio_types.h	/^} CSStatus;$/;"	t	typeref:enum:__anon4
+CS_32KCLK_DIS	../../sub/audio/audio.h	52;"	d
+CS_32KCLK_DIS	../../sub/audio/audio_config.c	26;"	d	file:
+CS_32KCLK_EN	../../sub/audio/audio.h	51;"	d
+CS_32KCLK_EN	../../sub/audio/audio_config.c	25;"	d	file:
+CS_ADDR_32KCLK1	../../sub/audio/audio.h	43;"	d
+CS_ADDR_32KCLK1	../../sub/audio/audio_config.c	20;"	d	file:
+CS_ADDR_DSPCLK1	../../sub/audio/audio.h	42;"	d
+CS_ADDR_DSPCLK1	../../sub/audio/audio_config.c	19;"	d	file:
+CS_ADDR_SWRESET	../../sub/audio/audio.h	37;"	d
+CS_ADDR_SWRST	../../sub/audio/audio_config.c	31;"	d	file:
+CS_ADDR_SYSCLK1	../../sub/audio/audio.h	41;"	d
+CS_ADDR_SYSCLK1	../../sub/audio/audio_config.c	18;"	d	file:
+CS_DSPCLK_DIS	../../sub/audio/audio.h	50;"	d
+CS_DSPCLK_DIS	../../sub/audio/audio_config.c	24;"	d	file:
+CS_DSPCLK_EN	../../sub/audio/audio.h	49;"	d
+CS_DSPCLK_EN	../../sub/audio/audio_config.c	23;"	d	file:
+CS_Initializing	../../sub/audio/audio_types.h	/^    CS_Initializing = 0,$/;"	e	enum:__anon4
+CS_Operating	../../sub/audio/audio_types.h	/^    CS_Operating$/;"	e	enum:__anon4
+CS_SPI_HEADERSZ	../../sub/audio/audio_mem.h	316;"	d
+CS_SPI_PACKETSIZE	../../sub/audio/audio_mem.h	315;"	d
+CS_SPI_RSIZE	../../sub/audio/audio_mem.h	317;"	d
+CS_SPI_WBYTEMAX	../../sub/audio/audio_mem.h	320;"	d
+CS_SPI_WDATAMAX	../../sub/audio/audio_mem.h	319;"	d
+CS_SPI_WSIZE	../../sub/audio/audio_mem.h	318;"	d
+CS_SWRST_VAL	../../sub/audio/audio_config.c	32;"	d	file:
+CS_SYSCLK_DIS	../../sub/audio/audio.h	48;"	d
+CS_SYSCLK_DIS	../../sub/audio/audio_config.c	22;"	d	file:
+CS_SYSCLK_EN	../../sub/audio/audio.h	47;"	d
+CS_SYSCLK_EN	../../sub/audio/audio_config.c	21;"	d	file:
+CS_Sleeping	../../sub/audio/audio_types.h	/^    CS_Sleeping,$/;"	e	enum:__anon4
+HAL_I2C_ErrorCallback	../../peripherals/i2c/i2c_peri.c	/^void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)$/;"	f
+HAL_I2C_MasterRxCpltCallback	../../peripherals/i2c/i2c_peri.c	/^void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)$/;"	f
+HAL_I2C_MasterTxCpltCallback	../../peripherals/i2c/i2c_peri.c	/^void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)$/;"	f
+HAL_I2C_MemRxCpltCallback	../../peripherals/i2c/i2c_peri.c	/^void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)$/;"	f
+HAL_I2C_MemTxCpltCallback	../../peripherals/i2c/i2c_peri.c	/^void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c)$/;"	f
+HAL_I2S_TxCpltCallback	../../peripherals/i2s/i2s_peri.c	/^void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s)$/;"	f
+HAL_I2S_TxHalfCpltCallback	../../peripherals/i2s/i2s_peri.c	/^void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s)$/;"	f
+HAL_SPI_AbortCpltCallback	../../peripherals/spi/spi_peri.c	/^void HAL_SPI_AbortCpltCallback(SPI_HandleTypeDef *hspi)$/;"	f
+HAL_SPI_ErrorCallback	../../peripherals/spi/spi_peri.c	/^void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)$/;"	f
+HAL_SPI_RxCpltCallback	../../peripherals/spi/spi_peri.c	/^void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)$/;"	f
+HAL_SPI_TxCpltCallback	../../peripherals/spi/spi_peri.c	/^void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)$/;"	f
+HAL_SPI_TxRxCpltCallback	../../peripherals/spi/spi_peri.c	/^void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)$/;"	f
+I2C_H_	../../peripherals/i2c/i2c_peri.h	7;"	d
+I2C_MAX_PERIPH	../../peripherals/i2c/i2c_peri.h	35;"	d
+I2C_NOADDR	../../peripherals/i2c/i2c_peri.h	/^static const uint32_t I2C_NOADDR = 0xFFFFFFFF;$/;"	v
+I2C_TRANSFER_TIMEOUT	../../peripherals/i2c/i2c_peri.h	/^static const uint32_t I2C_TRANSFER_TIMEOUT = portMAX_DELAY;$/;"	v
+I2S_BUFFSZ	../../peripherals/i2s/i2s_peri.h	43;"	d
+I2S_H_	../../peripherals/i2s/i2s_peri.h	7;"	d
+I2S_MAX_PERIPH	../../peripherals/i2s/i2s_peri.h	33;"	d
+I2S_TRANSFER_TIMEOUT	../../peripherals/i2s/i2s_peri.h	/^static const uint32_t I2S_TRANSFER_TIMEOUT = 5000;$/;"	v
+I2cObject	../../peripherals/i2c/i2c_peri.h	/^} I2cObject;$/;"	t	typeref:struct:__anon9
+I2cTransaction	../../peripherals/i2c/i2c_peri.h	/^} I2cTransaction;$/;"	t	typeref:struct:__anon8
+I2sCmd	../../peripherals/i2s/i2s_peri.h	/^} I2sCmd;$/;"	t	typeref:struct:__anon6
+I2sObject	../../peripherals/i2s/i2s_peri.h	/^} I2sObject;$/;"	t	typeref:struct:__anon7
+MBCmdItems	mocks/include/rtos.h	/^} MBCmdItems;$/;"	t	typeref:struct:__anon1
+MEM_BLOCK_WRITTEN	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_BLOCK_WRITTEN = 0;$/;"	v
+MEM_BUFF_SIZE	../../peripherals/memory/mem_peri.h	97;"	d
+MEM_CHE_TIMEMAX	../../peripherals/memory/mem_peri.h	/^static const uint16_t MEM_CHE_TIMEMAX = 2400;$/;"	v
+MEM_CHUNKBLK_SIZE	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CHUNKBLK_SIZE = 1;$/;"	v
+MEM_CHUNK_EMPTY	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CHUNK_EMPTY = 0xFF;$/;"	v
+MEM_CHUNK_MAXELEMENTS	../../peripherals/memory/mem_peri.h	56;"	d
+MEM_CHUNK_MINELEMENTS	../../peripherals/memory/mem_peri.h	57;"	d
+MEM_CMD_CHE	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_CHE = 0x60;$/;"	v
+MEM_CMD_DP	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_DP = 0xB9;$/;"	v
+MEM_CMD_PP	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_PP = 0x02;$/;"	v
+MEM_CMD_RDLP	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_RDLP = 0x03;$/;"	v
+MEM_CMD_RDSR	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_RDSR = 0x05;$/;"	v
+MEM_CMD_RID	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_RID = 0xAB;$/;"	v
+MEM_CMD_RJID	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_RJID = 0x9F;$/;"	v
+MEM_CMD_RST	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_RST = 0x99;$/;"	v
+MEM_CMD_RSTEN	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_RSTEN = 0x66;$/;"	v
+MEM_CMD_SSE	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_SSE = 0x20;$/;"	v
+MEM_CMD_WRDI	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_WRDI = 0x04;$/;"	v
+MEM_CMD_WREN	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_CMD_WREN = 0x06;$/;"	v
+MEM_ELEMBLK_OFFSET_MASK	../../peripherals/memory/mem_peri.h	/^static const uint32_t MEM_ELEMBLK_OFFSET_MASK = 0xFFFFFE;$/;"	v
+MEM_ELEMBLK_OFFSET_SHIFT	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_ELEMBLK_OFFSET_SHIFT = 1;$/;"	v
+MEM_ELEMBLK_SIZE	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_ELEMBLK_SIZE = 3;$/;"	v
+MEM_ELEMBLK_WRITTEN_MASK	../../peripherals/memory/mem_peri.h	/^static const uint32_t MEM_ELEMBLK_WRITTEN_MASK = 0x01;$/;"	v
+MEM_END_ADDRESS	../../peripherals/memory/mem_peri.h	/^static const size_t MEM_END_ADDRESS = 0x1DFFFF;     \/\/End of User memory$/;"	v
+MEM_H_	../../peripherals/memory/mem_peri.h	29;"	d
+MEM_NVS_FAIL	../../peripherals/memory/mem_peri.h	/^    MEM_NVS_FAIL = 0,$/;"	e	enum:__anon1
+MEM_NVS_FAIL	../../peripherals/memory/mem_peri.h	/^    MEM_NVS_FAIL = 0,$/;"	e	enum:__anon10
+MEM_OP_FAIL	../../peripherals/memory/mem_peri.h	/^    MEM_OP_FAIL,$/;"	e	enum:__anon1
+MEM_OP_FAIL	../../peripherals/memory/mem_peri.h	/^    MEM_OP_FAIL,$/;"	e	enum:__anon10
+MEM_OP_SUCCESS	../../peripherals/memory/mem_peri.h	/^    MEM_OP_SUCCESS$/;"	e	enum:__anon1
+MEM_OP_SUCCESS	../../peripherals/memory/mem_peri.h	/^    MEM_OP_SUCCESS$/;"	e	enum:__anon10
+MEM_PD_TIME	../../peripherals/memory/mem_peri.h	/^static const uint16_t MEM_PD_TIME = 1;$/;"	v
+MEM_PP_MAXBYTES	../../peripherals/memory/mem_peri.h	129;"	d
+MEM_PP_TIMEOUT	../../peripherals/memory/mem_peri.h	/^static const uint16_t MEM_PP_TIMEOUT = 10;$/;"	v
+MEM_PP_TYPICAL	../../peripherals/memory/mem_peri.h	/^static const uint16_t MEM_PP_TYPICAL = 1;$/;"	v
+MEM_RPD_TIME	../../peripherals/memory/mem_peri.h	/^static const uint16_t MEM_RPD_TIME = 1;$/;"	v
+MEM_SECTORERASE_TIMEMAX	../../peripherals/memory/mem_peri.h	/^static const uint16_t MEM_SECTORERASE_TIMEMAX = 120;$/;"	v
+MEM_START_ADDRESS	../../peripherals/memory/mem_peri.h	/^static const size_t MEM_START_ADDRESS = 0x0000;     \/\/Start of User memory$/;"	v
+MEM_STATBIT_RDY	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_STATBIT_RDY = 0;$/;"	v
+MEM_STATBIT_WEN	../../peripherals/memory/mem_peri.h	/^static const uint8_t MEM_STATBIT_WEN = 1;$/;"	v
+MemChunk	../../peripherals/memory/mem_peri.h	/^} MemChunk;$/;"	t	typeref:struct:__anon11
+MemChunk	../../peripherals/memory/mem_peri.h	/^} MemChunk;$/;"	t	typeref:struct:__anon2
+MemElement	../../peripherals/memory/mem_peri.h	/^} MemElement;$/;"	t	typeref:struct:__anon12
+MemElement	../../peripherals/memory/mem_peri.h	/^} MemElement;$/;"	t	typeref:struct:__anon3
+MemObject	../../peripherals/memory/mem_peri.h	/^} MemObject;$/;"	t	typeref:struct:__anon13
+MemObject	../../peripherals/memory/mem_peri.h	/^} MemObject;$/;"	t	typeref:struct:__anon4
+MemOpStatus	../../peripherals/memory/mem_peri.h	/^} MemOpStatus;$/;"	t	typeref:enum:__anon1
+MemOpStatus	../../peripherals/memory/mem_peri.h	/^} MemOpStatus;$/;"	t	typeref:enum:__anon10
+OAD_HASHVERIFY_CALCMISMATCH	../../peripherals/memory/mem_peri.h	156;"	d
+OAD_HASHVERIFY_HASHPROCERR	../../peripherals/memory/mem_peri.h	157;"	d
+OAD_HASHVERIFY_RECMISMATCH	../../peripherals/memory/mem_peri.h	155;"	d
+OAD_HASHVERIFY_SUCCESS	../../peripherals/memory/mem_peri.h	154;"	d
+OAD_IMAGE_HEADER_HASHOFFS	../../peripherals/memory/mem_peri.h	151;"	d
+OAD_IMAGE_HEADER_HASHSZ	../../peripherals/memory/mem_peri.h	152;"	d
+OAD_IMAGE_HEADER_SIZE	../../peripherals/memory/mem_peri.h	150;"	d
+PERIPHERALS_PERIPHERALS_H_	../../peripherals/peripherals.h	6;"	d
+PeriObject	../../peripherals/peripherals.h	/^} PeriObject;$/;"	t	typeref:struct:__anon1
+RTOS_RTOS_H_	mocks/include/rtos.h	7;"	d
+SHA_H_	../../peripherals/memory/sha-256.h	2;"	d
+SPI_H_	../../peripherals/spi/spi_peri.h	7;"	d
+SPI_MAX_PERIPH	../../peripherals/spi/spi_peri.h	36;"	d
+SPI_READ	../../peripherals/spi/spi_peri.h	/^	SPI_READ = 0,$/;"	e	enum:__anon2
+SPI_RW	../../peripherals/spi/spi_peri.h	/^	SPI_RW$/;"	e	enum:__anon2
+SPI_TRANSFER_TIMEOUT	../../peripherals/spi/spi_peri.h	/^static const uint32_t SPI_TRANSFER_TIMEOUT = 5000;$/;"	v
+SPI_WRITE	../../peripherals/spi/spi_peri.h	/^	SPI_WRITE,$/;"	e	enum:__anon2
+SUB_AUDIO_AUDIO_TYPES_H_	../../sub/audio/audio_types.h	8;"	d
+SemaphoreHandle_t	mocks/include/rtos.h	/^typedef void* SemaphoreHandle_t;$/;"	t
+SpiObject	../../peripherals/spi/spi_peri.h	/^} SpiObject;$/;"	t	typeref:struct:__anon4
+SpiSemaphore	../../peripherals/spi/spi_peri.h	/^} SpiSemaphore;$/;"	t	typeref:struct:__anon5
+SpiTransaction	../../peripherals/spi/spi_peri.h	/^}SpiTransaction;$/;"	t	typeref:struct:__anon3
+SpiTransferMode	../../peripherals/spi/spi_peri.h	/^} SpiTransferMode;$/;"	t	typeref:enum:__anon2
+TOTAL_LEN_LEN	../../peripherals/memory/sha-256.c	7;"	d	file:
+__MEM_HANDLER_H__	../include/mem_handler.h	2;"	d
+__STM32F4xx_HAL_H	mocks/include/stm32f4xx_hal.h	23;"	d
+adj_updated	../../sub/audio/audio_types.h	/^    bool adj_updated;$/;"	m	struct:__anon8
+ah	../../peripherals/memory/sha-256.c	/^		uint32_t ah[8];$/;"	l
+audfile_chunk	../../peripherals/i2s/i2s_peri.h	/^	MemChunk *audfile_chunk;$/;"	m	struct:__anon6
+audfile_index	../../peripherals/i2s/i2s_peri.h	/^	uint16_t audfile_index;$/;"	m	struct:__anon6
+audioInit	../../sub/audio/audio.c	/^void audioInit(AudioState *state, PowerUIState *pwr, PeriObject *peri,$/;"	f
+audioInit	../../sub/audio/audio.h	/^void audioInit(AudioState *state, PowerUIState *pwr, PeriObject *peri,$/;"	p
+audioLoadDefaultsToNVM	../../sub/audio/audio.h	/^bool audioLoadDefaultsToNVM(AudioState *state);$/;"	p
+audioLoadDefaultsToNVM	../../sub/audio/audio_config.c	/^bool audioLoadDefaultsToNVM(AudioState *state)$/;"	f
+audioNVSToDSPLoadAudMemBlock	../../sub/audio/audio_mem.c	/^AudMemStatus audioNVSToDSPLoadAudMemBlock(AudioState *state, MemChunk *chunk, uint16_t elem_index)$/;"	f
+audioNVSToDSPLoadAudMemBlock	../../sub/audio/audio_mem.h	/^AudMemStatus audioNVSToDSPLoadAudMemBlock(AudioState *state, MemChunk *chunk, uint16_t elem_index);$/;"	p
+audioNVSToDSPLoadAudMemReg	../../sub/audio/audio_mem.c	/^bool audioNVSToDSPLoadAudMemReg(AudioState *state, MemChunk *chunk, uint16_t elem_index)$/;"	f
+audioNVSToDSPLoadAudMemReg	../../sub/audio/audio_mem.h	/^bool audioNVSToDSPLoadAudMemReg(AudioState *state, MemChunk *chunk, uint16_t elem_index);$/;"	p
+audioNVSToRAMLoadDSPConfig	../../sub/audio/audio_mem.c	/^bool audioNVSToRAMLoadDSPConfig(AudioState *state)$/;"	f
+audioNVSToRAMLoadDSPConfig	../../sub/audio/audio_mem.h	/^bool audioNVSToRAMLoadDSPConfig(AudioState *state);$/;"	p
+audioNVSToRAMLoadInputConfig	../../sub/audio/audio_mem.c	/^bool audioNVSToRAMLoadInputConfig(AudioState *state)$/;"	f
+audioNVSToRAMLoadInputConfig	../../sub/audio/audio_mem.h	/^bool audioNVSToRAMLoadInputConfig(AudioState *state);$/;"	p
+audioNVSToRAMLoadOutputConfig	../../sub/audio/audio_mem.c	/^bool audioNVSToRAMLoadOutputConfig(AudioState *state)$/;"	f
+audioNVSToRAMLoadOutputConfig	../../sub/audio/audio_mem.h	/^bool audioNVSToRAMLoadOutputConfig(AudioState *state);$/;"	p
+audioRAMToDSPLoadInputConfig	../../sub/audio/audio_mem.c	/^bool audioRAMToDSPLoadInputConfig(AudioState *state, uint8_t channel, bool update)$/;"	f
+audioRAMToDSPLoadInputConfig	../../sub/audio/audio_mem.h	/^bool audioRAMToDSPLoadInputConfig(AudioState *state, uint8_t channel, bool update);$/;"	p
+audioRAMToDSPLoadOutputConfig	../../sub/audio/audio_mem.c	/^bool audioRAMToDSPLoadOutputConfig(AudioState *state, uint8_t channel, bool update)$/;"	f
+audioRAMToDSPLoadOutputConfig	../../sub/audio/audio_mem.h	/^bool audioRAMToDSPLoadOutputConfig(AudioState *state, uint8_t channel, bool update);$/;"	p
+audioRAMToNVSLoadAdjConfig	../../sub/audio/audio_mem.c	/^bool audioRAMToNVSLoadAdjConfig(AudioState *state)$/;"	f
+audioRAMToNVSLoadAdjConfig	../../sub/audio/audio_mem.h	/^bool audioRAMToNVSLoadAdjConfig(AudioState *state);$/;"	p
+audioRAMToNVSLoadAudMemReg	../../sub/audio/audio_mem.c	/^bool audioRAMToNVSLoadAudMemReg(AudioState *state, MemChunk *chunk,$/;"	f
+audioRAMToNVSLoadAudMemReg	../../sub/audio/audio_mem.h	/^bool audioRAMToNVSLoadAudMemReg(AudioState *state, MemChunk *chunk, AudMemReg *reg, uint16_t num_regs);$/;"	p
+audioRAMToNVSLoadDSPConfig	../../sub/audio/audio_mem.c	/^bool audioRAMToNVSLoadDSPConfig(AudioState *state)$/;"	f
+audioRAMToNVSLoadDSPConfig	../../sub/audio/audio_mem.h	/^bool audioRAMToNVSLoadDSPConfig(AudioState *state);$/;"	p
+audio_AIF_enable	../../sub/audio/audio.c	/^void audio_AIF_enable(AudioState *state, uint8_t channel, bool enable)$/;"	f
+audio_AIF_enable	../../sub/audio/audio.h	/^void audio_AIF_enable(AudioState *state, uint8_t channel, bool enable);$/;"	p
+audio_EQ_Request	../../sub/audio/audio.h	/^bool audio_EQ_Request(AudioState *state, uint8_t channel, int16_t *bands);$/;"	p
+audio_EQ_Set	../../sub/audio/audio.h	/^bool audio_EQ_Set(AudioState *state, uint8_t channel, int16_t *bands);$/;"	p
+audio_Input_MuteSet	../../sub/audio/audio.c	/^bool audio_Input_MuteSet(AudioState *state, uint8_t channel, bool mute)$/;"	f
+audio_Input_MuteSet	../../sub/audio/audio.h	/^bool audio_Input_MuteSet(AudioState *state, uint8_t channel, bool mute);$/;"	p
+audio_Input_SetAll	../../sub/audio/audio.c	/^bool audio_Input_SetAll(AudioState *state)$/;"	f
+audio_Input_SetAll	../../sub/audio/audio.h	/^bool audio_Input_SetAll(AudioState *state);$/;"	p
+audio_Input_VolumeSet	../../sub/audio/audio.c	/^bool audio_Input_VolumeSet(AudioState *state, uint8_t channel, int16_t volume)$/;"	f
+audio_Input_VolumeSet	../../sub/audio/audio.h	/^bool audio_Input_VolumeSet(AudioState *state, uint8_t channel, int16_t volume);$/;"	p
+audio_IsCalibrated	../../sub/audio/audio.h	/^bool audio_IsCalibrated(AudioState *state);$/;"	p
+audio_Output_MuteSet	../../sub/audio/audio.c	/^bool audio_Output_MuteSet(AudioState *state, uint8_t channel, bool mute)$/;"	f
+audio_Output_MuteSet	../../sub/audio/audio.h	/^bool audio_Output_MuteSet(AudioState *state, uint8_t channel, bool mute);$/;"	p
+audio_Output_SetAll	../../sub/audio/audio.c	/^bool audio_Output_SetAll(AudioState *state)$/;"	f
+audio_Output_SetAll	../../sub/audio/audio.h	/^bool audio_Output_SetAll(AudioState *state);$/;"	p
+audio_Output_VolumeSet	../../sub/audio/audio.c	/^bool audio_Output_VolumeSet(AudioState *state, uint8_t channel, int16_t volume)$/;"	f
+audio_Output_VolumeSet	../../sub/audio/audio.h	/^bool audio_Output_VolumeSet(AudioState *state, uint8_t channel, int16_t volume);$/;"	p
+audio_cs_init	../../sub/audio/audio.c	/^bool audio_cs_init(AudioState *state)$/;"	f
+audio_cs_init	../../sub/audio/audio.h	/^bool audio_cs_init(AudioState *state);$/;"	p
+audio_cs_slpenter	../../sub/audio/audio.c	/^bool audio_cs_slpenter(AudioState *state)$/;"	f
+audio_cs_slpenter	../../sub/audio/audio.h	/^bool audio_cs_slpenter(AudioState *state);$/;"	p
+audio_deinit_SPICS	../../sub/audio/audio.c	/^static void audio_deinit_SPICS(AudioState *state);$/;"	p	file:
+audio_deinit_SPICS	../../sub/audio/audio.c	/^void audio_deinit_SPICS(AudioState *state)$/;"	f
+audio_dsps	../../sub/audio/audio_mem.h	/^static AudioDSPConfig audio_dsps[AUDIO_DSP_CORES_MAX]= {$/;"	v
+audio_fill_buffer	../../sub/audio/audio_mem.c	/^static void audio_fill_buffer(uint16_t *buff, uint32_t addr, uint32_t data, bool data_long);$/;"	p	file:
+audio_fill_buffer	../../sub/audio/audio_mem.c	/^void audio_fill_buffer(uint16_t *txbuff, uint32_t addr, uint32_t data, bool data_long)$/;"	f
+audio_fill_bufferheader	../../sub/audio/audio_mem.c	/^static void audio_fill_bufferheader(uint16_t *buff, uint32_t addr);$/;"	p	file:
+audio_fill_bufferheader	../../sub/audio/audio_mem.c	/^void audio_fill_bufferheader(uint16_t *txbuff, uint32_t addr)$/;"	f
+audio_fill_readbit	../../sub/audio/audio_mem.c	/^static void audio_fill_readbit(SpiObject *spi, uint16_t *txbuff);$/;"	p	file:
+audio_fill_readbit	../../sub/audio/audio_mem.c	/^void audio_fill_readbit(SpiObject *spi, uint16_t *txbuff)$/;"	f
+audio_inadj	../../sub/audio/audio_mem.h	/^static int16_t audio_inadj[AUD_INPUT_NUM_CHANNELS] = { 0, 0};$/;"	v
+audio_init_DSPs	../../sub/audio/audio.c	/^bool audio_init_DSPs(AudioState *state)$/;"	f
+audio_init_DSPs	../../sub/audio/audio.c	/^static bool audio_init_DSPs(AudioState *state);$/;"	p	file:
+audio_init_SPICS	../../sub/audio/audio.c	/^static void audio_init_SPICS(AudioState *state);$/;"	p	file:
+audio_init_SPICS	../../sub/audio/audio.c	/^void audio_init_SPICS(AudioState *state)$/;"	f
+audio_inputs	../../sub/audio/audio_mem.h	/^static AudioInputConfig audio_inputs[AUD_INPUT_NUM_CHANNELS] = {$/;"	v
+audio_outadj	../../sub/audio/audio_mem.h	/^static int16_t audio_outadj[AUD_OUTPUT_NUM_CHANNELS]= { 0, 0};$/;"	v
+audio_outputs	../../sub/audio/audio_mem.h	/^static AudioOutputConfig audio_outputs[AUD_OUTPUT_NUM_CHANNELS]= {$/;"	v
+audio_playfile	../../sub/audio/audio.c	/^void audio_playfile(AudioState *state, uint16_t audfile_index, SemaphoreHandle_t *sem)$/;"	f
+audio_playfile	../../sub/audio/audio.h	/^void audio_playfile(AudioState *state, uint16_t audfile_index, SemaphoreHandle_t *sem);$/;"	p
+audio_read_address	../../sub/audio/audio_mem.c	/^bool audio_read_address(AudioState *state, uint32_t addr, uint32_t *data)$/;"	f
+audio_read_address	../../sub/audio/audio_mem.h	/^bool audio_read_address(AudioState *state, uint32_t addr, uint32_t *data);$/;"	p
+audio_read_buffer	../../sub/audio/audio_mem.c	/^static uint32_t audio_read_buffer(uint16_t *rxbuff, bool data_long);$/;"	p	file:
+audio_read_buffer	../../sub/audio/audio_mem.c	/^uint32_t audio_read_buffer(uint16_t *rxbuff, bool data_long)$/;"	f
+audio_spi_transfer	../../sub/audio/audio_mem.c	/^bool audio_spi_transfer(AudioState *state, size_t word_count, bool read)$/;"	f
+audio_spi_transfer	../../sub/audio/audio_mem.c	/^static bool audio_spi_transfer(AudioState *state, size_t word_count, bool read);$/;"	p	file:
+audio_start_DSP	../../sub/audio/audio.c	/^bool audio_start_DSP(AudioState *state, uint32_t core)$/;"	f
+audio_start_DSP	../../sub/audio/audio.c	/^static bool audio_start_DSP(AudioState *state, uint32_t core);$/;"	p	file:
+audio_status	../../sub/audio/audio.c	/^CSStatus audio_status(AudioState *state)$/;"	f
+audio_status	../../sub/audio/audio.h	/^CSStatus audio_status(AudioState *state);$/;"	p
+audio_stop_DSP	../../sub/audio/audio.c	/^bool audio_stop_DSP(AudioState *state, uint32_t core)$/;"	f
+audio_stop_DSP	../../sub/audio/audio.c	/^static bool audio_stop_DSP(AudioState *state, uint32_t core);$/;"	p	file:
+audio_stuff	unit_test.c	/^  uint32_t audio_stuff = AUDMEM_SUCCESS;$/;"	l
+audio_write_address	../../sub/audio/audio_mem.c	/^bool audio_write_address(AudioState *state, uint32_t addr, uint32_t data)$/;"	f
+audio_write_address	../../sub/audio/audio_mem.h	/^bool audio_write_address(AudioState *state, uint32_t addr, uint32_t data);$/;"	p
+buffer	../../peripherals/i2s/i2s_peri.h	/^	uint16_t *buffer;$/;"	m	struct:__anon7
+buffer	../../peripherals/memory/mem_peri.h	/^    uint8_t buffer[MEM_BUFF_SIZE];$/;"	m	struct:__anon13
+buffer	../../peripherals/memory/mem_peri.h	/^    uint8_t buffer[MEM_BUFF_SIZE];$/;"	m	struct:__anon4
+buffer_state	../../peripherals/memory/sha-256.c	/^struct buffer_state {$/;"	s	file:
+busy	../../peripherals/i2c/i2c_peri.h	/^    bool busy;$/;"	m	struct:__anon9
+busy	../../peripherals/spi/spi_peri.h	/^	bool busy;$/;"	m	struct:__anon4
+calcHash	../../peripherals/memory/mem_peri.c	/^	uint8_t calcHash[OAD_IMAGE_HEADER_HASHSZ];$/;"	l
+calc_chunk	../../peripherals/memory/sha-256.c	/^static int calc_chunk(uint8_t chunk[CHUNK_SIZE], struct buffer_state * state)$/;"	f	file:
+calc_chunk_flash	../../peripherals/memory/sha-256.c	/^static int calc_chunk_flash(uint8_t chunk[CHUNK_SIZE], struct buffer_state * state)$/;"	f	file:
+calc_sha_256	../../peripherals/memory/mem_peri.h	/^void calc_sha_256(uint8_t hash[32],$/;"	p
+calc_sha_256	../../peripherals/memory/sha-256.c	/^void calc_sha_256(uint8_t hash[32],$/;"	f
+calc_sha_256_flash	../../peripherals/memory/mem_peri.h	/^void calc_sha_256_flash(uint8_t hash[32],$/;"	p
+calc_sha_256_flash	../../peripherals/memory/sha-256.c	/^void calc_sha_256_flash(uint8_t hash[32], const void * input, size_t len)$/;"	f
+ch	../../peripherals/memory/sha-256.c	/^				const uint32_t ch = (ah[4] & ah[5]) ^ (~ah[4] & ah[6]);$/;"	l
+chip_id	../../peripherals/memory/mem_peri.h	/^    uint32_t chip_id;$/;"	m	struct:__anon13
+chip_id	../../peripherals/memory/mem_peri.h	/^    uint32_t chip_id;$/;"	m	struct:__anon4
+chunk	../../peripherals/memory/sha-256.c	/^	MemChunk *chunk;$/;"	m	struct:buffer_state	file:
+chunk	../../peripherals/memory/sha-256.c	/^	uint8_t *chunk = mem->buffer;$/;"	l
+chunk	../../peripherals/memory/sha-256.c	/^	uint8_t chunk[64];$/;"	l
+chunks	../../peripherals/memory/mem_peri.h	/^    MemChunk *chunks;$/;"	m	struct:__anon13
+chunks	../../peripherals/memory/mem_peri.h	/^    MemChunk *chunks;$/;"	m	struct:__anon4
+clockreg	../../sub/audio/audio_types.h	/^    uint32_t clockreg;$/;"	m	struct:__anon7
+core	../../sub/audio/audio.c	/^    uint8_t core = 0;$/;"	l
+count	../../peripherals/spi/spi_peri.h	/^    size_t count;$/;"	m	struct:__anon3
+cs_pin	../../peripherals/memory/mem_peri.h	/^    uint16_t cs_pin;$/;"	m	struct:__anon13
+cs_pin	../../peripherals/memory/mem_peri.h	/^    uint16_t cs_pin;$/;"	m	struct:__anon4
+cs_pin	../../sub/audio/audio_types.h	/^	uint16_t cs_pin;$/;"	m	struct:__anon8
+cs_port	../../peripherals/memory/mem_peri.h	/^    GPIO_TypeDef *cs_port;$/;"	m	struct:__anon13
+cs_port	../../peripherals/memory/mem_peri.h	/^    GPIO_TypeDef *cs_port;$/;"	m	struct:__anon4
+cs_port	../../sub/audio/audio_types.h	/^    GPIO_TypeDef *cs_port;$/;"	m	struct:__anon8
+data	../../sub/audio/audio_mem.c	/^    AudMemReg data;$/;"	l
+data	../../sub/audio/audio_mem.h	/^    uint32_t data;$/;"	m	struct:__anon1
+data_size	../../sub/audio/audio_mem.c	/^    size_t start_address, word_count, data_size;$/;"	l
+dev_id	../../peripherals/memory/mem_peri.h	/^    uint8_t dev_id;$/;"	m	struct:__anon13
+dev_id	../../peripherals/memory/mem_peri.h	/^    uint8_t dev_id;$/;"	m	struct:__anon4
+dsp_config	../../sub/audio/audio_types.h	/^    AudioDSPConfig *dsp_config;$/;"	m	struct:__anon8
+dsp_loadstat	../../sub/audio/audio.c	/^    AudMemStatus dsp_loadstat = AUDMEM_SUCCESS;$/;"	l
+dsp_loadsuccess	../../sub/audio/audio.c	/^    bool dsp_loadsuccess = true;$/;"	l
+elem	../../peripherals/memory/mem_peri.c	/^	MemElement elem;$/;"	l
+elem	../../peripherals/memory/sha-256.c	/^	MemElement *elem;$/;"	m	struct:buffer_state	file:
+elem_index	../../peripherals/memory/mem_peri.c	/^    uint16_t elem_index = 0;$/;"	l
+elem_index	../../sub/audio/audio.c	/^    uint8_t elem_index = 0;$/;"	l
+elem_offset	../../sub/audio/audio_mem.c	/^    size_t elem_offset;$/;"	l
+elemblock_offset	../../peripherals/memory/mem_peri.c	/^    size_t elemblock_offset = memReturnChunkEnd(mem, chunk) - ((elem_index + 1) * MEM_ELEMBLK_SIZE);$/;"	l
+elemindex	../../sub/audio/audio_mem.c	/^    uint16_t elemindex;$/;"	l
+elemoffs	../../peripherals/memory/sha-256.c	/^	size_t elemoffs;$/;"	m	struct:buffer_state	file:
+enable	../../sub/audio/audio_types.h	/^    bool enable;$/;"	m	struct:__anon7
+end	../../peripherals/memory/mem_peri.c	/^    size_t end = chunk->offset;$/;"	l
+end_offset	../../peripherals/memory/mem_peri.c	/^    size_t end_offset = memExtractElementOffset(temp);$/;"	l
+foffset	../../peripherals/memory/mem_peri.c	/^	size_t foffset = offset;$/;"	l
+h	../../peripherals/memory/sha-256.c	/^	uint32_t h[] = { 0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 };$/;"	l
+handle	../../peripherals/i2c/i2c_peri.h	/^    I2C_HandleTypeDef *handle;$/;"	m	struct:__anon9
+handle	../../peripherals/i2s/i2s_peri.h	/^	I2S_HandleTypeDef *handle;$/;"	m	struct:__anon7
+handle	../../peripherals/spi/spi_peri.h	/^	SPI_HandleTypeDef *handle;$/;"	m	struct:__anon4
+handle	../../peripherals/spi/spi_peri.h	/^	SPI_HandleTypeDef *handle;$/;"	m	struct:__anon5
+i	../../peripherals/memory/sha-256.c	/^		int i;$/;"	l
+i	../../peripherals/memory/sha-256.c	/^	unsigned i, j;$/;"	l
+i2c	../../peripherals/peripherals.h	/^    I2cObject i2c;$/;"	m	struct:__anon1
+i2cCheckBusy	../../peripherals/i2c/i2c_peri.c	/^bool i2cCheckBusy(I2cObject *i2c)$/;"	f
+i2cCheckBusy	../../peripherals/i2c/i2c_peri.h	/^bool i2cCheckBusy(I2cObject *i2c);$/;"	p
+i2cInit	../../peripherals/i2c/i2c_peri.c	/^void i2cInit(I2cObject *i2c, I2C_HandleTypeDef *handle)$/;"	f
+i2cInit	../../peripherals/i2c/i2c_peri.h	/^void i2cInit(I2cObject *i2c, I2C_HandleTypeDef *handle);$/;"	p
+i2cInitTransaction	../../peripherals/i2c/i2c_peri.c	/^void i2cInitTransaction(I2cTransaction *new_trans, uint8_t address, size_t mem_addr_size,$/;"	f
+i2cInitTransaction	../../peripherals/i2c/i2c_peri.h	/^void i2cInitTransaction(I2cTransaction *new_trans, uint8_t address, size_t mem_addr_size,$/;"	p
+i2cNewRX	../../peripherals/i2c/i2c_peri.c	/^bool i2cNewRX(I2cObject *i2c, I2cTransaction *new_trans,$/;"	f
+i2cNewRX	../../peripherals/i2c/i2c_peri.c	/^static bool i2cNewRX(I2cObject *i2c, I2cTransaction *new_trans,$/;"	p	file:
+i2cNewRXWait	../../peripherals/i2c/i2c_peri.c	/^bool i2cNewRXWait(I2cObject *i2c, I2cTransaction *new_trans,$/;"	f
+i2cNewRXWait	../../peripherals/i2c/i2c_peri.h	/^bool i2cNewRXWait(I2cObject *i2c, I2cTransaction *new_trans,$/;"	p
+i2cNewTX	../../peripherals/i2c/i2c_peri.c	/^bool i2cNewTX(I2cObject *i2c, I2cTransaction *new_trans,$/;"	f
+i2cNewTX	../../peripherals/i2c/i2c_peri.c	/^static bool i2cNewTX(I2cObject *i2c, I2cTransaction *new_trans,$/;"	p	file:
+i2cNewTXWait	../../peripherals/i2c/i2c_peri.c	/^bool i2cNewTXWait(I2cObject *i2c, I2cTransaction *new_trans,$/;"	f
+i2cNewTXWait	../../peripherals/i2c/i2c_peri.h	/^bool i2cNewTXWait(I2cObject *i2c, I2cTransaction *new_trans,$/;"	p
+i2cReleaseLock	../../peripherals/i2c/i2c_peri.c	/^static void i2cReleaseLock(void);$/;"	p	file:
+i2cReleaseLock	../../peripherals/i2c/i2c_peri.c	/^void i2cReleaseLock(void)$/;"	f
+i2cTransfer	../../peripherals/i2c/i2c_peri.c	/^bool i2cTransfer(I2cObject *i2c, I2cTransaction *trans)$/;"	f
+i2cTransfer	../../peripherals/i2c/i2c_peri.c	/^static bool i2cTransfer(I2cObject *i2c, I2cTransaction *trans);$/;"	p	file:
+i2cTransferResult	../../peripherals/i2c/i2c_peri.c	/^bool i2cTransferResult(I2cObject *i2c)$/;"	f
+i2cTransferResult	../../peripherals/i2c/i2c_peri.c	/^static bool i2cTransferResult(I2cObject *i2c);$/;"	p	file:
+i2cWaitComplete	../../peripherals/i2c/i2c_peri.c	/^bool i2cWaitComplete(I2cObject *i2c)$/;"	f
+i2cWaitComplete	../../peripherals/i2c/i2c_peri.h	/^bool i2cWaitComplete(I2cObject *i2c);$/;"	p
+i2c_MspDeInit	../../peripherals/i2c/i2c_peri.c	/^void i2c_MspDeInit(I2cObject *i2c)$/;"	f
+i2c_MspDeInit	../../peripherals/i2c/i2c_peri.h	/^void i2c_MspDeInit(I2cObject *i2c);$/;"	p
+i2c_MspInit	../../peripherals/i2c/i2c_peri.c	/^void i2c_MspInit(I2cObject *i2c)$/;"	f
+i2c_MspInit	../../peripherals/i2c/i2c_peri.h	/^void i2c_MspInit(I2cObject *i2c);$/;"	p
+i2c_sem_done	../../peripherals/i2c/i2c_peri.c	/^SemaphoreHandle_t i2c_sem_done;$/;"	v
+i2c_sem_lock	../../peripherals/i2c/i2c_peri.c	/^SemaphoreHandle_t i2c_sem_lock;$/;"	v
+i2s	../../peripherals/i2s/i2s_peri.c	/^	I2sObject *i2s = NULL;$/;"	l
+i2s	../../peripherals/i2s/i2s_peri.c	/^	I2sObject *i2s = i2s_matchObject(hi2s);$/;"	l
+i2s	../../peripherals/peripherals.h	/^    I2sObject i2s;$/;"	m	struct:__anon1
+i2sCheckBusy	../../peripherals/i2s/i2s_peri.c	/^bool i2sCheckBusy(I2sObject *i2s)$/;"	f
+i2sCheckBusy	../../peripherals/i2s/i2s_peri.h	/^bool i2sCheckBusy(I2sObject *i2s);$/;"	p
+i2sInit	../../peripherals/i2s/i2s_peri.c	/^void i2sInit(I2sObject *i2s, I2S_HandleTypeDef *handle, uint8_t periph_index)$/;"	f
+i2sInit	../../peripherals/i2s/i2s_peri.h	/^void i2sInit(I2sObject *i2s, I2S_HandleTypeDef *handle, uint8_t periph_index);$/;"	p
+i2s_MspDeInit	../../peripherals/i2s/i2s_peri.c	/^void i2s_MspDeInit(I2sObject *i2s)$/;"	f
+i2s_MspDeInit	../../peripherals/i2s/i2s_peri.h	/^void i2s_MspDeInit(I2sObject *i2s);$/;"	p
+i2s_MspInit	../../peripherals/i2s/i2s_peri.c	/^void i2s_MspInit(I2sObject *i2s)$/;"	f
+i2s_MspInit	../../peripherals/i2s/i2s_peri.h	/^void i2s_MspInit(I2sObject *i2s);$/;"	p
+i2s_buff	../../peripherals/i2s/i2s_peri.c	/^uint16_t i2s_buff[I2S_BUFFSZ];$/;"	v
+i2s_instance	../../peripherals/i2s/i2s_peri.c	/^I2sObject *i2s_instance[I2S_MAX_PERIPH];$/;"	v
+i2s_matchObject	../../peripherals/i2s/i2s_peri.c	/^I2sObject *i2s_matchObject(I2S_HandleTypeDef *hi2s)$/;"	f
+i2s_startEmptyStream	../../peripherals/i2s/i2s_peri.c	/^void i2s_startEmptyStream(I2sObject *i2s)$/;"	f
+i2s_startEmptyStream	../../peripherals/i2s/i2s_peri.h	/^void i2s_startEmptyStream(I2sObject *i2s);$/;"	p
+i2s_stopStream	../../peripherals/i2s/i2s_peri.c	/^void i2s_stopStream(I2sObject *i2s)$/;"	f
+i2s_stopStream	../../peripherals/i2s/i2s_peri.h	/^void i2s_stopStream(I2sObject *i2s);$/;"	p
+id	../../peripherals/memory/mem_peri.c	/^	uint32_t id = 0xFFFFFF;$/;"	l
+id	../../peripherals/memory/mem_peri.c	/^	uint32_t id = 0xFFFFFFFF;$/;"	l
+ilen	../../peripherals/memory/mem_peri.c	/^	size_t ilen = 0;$/;"	l
+index	../../sub/audio/audio_mem.c	/^    uint16_t index = 0;$/;"	l
+init_buf_state	../../peripherals/memory/sha-256.c	/^static void init_buf_state(struct buffer_state * state,$/;"	f	file:
+init_buf_state_flash	../../peripherals/memory/sha-256.c	/^static void init_buf_state_flash(struct buffer_state * state, const void * input, size_t len)$/;"	f	file:
+input_adj	../../sub/audio/audio_types.h	/^    int16_t *input_adj;$/;"	m	struct:__anon8
+input_config	../../sub/audio/audio_types.h	/^    AudioInputConfig *input_config;$/;"	m	struct:__anon8
+j	../../peripherals/memory/sha-256.c	/^	unsigned i, j;$/;"	l
+k	../../peripherals/memory/sha-256.c	/^static const uint32_t k[] = {$/;"	v	file:
+left	../../peripherals/memory/sha-256.c	/^		const size_t left = space_in_chunk - TOTAL_LEN_LEN;$/;"	l
+leftover_count	../../sub/audio/audio_mem.c	/^    uint32_t leftover_count;$/;"	l
+len	../../peripherals/memory/sha-256.c	/^		size_t len = state->total_len;$/;"	l
+len	../../peripherals/memory/sha-256.c	/^	size_t len;$/;"	m	struct:buffer_state	file:
+length	../../peripherals/memory/mem_peri.c	/^	size_t length = size;$/;"	l
+length	../../sub/audio/audio_mem.h	/^    uint32_t length;$/;"	m	struct:__anon2
+long_enable	../../sub/audio/audio_mem.c	/^    bool long_enable = false;$/;"	l
+main	unit_test.c	/^int main(void) {$/;"	f
+maj	../../peripherals/memory/sha-256.c	/^				const uint32_t maj = (ah[0] & ah[1]) ^ (ah[0] & ah[2]) ^ (ah[1] & ah[2]);$/;"	l
+mem	../../peripherals/memory/sha-256.c	/^	MemObject *mem;$/;"	m	struct:buffer_state	file:
+mem	../../peripherals/peripherals.h	/^    MemObject mem;$/;"	m	struct:__anon1
+memAddElement	../../peripherals/memory/mem_peri.c	/^MemOpStatus memAddElement(MemObject *mem, MemChunk *chunk, size_t elem_size, MemElement *elem_return, uint16_t *elemindex_return)$/;"	f
+memAddElement	../../peripherals/memory/mem_peri.h	/^MemOpStatus memAddElement(MemObject *mem, MemChunk *chunk, size_t elem_size,$/;"	p
+memCheckBusy	../../peripherals/memory/mem_peri.c	/^bool memCheckBusy(MemObject *mem)$/;"	f
+memCheckBusy	../../peripherals/memory/mem_peri.h	/^bool memCheckBusy(MemObject *mem);$/;"	p
+memCheckChunk	../../peripherals/memory/mem_peri.c	/^MemOpStatus memCheckChunk(MemObject *mem, MemChunk *chunk)$/;"	f
+memCheckChunk	../../peripherals/memory/mem_peri.h	/^MemOpStatus memCheckChunk(MemObject *mem, MemChunk *chunk);$/;"	p
+memCheckHashOAD	../../peripherals/memory/mem_peri.c	/^uint8_t memCheckHashOAD(MemObject *mem, MemChunk *chunk, uint8_t *refHash)$/;"	f
+memCheckHashOAD	../../peripherals/memory/mem_peri.h	/^uint8_t memCheckHashOAD(MemObject *mem, MemChunk *chunk, uint8_t *refhash);$/;"	p
+memExtractElementOffset	../../peripherals/memory/mem_peri.c	/^size_t memExtractElementOffset(uint32_t temp)$/;"	f
+memExtractElementOffset	../../peripherals/memory/mem_peri.c	/^static size_t memExtractElementOffset(uint32_t temp);$/;"	p	file:
+memInit	../../peripherals/memory/mem_peri.c	/^bool memInit(MemObject *mem, SPI_HandleTypeDef *handle, uint8_t spi_index,$/;"	f
+memInit	../../peripherals/memory/mem_peri.h	/^bool memInit(MemObject *mem, SPI_HandleTypeDef *handle, uint8_t spi_index,$/;"	p
+memInitChunk	../../peripherals/memory/mem_peri.c	/^MemOpStatus memInitChunk(MemObject *mem, MemChunk *chunk)$/;"	f
+memInitChunk	../../peripherals/memory/mem_peri.h	/^MemOpStatus memInitChunk(MemObject *mem, MemChunk *chunk);$/;"	p
+memReadElementParam	../../peripherals/memory/mem_peri.c	/^MemOpStatus memReadElementParam(MemObject *mem, MemChunk *chunk, MemElement *elem,$/;"	f
+memReadElementParam	../../peripherals/memory/mem_peri.h	/^MemOpStatus memReadElementParam(MemObject *mem, MemChunk *chunk, MemElement *elem,$/;"	p
+memReadFromElement	../../peripherals/memory/mem_peri.c	/^MemOpStatus memReadFromElement(MemObject *mem, MemChunk *chunk, MemElement *elem, size_t offset,$/;"	f
+memReadFromElement	../../peripherals/memory/mem_peri.h	/^MemOpStatus memReadFromElement(MemObject *mem, MemChunk *chunk, MemElement *elem, size_t offset,$/;"	p
+memReturnChunkEnd	../../peripherals/memory/mem_peri.c	/^size_t memReturnChunkEnd(MemObject *mem, MemChunk *chunk)$/;"	f
+memReturnChunkEnd	../../peripherals/memory/mem_peri.c	/^static size_t memReturnChunkEnd(MemObject *mem, MemChunk *chunk);$/;"	p	file:
+memWriteToElement	../../peripherals/memory/mem_peri.c	/^MemOpStatus memWriteToElement(MemObject *mem, MemChunk *chunk, MemElement *elem, size_t offset,$/;"	f
+memWriteToElement	../../peripherals/memory/mem_peri.h	/^MemOpStatus memWriteToElement(MemObject *mem, MemChunk *chunk, MemElement *elem, size_t offset,$/;"	p
+mem_addr	../../peripherals/i2c/i2c_peri.h	/^	uint32_t mem_addr;$/;"	m	struct:__anon8
+mem_addr_size	../../peripherals/i2c/i2c_peri.h	/^	size_t mem_addr_size;$/;"	m	struct:__anon8
+mem_stuff	unit_test.c	/^  uint32_t mem_stuff = MEM_NVS_FAIL;$/;"	l
+memblk_elem	../../sub/audio/audio.c	/^    uint16_t memblk_elem = 0;$/;"	l
+mh_printf	../include/mem_handler.h	/^int mh_printf(uint8_t *s);$/;"	p
+mh_printf	../mem_handler.c	/^int mh_printf(uint8_t *s) {$/;"	f
+mode	../../peripherals/spi/spi_peri.h	/^    SpiTransferMode mode;$/;"	m	struct:__anon3
+mode	../../sub/audio/audio_mem.c	/^    SpiTransferMode mode = SPI_WRITE;$/;"	l
+mute	../../sub/audio/audio_types.h	/^    bool mute;$/;"	m	struct:__anon5
+mute	../../sub/audio/audio_types.h	/^    bool mute;$/;"	m	struct:__anon6
+new_elem_end	../../peripherals/memory/mem_peri.c	/^    size_t new_elem_end = temp.offset + temp.size + elem_size;$/;"	l
+num_chunks	../../peripherals/memory/mem_peri.h	/^    uint16_t num_chunks;$/;"	m	struct:__anon13
+num_chunks	../../peripherals/memory/mem_peri.h	/^    uint16_t num_chunks;$/;"	m	struct:__anon4
+num_sectors	../../peripherals/memory/mem_peri.h	/^    uint8_t num_sectors;         \/\/Size of chunk in sectors$/;"	m	struct:__anon11
+num_sectors	../../peripherals/memory/mem_peri.h	/^    uint8_t num_sectors;         \/\/Size of chunk in sectors$/;"	m	struct:__anon2
+nvsChipErase	../../peripherals/memory/mem_peri.c	/^bool nvsChipErase(MemObject *mem)$/;"	f
+nvsChipErase	../../peripherals/memory/mem_peri.c	/^static bool nvsChipErase(MemObject *mem);$/;"	p	file:
+nvsEnterDeepPowerdown	../../peripherals/memory/mem_peri.c	/^bool nvsEnterDeepPowerdown(MemObject *mem)$/;"	f
+nvsEnterDeepPowerdown	../../peripherals/memory/mem_peri.c	/^static bool nvsEnterDeepPowerdown(MemObject *mem);$/;"	p	file:
+nvsErase	../../peripherals/memory/mem_peri.c	/^bool nvsErase(MemObject *mem, size_t offset, uint16_t num_sectors)$/;"	f
+nvsErase	../../peripherals/memory/mem_peri.h	/^bool nvsErase(MemObject *mem, size_t offset, uint16_t size);$/;"	p
+nvsExitDeepPowerdown	../../peripherals/memory/mem_peri.c	/^bool nvsExitDeepPowerdown(MemObject *mem)$/;"	f
+nvsExitDeepPowerdown	../../peripherals/memory/mem_peri.c	/^static bool nvsExitDeepPowerdown(MemObject *mem);$/;"	p	file:
+nvsReadID	../../peripherals/memory/mem_peri.c	/^static uint8_t nvsReadID(MemObject *mem);$/;"	p	file:
+nvsReadID	../../peripherals/memory/mem_peri.c	/^uint8_t nvsReadID(MemObject *mem)$/;"	f
+nvsReadJID	../../peripherals/memory/mem_peri.c	/^static uint32_t nvsReadJID(MemObject *mem);$/;"	p	file:
+nvsReadJID	../../peripherals/memory/mem_peri.c	/^uint32_t nvsReadJID(MemObject *mem)$/;"	f
+nvsReadStatus	../../peripherals/memory/mem_peri.c	/^bool nvsReadStatus(MemObject *mem, uint8_t *status)$/;"	f
+nvsReadStatus	../../peripherals/memory/mem_peri.c	/^static bool nvsReadStatus(MemObject *mem, uint8_t *status);$/;"	p	file:
+nvsReadTo	../../peripherals/memory/mem_peri.c	/^bool nvsReadTo(MemObject *mem, size_t offset, void *dest, size_t size)$/;"	f
+nvsReadTo	../../peripherals/memory/mem_peri.h	/^bool nvsReadTo(MemObject *mem, size_t offset, void *dest, size_t size);$/;"	p
+nvsReset	../../peripherals/memory/mem_peri.c	/^bool nvsReset(MemObject *mem)$/;"	f
+nvsReset	../../peripherals/memory/mem_peri.c	/^static bool nvsReset(MemObject *mem);$/;"	p	file:
+nvsVerify	../../peripherals/memory/mem_peri.c	/^bool nvsVerify(MemObject *mem, size_t offset, void *source, size_t size)$/;"	f
+nvsVerify	../../peripherals/memory/mem_peri.c	/^static bool nvsVerify(MemObject *mem, size_t offset, void *source, size_t size);$/;"	p	file:
+nvsWaitReady	../../peripherals/memory/mem_peri.c	/^bool nvsWaitReady(MemObject *mem)$/;"	f
+nvsWaitReady	../../peripherals/memory/mem_peri.c	/^static bool nvsWaitReady(MemObject *mem);$/;"	p	file:
+nvsWriteDisable	../../peripherals/memory/mem_peri.c	/^bool nvsWriteDisable(MemObject *mem)$/;"	f
+nvsWriteDisable	../../peripherals/memory/mem_peri.c	/^static bool nvsWriteDisable(MemObject *mem);$/;"	p	file:
+nvsWriteEnable	../../peripherals/memory/mem_peri.c	/^bool nvsWriteEnable(MemObject *mem)$/;"	f
+nvsWriteEnable	../../peripherals/memory/mem_peri.c	/^static bool nvsWriteEnable(MemObject *mem);$/;"	p	file:
+nvsWriteFrom	../../peripherals/memory/mem_peri.c	/^bool nvsWriteFrom(MemObject *mem, size_t offset, void *source, size_t size)$/;"	f
+nvsWriteFrom	../../peripherals/memory/mem_peri.h	/^bool nvsWriteFrom(MemObject *mem, size_t offset, void *source, size_t size);$/;"	p
+offset	../../peripherals/memory/mem_peri.c	/^	size_t offset = OAD_IMAGE_HEADER_SIZE;$/;"	l
+offset	../../peripherals/memory/mem_peri.c	/^    size_t offset = memReturnChunkEnd(mem, chunk) - ((element_index + 1) * MEM_ELEMBLK_SIZE);$/;"	l
+offset	../../peripherals/memory/mem_peri.h	/^    size_t offset;               \/\/Offset of chunk within memory$/;"	m	struct:__anon11
+offset	../../peripherals/memory/mem_peri.h	/^    size_t offset;               \/\/Offset of chunk within memory$/;"	m	struct:__anon2
+offset	../../peripherals/memory/mem_peri.h	/^    size_t offset;               \/\/Offset of element within chunk (19 bits)$/;"	m	struct:__anon12
+offset	../../peripherals/memory/mem_peri.h	/^    size_t offset;               \/\/Offset of element within chunk (19 bits)$/;"	m	struct:__anon3
+offset	../../sub/audio/audio_mem.h	/^    uint32_t offset;$/;"	m	struct:__anon1
+offset	../../sub/audio/audio_mem.h	/^    uint32_t offset;$/;"	m	struct:__anon2
+output_adj	../../sub/audio/audio_types.h	/^    int16_t *output_adj;$/;"	m	struct:__anon8
+output_config	../../sub/audio/audio_types.h	/^    AudioOutputConfig *output_config;$/;"	m	struct:__anon8
+p	../../peripherals/memory/sha-256.c	/^		const uint8_t *p = chunk;$/;"	l
+p	../../peripherals/memory/sha-256.c	/^	const uint8_t * p;$/;"	m	struct:buffer_state	file:
+peri	../../sub/audio/audio_types.h	/^    PeriObject *peri;$/;"	m	struct:__anon8
+periph_index	../../peripherals/i2s/i2s_peri.h	/^	uint8_t periph_index;$/;"	m	struct:__anon7
+periph_index	../../peripherals/spi/spi_peri.c	/^	uint8_t periph_index;$/;"	l
+periph_index	../../peripherals/spi/spi_peri.h	/^	uint8_t periph_index;$/;"	m	struct:__anon4
+playing	../../peripherals/i2s/i2s_peri.h	/^	bool playing;$/;"	m	struct:__anon7
+pwr	../../sub/audio/audio_types.h	/^	PowerUIState *pwr;              \/\/Power$/;"	m	struct:__anon8
+read_buff	../../peripherals/i2c/i2c_peri.h	/^	void *read_buff;$/;"	m	struct:__anon8
+read_buff	../../peripherals/spi/spi_peri.h	/^	void *read_buff;$/;"	m	struct:__anon3
+read_count	../../peripherals/i2c/i2c_peri.h	/^	size_t read_count;$/;"	m	struct:__anon8
+readback	../../sub/audio/audio_mem.c	/^        uint32_t readback;$/;"	l
+readbackmem	../../sub/audio/audio_mem.c	/^        uint32_t readbackmem, readbackmemH, readbackmemL;$/;"	l
+readbackmemH	../../sub/audio/audio_mem.c	/^        uint32_t readbackmem, readbackmemH, readbackmemL;$/;"	l
+readbackmemL	../../sub/audio/audio_mem.c	/^        uint32_t readbackmem, readbackmemH, readbackmemL;$/;"	l
+readsz	../../peripherals/memory/mem_peri.c	/^	size_t readsz = 0;$/;"	l
+result	../../peripherals/i2c/i2c_peri.c	/^	bool result = i2cTransfer(i2c, new_trans);$/;"	l
+result	../../peripherals/memory/mem_peri.c	/^	MemOpStatus result = MEM_OP_SUCCESS;$/;"	l
+result	../../peripherals/memory/mem_peri.c	/^    MemOpStatus result = MEM_OP_SUCCESS;$/;"	l
+result	../../peripherals/memory/mem_peri.c	/^    MemOpStatus result;$/;"	l
+result	../../peripherals/memory/mem_peri.c	/^    bool result = true;$/;"	l
+right_rot	../../peripherals/memory/sha-256.c	/^static inline uint32_t right_rot(uint32_t value, unsigned int count)$/;"	f	file:
+rtos_Sleep_mS	mocks/include/rtos.h	/^void rtos_Sleep_mS(uint32_t time_ms);$/;"	p
+rtos_cmd_fail	mocks/include/rtos.h	/^void rtos_cmd_fail(MBCmdItems *items);$/;"	p
+rtos_cmd_success	mocks/include/rtos.h	/^void rtos_cmd_success(MBCmdItems *items);$/;"	p
+rtos_createClock	mocks/include/rtos.h	/^void rtos_createClock(TimerHandle_t *clock, const char * const pcTimerName,$/;"	p
+rtos_createMailbox	mocks/include/rtos.h	/^void rtos_createMailbox(QueueHandle_t *mail, size_t msg_size, uint8_t mb_capacity);$/;"	p
+rtos_createSemaphore	mocks/include/rtos.h	/^void rtos_createSemaphore(SemaphoreHandle_t *sem, uint8_t sem_count, uint8_t init_count);$/;"	p
+rtos_createThread	mocks/include/rtos.h	/^void rtos_createThread(TaskHandle_t *task, int priority,$/;"	p
+s0	../../peripherals/memory/sha-256.c	/^					const uint32_t s0 = right_rot(w[(j + 1) & 0xf], 7) ^ right_rot(w[(j + 1) & 0xf], 18) ^ (w[(j + 1) & 0xf] >> 3);$/;"	l
+s0	../../peripherals/memory/sha-256.c	/^				const uint32_t s0 = right_rot(ah[0], 2) ^ right_rot(ah[0], 13) ^ right_rot(ah[0], 22);$/;"	l
+s1	../../peripherals/memory/sha-256.c	/^					const uint32_t s1 = right_rot(w[(j + 14) & 0xf], 17) ^ right_rot(w[(j + 14) & 0xf], 19) ^ (w[(j + 14) & 0xf] >> 10);$/;"	l
+s1	../../peripherals/memory/sha-256.c	/^				const uint32_t s1 = right_rot(ah[4], 6) ^ right_rot(ah[4], 11) ^ right_rot(ah[4], 25);$/;"	l
+sectorSize	../../peripherals/memory/mem_peri.h	/^    size_t sectorSize;$/;"	m	struct:__anon13
+sectorSize	../../peripherals/memory/mem_peri.h	/^    size_t sectorSize;$/;"	m	struct:__anon4
+sector_erase	../../peripherals/memory/mem_peri.c	/^	size_t sector_erase = 0;$/;"	l
+sem	../../peripherals/spi/spi_peri.h	/^	SemaphoreHandle_t sem;$/;"	m	struct:__anon5
+sem_cmd	../../sub/audio/audio_types.h	/^    SemaphoreHandle_t sem_cmd;$/;"	m	struct:__anon8
+sem_cmd	mocks/include/rtos.h	/^    SemaphoreHandle_t* sem_cmd;$/;"	m	struct:__anon1
+single_one_delivered	../../peripherals/memory/sha-256.c	/^	int single_one_delivered; \/* bool *\/$/;"	m	struct:buffer_state	file:
+size	../../peripherals/memory/mem_peri.h	/^    size_t size;                 \/\/Size of data$/;"	m	struct:__anon12
+size	../../peripherals/memory/mem_peri.h	/^    size_t size;                 \/\/Size of data$/;"	m	struct:__anon3
+slave_address	../../peripherals/i2c/i2c_peri.h	/^	uint8_t slave_address;$/;"	m	struct:__anon8
+source_char	../../peripherals/memory/mem_peri.c	/^	uint8_t *source_char = (uint8_t *)source;$/;"	l
+source_offset	../../peripherals/memory/mem_peri.c	/^	size_t source_offset = 0;$/;"	l
+space_in_chunk	../../peripherals/memory/sha-256.c	/^	size_t space_in_chunk;$/;"	l
+spi	../../peripherals/memory/mem_peri.h	/^    SpiObject spi;$/;"	m	struct:__anon13
+spi	../../peripherals/memory/mem_peri.h	/^    SpiObject spi;$/;"	m	struct:__anon4
+spi	../../peripherals/peripherals.h	/^    SpiObject spi;$/;"	m	struct:__anon1
+spiCheckBusy	../../peripherals/spi/spi_peri.c	/^bool spiCheckBusy(SpiObject *spi)$/;"	f
+spiCheckBusy	../../peripherals/spi/spi_peri.h	/^bool spiCheckBusy(SpiObject *spi);$/;"	p
+spiInit	../../peripherals/spi/spi_peri.c	/^void spiInit(SpiObject *spi, SPI_HandleTypeDef *handle, uint8_t periph_index)$/;"	f
+spiInit	../../peripherals/spi/spi_peri.h	/^void spiInit(SpiObject *spi, SPI_HandleTypeDef *handle, uint8_t periph_index);$/;"	p
+spiInitTransaction	../../peripherals/spi/spi_peri.c	/^void spiInitTransaction(SpiTransaction *new_trans,$/;"	f
+spiInitTransaction	../../peripherals/spi/spi_peri.h	/^void spiInitTransaction(SpiTransaction *new_trans,$/;"	p
+spiNewTransfer	../../peripherals/spi/spi_peri.c	/^bool spiNewTransfer(SpiObject *spi, SpiTransaction *new_trans, size_t count, SpiTransferMode mode)$/;"	f
+spiNewTransfer	../../peripherals/spi/spi_peri.c	/^static bool spiNewTransfer(SpiObject *spi, SpiTransaction *new_trans,$/;"	p	file:
+spiNewTransferWait	../../peripherals/spi/spi_peri.c	/^bool spiNewTransferWait(SpiObject *spi, SpiTransaction *new_trans, size_t count, SpiTransferMode mode)$/;"	f
+spiNewTransferWait	../../peripherals/spi/spi_peri.h	/^bool spiNewTransferWait(SpiObject *spi, SpiTransaction *new_trans,$/;"	p
+spiReleaseLock	../../peripherals/spi/spi_peri.c	/^static void spiReleaseLock(SPI_HandleTypeDef *hspi);$/;"	p	file:
+spiReleaseLock	../../peripherals/spi/spi_peri.c	/^void spiReleaseLock(SPI_HandleTypeDef *hspi)$/;"	f
+spiTransfer	../../peripherals/spi/spi_peri.c	/^bool spiTransfer(SpiObject *spi, SpiTransaction *trans)$/;"	f
+spiTransfer	../../peripherals/spi/spi_peri.c	/^static bool spiTransfer(SpiObject *spi, SpiTransaction *trans);$/;"	p	file:
+spiTransferResult	../../peripherals/spi/spi_peri.c	/^bool spiTransferResult(SpiObject *spi)$/;"	f
+spiTransferResult	../../peripherals/spi/spi_peri.c	/^static bool spiTransferResult(SpiObject *spi);$/;"	p	file:
+spiWaitComplete	../../peripherals/spi/spi_peri.c	/^bool spiWaitComplete(SpiObject *spi)$/;"	f
+spiWaitComplete	../../peripherals/spi/spi_peri.h	/^bool spiWaitComplete(SpiObject *spi);$/;"	p
+spi_MspDeInit	../../peripherals/spi/spi_peri.c	/^void spi_MspDeInit(SpiObject *spi)$/;"	f
+spi_MspDeInit	../../peripherals/spi/spi_peri.h	/^void spi_MspDeInit(SpiObject *spi);$/;"	p
+spi_MspInit	../../peripherals/spi/spi_peri.c	/^void spi_MspInit(SpiObject *spi)$/;"	f
+spi_MspInit	../../peripherals/spi/spi_peri.h	/^void spi_MspInit(SpiObject *spi);$/;"	p
+spi_read	../../sub/audio/audio_types.h	/^    uint32_t spi_read;$/;"	m	struct:__anon8
+spi_sem_done	../../peripherals/spi/spi_peri.c	/^SpiSemaphore spi_sem_done[SPI_MAX_PERIPH];$/;"	v
+spi_sem_lock	../../peripherals/spi/spi_peri.c	/^SpiSemaphore spi_sem_lock[SPI_MAX_PERIPH];$/;"	v
+spi_trans	../../sub/audio/audio_types.h	/^    SpiTransaction spi_trans;$/;"	m	struct:__anon8
+srcBuf	../../peripherals/memory/mem_peri.c	/^	uint8_t *srcBuf = source;$/;"	l
+start_address	../../sub/audio/audio_mem.c	/^    size_t start_address, word_count, data_size;$/;"	l
+state	../../peripherals/memory/sha-256.c	/^	struct buffer_state state;$/;"	l
+status	../../peripherals/memory/mem_peri.c	/^	uint8_t status;$/;"	l
+status	../../sub/audio/audio_types.h	/^    CSStatus status;                \/\/Status$/;"	m	struct:__anon8
+success	../../peripherals/memory/mem_peri.c	/^	bool success = false;$/;"	l
+success	../../sub/audio/audio_mem.c	/^    bool success = true;$/;"	l
+success	mocks/include/rtos.h	/^    bool success;$/;"	m	struct:__anon1
+temp	../../peripherals/memory/mem_peri.c	/^    MemElement temp;$/;"	l
+temp	../../peripherals/memory/mem_peri.c	/^    uint32_t temp;$/;"	l
+temp	../../peripherals/memory/mem_peri.c	/^    uint8_t temp;$/;"	l
+temp1	../../peripherals/memory/sha-256.c	/^				const uint32_t temp1 = ah[7] + s1 + ch + k[i << 4 | j] + w[j];$/;"	l
+temp2	../../peripherals/memory/sha-256.c	/^				const uint32_t temp2 = s0 + maj;$/;"	l
+temp_elem	../../peripherals/memory/mem_peri.c	/^    uint32_t temp_elem = (new_elem_end << MEM_ELEMBLK_OFFSET_SHIFT) & ~MEM_ELEMBLK_WRITTEN_MASK;$/;"	l
+tmp	../../sub/audio/audio_mem.c	/^    uint32_t tmp = 0;$/;"	l
+tmp	../../sub/audio/audio_mem.c	/^    uint32_t tmp;$/;"	l
+totalSize	../../peripherals/memory/mem_peri.h	/^    size_t totalSize;$/;"	m	struct:__anon13
+totalSize	../../peripherals/memory/mem_peri.h	/^    size_t totalSize;$/;"	m	struct:__anon4
+total_len	../../peripherals/memory/sha-256.c	/^	size_t total_len;$/;"	m	struct:buffer_state	file:
+total_len_delivered	../../peripherals/memory/sha-256.c	/^	int total_len_delivered; \/* bool *\/$/;"	m	struct:buffer_state	file:
+trans	../../peripherals/memory/mem_peri.h	/^    SpiTransaction trans;$/;"	m	struct:__anon13
+trans	../../peripherals/memory/mem_peri.h	/^    SpiTransaction trans;$/;"	m	struct:__anon4
+tx	../../sub/audio/audio_mem.c	/^	uint8_t *tx = txbuff;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff = MEM_CMD_DP;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff = MEM_CMD_RDSR;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff = MEM_CMD_RID;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff = MEM_CMD_RJID;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff = MEM_CMD_RSTEN;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff = MEM_CMD_WRDI;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff = MEM_CMD_WREN;$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff[4];$/;"	l
+txbuff	../../peripherals/memory/mem_peri.c	/^	uint8_t txbuff[5];$/;"	l
+update	../../sub/audio/audio.c	/^    bool update = false;$/;"	l
+verify_buffer	../../peripherals/memory/mem_peri.h	/^    uint8_t verify_buffer[MEM_PP_MAXBYTES];$/;"	m	struct:__anon13
+verify_buffer	../../peripherals/memory/mem_peri.h	/^    uint8_t verify_buffer[MEM_PP_MAXBYTES];$/;"	m	struct:__anon4
+voffset	../../peripherals/memory/mem_peri.c	/^	size_t voffset = offset;$/;"	l
+volume	../../sub/audio/audio_types.h	/^    int16_t volume;$/;"	m	struct:__anon5
+volume	../../sub/audio/audio_types.h	/^    int16_t volume;$/;"	m	struct:__anon6
+vsize	../../peripherals/memory/mem_peri.c	/^	size_t vsize;$/;"	l
+w	../../peripherals/memory/sha-256.c	/^			uint32_t w[16];$/;"	l
+word_count	../../sub/audio/audio_mem.c	/^    size_t start_address, word_count, data_size;$/;"	l
+write_buff	../../peripherals/i2c/i2c_peri.h	/^	void *write_buff;$/;"	m	struct:__anon8
+write_buff	../../peripherals/spi/spi_peri.h	/^	void *write_buff;$/;"	m	struct:__anon3
+write_count	../../peripherals/i2c/i2c_peri.h	/^	size_t write_count;$/;"	m	struct:__anon8
+xHigherPriorityTaskWoken	../../peripherals/i2c/i2c_peri.c	/^	static BaseType_t xHigherPriorityTaskWoken;$/;"	l	file:
+xHigherPriorityTaskWoken	../../peripherals/spi/spi_peri.c	/^	static BaseType_t xHigherPriorityTaskWoken;$/;"	l	file:

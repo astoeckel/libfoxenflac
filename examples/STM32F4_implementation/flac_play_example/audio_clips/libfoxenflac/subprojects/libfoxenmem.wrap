@@ -1,0 +1,4 @@
+[wrap-git]
+directory=libfoxenmem
+url=https://github.com/astoeckel/libfoxenmem
+revision=head

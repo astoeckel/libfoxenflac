@@ -1,0 +1,4 @@
+[wrap-git]
+directory=libfoxenflac
+url=https://github.com/astoeckel/libfoxenflac
+revision=head

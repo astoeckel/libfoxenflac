@@ -1,0 +1,6 @@
+Some of the samples in this directory were copied from the Claxon Rust FLAC
+decoder. See
+
+https://github.com/ruuda/claxon/tree/master/testsamples
+
+for more information.
