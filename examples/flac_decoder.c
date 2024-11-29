@@ -85,7 +85,8 @@ int main(int argc, char *argv[]) {
 
 		/* Copy unread bytes to the beginning of the buffer and adjust the write
 		   cursor. */
-		for (uint32_t i = 0; i < (in_buf_wr_cur - in_buf_len); i++) {
+		for (uint32_t i = 0; in_buf_len && (i < (in_buf_wr_cur - in_buf_len));
+		     i++) {
 			in_buf[i] = in_buf[i + in_buf_len];
 		}
 		in_buf_wr_cur = in_buf_wr_cur - in_buf_len;
