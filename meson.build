@@ -61,32 +61,32 @@ exe_test_flac_integration = executable(
 test(
     'test_flac_integration_noise',
     exe_test_flac_integration,
-    args: [join_paths(meson.source_root(), 'test/data/noise.flac')])
+    args: [join_paths(meson.project_source_root(), 'test/data/noise.flac')])
 test(
     'test_flac_integration_wasted_bits',
     exe_test_flac_integration,
-    args: [join_paths(meson.source_root(), 'test/data/wasted_bits.flac')])
+    args: [join_paths(meson.project_source_root(), 'test/data/wasted_bits.flac')])
 test(
     'test_flac_integration_short',
     exe_test_flac_integration,
-    args: [join_paths(meson.source_root(), 'test/data/short.flac')])
+    args: [join_paths(meson.project_source_root(), 'test/data/short.flac')])
 test(
     'test_flac_integration_subframe_header_reset',
     exe_test_flac_integration,
-    args: [join_paths(meson.source_root(), 'test/data/subframe_header_reset.flac')])
+    args: [join_paths(meson.project_source_root(), 'test/data/subframe_header_reset.flac')])
 test(
     'test_flac_integration_afl_rice_parameter_zero',
     exe_test_flac_integration,
-    args: [join_paths(meson.source_root(), 'test/data/afl_rice_parameter_zero.flac')])
+    args: [join_paths(meson.project_source_root(), 'test/data/afl_rice_parameter_zero.flac')])
 
 exe_python = find_program('python3')
 test(
     'test_flac_integration_runner',
     exe_python,
     args: [
-        join_paths(meson.source_root(), 'test/test_flac_integration_runner.py'),
-        '--song-dir',
-        join_paths(meson.source_root(), 'test/data/extra/'),
+        join_paths(meson.project_source_root(), 'test/test_flac_integration_runner.py'),
+        '--data-dir',
+        join_paths(meson.project_source_root(), 'test/data/extra/'),
         '--exe',
         exe_test_flac_integration,
         '--no-download'],
