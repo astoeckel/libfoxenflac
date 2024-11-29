@@ -28,31 +28,31 @@ TESTS = [
     # Note 2022-02-23: for some reason these downloads are very slow.
     # As we've added the IETF FLAC WG test suite, these should no longer be
     # neccessary.
-    {
-        # "I Have a Dream" by Martin Luther King in 1963, 16 bit mono, 22.05 kHz.
-        "url": "https://archive.org/download/MLKDream/MLKDream.flac",
-        "hash": "4db90f6a5061560bd0318ce94e35d4897ba65094e22d29ebaba381f615011c8c",
-    },
-    {
-        # Intro of Karl Denson’s Tiny Universe live in 2015, 24 bit stereo, 96 kHz.
-        "url": "https://archive.org/download/kdtu2015-01-07.cmc641.flac24/kdtu2015-01-07.cmc641-t01.flac",
-        "hash": "f5f55f6780fa6aa8905cb11d72e901e4b2db5ff7edcaff457537ad8c4865d829",
-    },
-    {
-        # "Disarm" by Smashing Pumpkins live at Lowlands 1993, 16 bit stereo, 44.1 kHz.
-        "url": "https://archive.org/download/tsp1993-08-07.flac16/tsp1993-08-07d2t01.flac",
-        "hash": "b7c60aa5d15975ca856096f93359faeed6f4c24931cee68430ffe5c9164f7eb6",
-    },
-    {
-        # "Lowlands" by The Gourds live at Lowlands 2004, 16 bit stereo, 44.1 kHz.
-        "url": "https://archive.org/download/gds2004-10-16.matrix.flac/gds10-16-2004d2t10.flac",
-        "hash": "7e9df9134879f35c830433fa7591605115b50ddba36c1ebd509e36c16d5981d4",
-    },
-    {
-        # "Once Upon a Time" by Smashing Pumpkins live at Pinkpop 1998, 16 bit stereo, 44.1 kHz.
-        "url": "https://archive.org/download/tsp1998-06-01.flac16/tsp1998-06-01t02.flac",
-        "hash": "d1792d3f89debd57e60f54a296de3e347ce866b1d324bb1128e7c9aa61de1294",
-    },
+#    {
+#        # "I Have a Dream" by Martin Luther King in 1963, 16 bit mono, 22.05 kHz.
+#        "url": "https://archive.org/download/MLKDream/MLKDream.flac",
+#        "hash": "4db90f6a5061560bd0318ce94e35d4897ba65094e22d29ebaba381f615011c8c",
+#    },
+#    {
+#        # Intro of Karl Denson’s Tiny Universe live in 2015, 24 bit stereo, 96 kHz.
+#        "url": "https://archive.org/download/kdtu2015-01-07.cmc641.flac24/kdtu2015-01-07.cmc641-t01.flac",
+#        "hash": "f5f55f6780fa6aa8905cb11d72e901e4b2db5ff7edcaff457537ad8c4865d829",
+#    },
+#    {
+#        # "Disarm" by Smashing Pumpkins live at Lowlands 1993, 16 bit stereo, 44.1 kHz.
+#        "url": "https://archive.org/download/tsp1993-08-07.flac16/tsp1993-08-07d2t01.flac",
+#        "hash": "b7c60aa5d15975ca856096f93359faeed6f4c24931cee68430ffe5c9164f7eb6",
+#    },
+#    {
+#        # "Lowlands" by The Gourds live at Lowlands 2004, 16 bit stereo, 44.1 kHz.
+#        "url": "https://archive.org/download/gds2004-10-16.matrix.flac/gds10-16-2004d2t10.flac",
+#        "hash": "7e9df9134879f35c830433fa7591605115b50ddba36c1ebd509e36c16d5981d4",
+#    },
+#    {
+#        # "Once Upon a Time" by Smashing Pumpkins live at Pinkpop 1998, 16 bit stereo, 44.1 kHz.
+#        "url": "https://archive.org/download/tsp1998-06-01.flac16/tsp1998-06-01t02.flac",
+#        "hash": "d1792d3f89debd57e60f54a296de3e347ce866b1d324bb1128e7c9aa61de1294",
+#    },
     # Some additional test files from the FFMpeg sample repository
     {
         "url": "http://samples.ffmpeg.org/flac/short.flac",
