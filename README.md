@@ -121,6 +121,11 @@ Run the unit tests by executing
 ninja test
 ```
 
+> [NOTE]
+> This requires the reference `flac` decoder to be installed. Some test files
+> need to be downloaded from the internet. Manually run
+> `test/test_flac_integration_runner.py` to download these files.
+
 To test the library in action, you can for example run the following (assumes
 you have `curl` and `aplay` installed, which is the default on most Linux
 distributions)
