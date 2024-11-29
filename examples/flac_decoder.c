@@ -22,8 +22,7 @@
 
 #include <foxen/flac.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	if (argc != 2) {
 		fprintf(stderr, "Usage: %s <FLAC FILE>\n", argv[0]);
 		return 1;
@@ -34,48 +33,48 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	uint8_t buf[128];
+	uint8_t in_buf[128];
 	int32_t out_buf[512];
-	uint32_t buf_wr_cur = 0;
+	uint32_t in_buf_wr_cur = 0;
 	fx_flac_t *flac = FX_FLAC_ALLOC_DEFAULT();
-	bool done = false;
+	bool done_reading = false;
 #if 0
 	uint64_t smpl_idx = 0;
 	uint64_t byte_idx = 0;
 #endif
-	while (!done) {
+	while (true) {
 		/* Read data from the input file */
-		size_t to_read =  sizeof(buf) - buf_wr_cur;
-		if (to_read > 0) {
-			size_t n_read = fread(buf + buf_wr_cur, 1, to_read, f);
+		size_t to_read = sizeof(in_buf) - in_buf_wr_cur;
+		size_t n_read = 0;
+		if ((!done_reading) && (to_read > 0)) {
+			n_read = fread(in_buf + in_buf_wr_cur, 1, to_read, f);
 			if (n_read == 0) {
+				done_reading = true;
 				fprintf(stderr, "%s: Reached end of file.\n", argv[1]);
-				done = true;
-				break;
 			}
 
 			/* Advance the write cursor */
-			buf_wr_cur += n_read;
+			in_buf_wr_cur += n_read;
 		}
 
 		/* Read from the buffer */
-		uint32_t buf_len = buf_wr_cur;
+		uint32_t in_buf_len = in_buf_wr_cur;
 		uint32_t out_buf_len = 512;
-		switch (fx_flac_process(flac, buf, &buf_len, out_buf, &out_buf_len)) {
+		switch (
+		    fx_flac_process(flac, in_buf, &in_buf_len, out_buf, &out_buf_len)) {
 			case FLAC_END_OF_METADATA:
 				/* Can read metadata here */
 				break;
 			case FLAC_ERR:
 				fprintf(stderr, "FLAC decoder in error state!\n");
-				done = true;
 				break;
 			default:
 				break;
 		}
 
-		/* Write decoded samples to stdout */
+			/* Write decoded samples to stdout */
 #if 0
-		byte_idx += buf_len;
+		byte_idx += in_buf_len;
 		for (uint32_t i = 0; i < out_buf_len; i++) {
 /*			fprintf(stdout, "%08lX %09ld %11d\n", byte_idx, smpl_idx++, out_buf[i] >> 16);*/
 			fprintf(stdout, "%09ld %11d\n", smpl_idx++, out_buf[i] >> 16);
@@ -86,10 +85,15 @@ int main(int argc, char *argv[])
 
 		/* Copy unread bytes to the beginning of the buffer and adjust the write
 		   cursor. */
-		for (uint32_t i = 0; i < buf_wr_cur - buf_len; i++) {
-			buf[i] = buf[i + buf_len];
+		for (uint32_t i = 0; i < (in_buf_wr_cur - in_buf_len); i++) {
+			in_buf[i] = in_buf[i + in_buf_len];
 		}
-		buf_wr_cur = buf_wr_cur - buf_len;
+		in_buf_wr_cur = in_buf_wr_cur - in_buf_len;
+
+		/* Check whether we are at the end of the file */
+		if ((in_buf_len == 0U) && (out_buf_len == 0U) && (n_read < to_read)) {
+			break;
+		}
 	}
 	free(flac);
 
