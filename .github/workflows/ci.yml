@@ -42,11 +42,15 @@ jobs:
               --data-dir ../test/data/extra/ \
               --exe ./test_flac_integration
           ninja test
+      - name: Demo test
+        run: |
+          cd build
+          echo "1058e2a061aecd46ddfbc6330230d1f412e36bbd02c7ffdefbb992926e3c00ef  -" > ref.txt
+          ./flac_decoder ../test/data/short.flac | sha256sum -c ref.txt
       - name: Coverage
         run: |
           cd build
           ninja coverage
-
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
