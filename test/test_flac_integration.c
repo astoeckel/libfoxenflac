@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <foxen/flac.h>
+#include <foxen-flac.h>
 
 #include "bitstream.h"
 

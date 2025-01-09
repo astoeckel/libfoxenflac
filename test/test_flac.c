@@ -19,8 +19,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include <foxen/flac.h>
-#include <foxen/unittest.h>
+#include <foxen-flac.h>
+#include <foxen-unittest.h>
 
 /******************************************************************************
  * Unit tests                                                                 *
