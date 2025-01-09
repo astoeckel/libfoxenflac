@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <foxen/flac.h>
+#include <foxen-flac.h>
 
 int main(int argc, char *argv[]) {
 	if (argc != 2) {

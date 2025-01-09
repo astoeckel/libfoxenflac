@@ -21,12 +21,12 @@ if compiler.get_id() == 'gcc' or compiler.get_id() == 'clang'
 endif
 
 # Include directory
-inc_foxen = include_directories('.')
+inc_foxen = include_directories('src')
 
 # Define the contents of the actual library
 lib_foxenflac = library(
     'foxenflac',
-    'foxen/flac.c',
+    'src/foxen-flac.c',
     include_directories: inc_foxen,
     install: true)
 
@@ -94,7 +94,7 @@ test(
 
 # Install the header file
 install_headers(
-    ['foxen/flac.h'],
+    ['src/foxen-flac.h'],
     subdir: 'foxen')
 
 # Generate a Pkg config file

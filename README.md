@@ -47,7 +47,7 @@ The following list of items is *not* implemented at the moment:
 ## Usage
 
 ```C
-#include <foxen/flac.h>
+#include <foxen-flac.h>
 
 #include <stdlib.h> /* The FX_FLAC_ALLOC_DEFAULT macro uses malloc(). Have
                        a look at flac.h for more info on how to instantiate
@@ -140,7 +140,7 @@ run the Unit tests just run the the following from the `build` directory
 ```
 emcc -Oz \
     ../test/test_flac.c \
-    ../foxen/flac.c \
+    ../src/foxen-flac.c \
     ../subprojects/libfoxenbitstream/foxen/bitstream.c \
     -I ../subprojects/libfoxenunit \
     -I ../ \
