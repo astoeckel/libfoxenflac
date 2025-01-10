@@ -21,7 +21,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <foxen/flac.h>
+#ifdef ARDUINO
+# include "foxen-flac.h"
+#else
+# include <foxen/flac.h>
+#endif
 
 #if 0
 /* Set FX_FLAC_NO_CRC if you control the input data and already performed other
