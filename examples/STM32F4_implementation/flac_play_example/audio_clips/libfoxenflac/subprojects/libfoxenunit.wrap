@@ -1,0 +1,4 @@
+[wrap-git]
+directory=libfoxenunit
+url=https://github.com/astoeckel/libfoxenunit
+revision=head

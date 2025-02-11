@@ -1,0 +1,9 @@
+I might grant individuals or entities the right to use libfoxenflac under a proprietary license.
+For example, this may be under the condition that they contribute changes made to the library
+back to the project and sign a Contributor License Agreement (CLA). This CLA allows me to
+redistribute these changes under any license to third parties.
+
+To contribute to libfoxenflac under the terms of the CLA, simply open one or multiple (as you
+see fit) "Pull Requests" (PRs) on GitHub.  In addition to the usual description of the PR, please
+include a line clearly stating that this contribution is made under the terms of the CLA between
+me (Andreas Stöckel) and you (either you as an individual or you as an entity/company).

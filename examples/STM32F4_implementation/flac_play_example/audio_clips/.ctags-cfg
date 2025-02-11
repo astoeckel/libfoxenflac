@@ -1,0 +1,11 @@
+DIR_ARR=(
+  "."
+  "../statemachine"
+  "../sub/"
+  "../peripherals/memory"
+  "../peripherals"
+  "../Middlewares/Third_Party/FreeRTOS"
+  "../RTOS"
+  "../Core/Inc"
+  "../Core/Src"
+  )
